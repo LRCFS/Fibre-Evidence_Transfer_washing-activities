@@ -27,6 +27,7 @@ library(FSA)
 library(multcomp)
 library(ggrepel)
 library(car)
+library(gapminder)
 
 #############################################################
 #####                      Function                     #####
