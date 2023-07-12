@@ -3,28 +3,34 @@
 #########################################################
 # select the column Transfer only in each dataframe
 # Dataset with 1 garments
-TransferW000_G1 <- forFibreCount0_G1 %>%
-  dplyr::select(Coder,Coder2,`After transfer`)
-TransferW001_G1 <- forFibreCount1_G1 %>%
-  dplyr::select(Coder,Coder2,`After transfer`)
-TransferW002_G1 <- forFibreCount2_G1 %>%
-  dplyr::select(Coder,Coder2,`After transfer`)
-TransferW003_G1 <- forFibreCount3_G1 %>%
-  dplyr::select(Coder,Coder2,`After transfer`)
-TransferW004_G1 <- forFibreCount4_G1 %>%
-  dplyr::select(Coder,Coder2,`After transfer`)
-TransferW005_G1 <- forFibreCount5_G1 %>%
-  dplyr::select(Coder,Coder2,`After transfer`)
-TransferW006_G1 <- forFibreCount6_G1 %>%
-  dplyr::select(Coder,Coder2,`After transfer`)
-TransferW007_G1 <- forFibreCount7_G1 %>%
-  dplyr::select(Coder,Coder2,`After transfer`)
-TransferW009_G1 <- forFibreCount9_G1 %>%
-  dplyr::select(Coder,Coder2,`After transfer`)
-TransferW011_G1 <- forFibreCount11_G1 %>%
-  dplyr::select(Coder,Coder2,`After transfer`)
+# create a list called data_list that contains all the individual data frames 
+data_list_G1 <- list(forFibreCount0_G1,forFibreCount1_G1,forFibreCount2_G1,forFibreCount3_G1,forFibreCount4_G1,
+                  forFibreCount5_G1,forFibreCount6_G1,forFibreCount7_G1,forFibreCount9_G1,forFibreCount11_G1)
+# apply the select function to each data frame to extract the columns:
+#"Coder, Coder2, and After transfer"
+# The result is a new list called TransferW_G1 that contains the modified data frames
+TransferW_G1 <- lapply(data_list_G1, function(data) {
+  data %>%
+    dplyr::select(Coder, Coder2, `After transfer`)
+})
+# convert the list TransferW_G1 back to a single data frame
+combined_data <- bind_rows(TransferW_G1)
 
 # Dataset with 5 garments
+# Create a vector of numbers from 0 to 51
+count <- 0:51
+# Use lapply to iterate over the count vector and generate the TransferW_G5 list
+TransferW_G5 <- lapply(count, function(i) {
+  df <- get(paste0("forFibreCount", i, "_G5"))
+  df %>% dplyr::select(Coder, Coder2, `After transfer`)
+})
+
+# Assign each element of the TransferW_G5 list to separate data frames
+for (i in count) {
+  assign(paste0("TransferW", sprintf("%03d", i), "_G5"), TransferW_G5[[i+1]], envir = .GlobalEnv)
+}
+
+
 TransferW000_G5 <- forFibreCount0_G5 %>%
   dplyr::select(Coder,Coder2,`After transfer`)
 TransferW001_G5 <- forFibreCount1_G5 %>%

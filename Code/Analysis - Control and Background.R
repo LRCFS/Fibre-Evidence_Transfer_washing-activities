@@ -2,433 +2,126 @@
 #####           Fibre transfer analysis             #####
 #########################################################
 # Assign a Coder to each wash number
-W000_G1_Dataset$Coder <- "W000"
-W001_G1_Dataset$Coder <- "W001"
-W002_G1_Dataset$Coder <- "W002"
-W003_G1_Dataset$Coder <- "W003"
-W004_G1_Dataset$Coder <- "W004"
-W005_G1_Dataset$Coder <- "W005"
-W006_G1_Dataset$Coder <- "W006"
-W007_G1_Dataset$Coder <- "W007"
-W009_G1_Dataset$Coder <- "W009"
-W011_G1_Dataset$Coder <- "W011"
-# W013_G1_Dataset$Coder <- "W013"
-# W015_G1_Dataset$Coder <- "W015"
-W000_G5_Dataset$Coder <- "W000"
-W001_G5_Dataset$Coder <- "W001"
-W002_G5_Dataset$Coder <- "W002"
-W003_G5_Dataset$Coder <- "W003"
-W004_G5_Dataset$Coder <- "W004"
-W005_G5_Dataset$Coder <- "W005"
-W006_G5_Dataset$Coder <- "W006"
-W007_G5_Dataset$Coder <- "W007"
-W008_G5_Dataset$Coder <- "W008"
-W009_G5_Dataset$Coder <- "W009"
-W010_G5_Dataset$Coder <- "W010"
-W011_G5_Dataset$Coder <- "W011"
-W012_G5_Dataset$Coder <- "W012"
-W013_G5_Dataset$Coder <- "W013"
-W014_G5_Dataset$Coder <- "W014"
-W015_G5_Dataset$Coder <- "W015"
-W016_G5_Dataset$Coder <- "W016"
-W017_G5_Dataset$Coder <- "W017"
-W018_G5_Dataset$Coder <- "W018"
-W019_G5_Dataset$Coder <- "W019"
-W020_G5_Dataset$Coder <- "W020"
-W021_G5_Dataset$Coder <- "W021"
-W022_G5_Dataset$Coder <- "W022"
-W023_G5_Dataset$Coder <- "W023"
-W024_G5_Dataset$Coder <- "W024"
-W025_G5_Dataset$Coder <- "W025"
-W026_G5_Dataset$Coder <- "W026"
-W027_G5_Dataset$Coder <- "W027"
-W028_G5_Dataset$Coder <- "W028"
-W029_G5_Dataset$Coder <- "W029"
-W030_G5_Dataset$Coder <- "W030"
-W031_G5_Dataset$Coder <- "W031"
-W032_G5_Dataset$Coder <- "W032"
-W033_G5_Dataset$Coder <- "W033"
-W034_G5_Dataset$Coder <- "W034"
-W035_G5_Dataset$Coder <- "W035"
-W036_G5_Dataset$Coder <- "W036"
-W037_G5_Dataset$Coder <- "W037"
-W038_G5_Dataset$Coder <- "W038"
-W039_G5_Dataset$Coder <- "W039"
-W040_G5_Dataset$Coder <- "W040"
-W041_G5_Dataset$Coder <- "W041"
-W042_G5_Dataset$Coder <- "W042"
-W043_G5_Dataset$Coder <- "W043"
-W044_G5_Dataset$Coder <- "W044"
-W045_G5_Dataset$Coder <- "W045"
-W046_G5_Dataset$Coder <- "W046"
-W047_G5_Dataset$Coder <- "W047"
-W048_G5_Dataset$Coder <- "W048"
-W049_G5_Dataset$Coder <- "W049"
-W050_G5_Dataset$Coder <- "W050"
-W051_G5_Dataset$Coder <- "W051"
-W000_G12A_Dataset$Coder <- "W000"
-W001_G12A_Dataset$Coder <- "W001"
-W002_G12A_Dataset$Coder <- "W002"
-W003_G12A_Dataset$Coder <- "W003"
-W004_G12A_Dataset$Coder <- "W004"
-W005_G12A_Dataset$Coder <- "W005"
-W000_G12B_Dataset$Coder <- "W000"
-W001_G12B_Dataset$Coder <- "W001"
-W002_G12B_Dataset$Coder <- "W002"
-W003_G12B_Dataset$Coder <- "W003"
-W004_G12B_Dataset$Coder <- "W004"
-W005_G12B_Dataset$Coder <- "W005"
-W000_G12C_Dataset$Coder <- "W000"
-W001_G12C_Dataset$Coder <- "W001"
-W002_G12C_Dataset$Coder <- "W002"
-W003_G12C_Dataset$Coder <- "W003"
-W004_G12C_Dataset$Coder <- "W004"
-W005_G12C_Dataset$Coder <- "W005"
+coder_ids <- list(
+  G1 = c("W000", "W001", "W002", "W003", "W004", "W005", "W006", "W007", "W009", "W011"),
+  G5 = c("W000", "W001", "W002", "W003", "W004", "W005", "W006", "W007", "W008", "W009",
+         "W010", "W011", "W012", "W013", "W014", "W015", "W016", "W017", "W018", "W019",
+         "W020", "W021", "W022", "W023", "W024", "W025", "W026", "W027", "W028", "W029",
+         "W030", "W031", "W032", "W033", "W034", "W035", "W036", "W037", "W038", "W039",
+         "W040", "W041", "W042", "W043", "W044", "W045", "W046", "W047", "W048", "W049",
+         "W050", "W051"),
+  G12A = c("W000", "W001", "W002", "W003", "W004", "W005", "W006"),
+  G12B = c("W000", "W001", "W002", "W003", "W004", "W005", "W006"),
+  G12C = c("W000", "W001", "W002", "W003", "W004", "W005", "W006")
+)
+# Iterate over the coder_ids list and modify the respective data frames
+lapply(names(coder_ids), function(coder) {
+  lapply(coder_ids[[coder]], function(id) {
+    df_name <- paste0(id, "_", coder, "_Dataset")
+    if (exists(df_name) && !is.null(get(df_name))) {
+      assign(df_name, get(df_name) %>% mutate(Coder = id), envir = .GlobalEnv)
+    }
+  })
+})
 
 # Assign a Coder to each garment number
-W000_G1_Dataset$Coder2 <- "G1"
-W001_G1_Dataset$Coder2 <- "G1"
-W002_G1_Dataset$Coder2 <- "G1"
-W003_G1_Dataset$Coder2 <- "G1"
-W004_G1_Dataset$Coder2 <- "G1"
-W005_G1_Dataset$Coder2 <- "G1"
-W006_G1_Dataset$Coder2 <- "G1"
-W007_G1_Dataset$Coder2 <- "G1"
-W009_G1_Dataset$Coder2 <- "G1"
-W011_G1_Dataset$Coder2 <- "G1"
-# W013_G1_Dataset$Coder2 <- "G1"
-# W015_G1_Dataset$Coder2 <- "G1"
-W000_G5_Dataset$Coder2 <- "G5"
-W001_G5_Dataset$Coder2 <- "G5"
-W002_G5_Dataset$Coder2 <- "G5"
-W003_G5_Dataset$Coder2 <- "G5"
-W004_G5_Dataset$Coder2 <- "G5"
-W005_G5_Dataset$Coder2 <- "G5"
-W006_G5_Dataset$Coder2 <- "G5"
-W007_G5_Dataset$Coder2 <- "G5"
-W008_G5_Dataset$Coder2 <- "G5"
-W009_G5_Dataset$Coder2 <- "G5"
-W010_G5_Dataset$Coder2 <- "G5"
-W011_G5_Dataset$Coder2 <- "G5"
-W012_G5_Dataset$Coder2 <- "G5"
-W013_G5_Dataset$Coder2 <- "G5"
-W014_G5_Dataset$Coder2 <- "G5"
-W015_G5_Dataset$Coder2 <- "G5"
-W016_G5_Dataset$Coder2 <- "G5"
-W017_G5_Dataset$Coder2 <- "G5"
-W018_G5_Dataset$Coder2 <- "G5"
-W019_G5_Dataset$Coder2 <- "G5"
-W020_G5_Dataset$Coder2 <- "G5"
-W021_G5_Dataset$Coder2 <- "G5"
-W022_G5_Dataset$Coder2 <- "G5"
-W023_G5_Dataset$Coder2 <- "G5"
-W024_G5_Dataset$Coder2 <- "G5"
-W025_G5_Dataset$Coder2 <- "G5"
-W026_G5_Dataset$Coder2 <- "G5"
-W027_G5_Dataset$Coder2 <- "G5"
-W028_G5_Dataset$Coder2 <- "G5"
-W029_G5_Dataset$Coder2 <- "G5"
-W030_G5_Dataset$Coder2 <- "G5"
-W031_G5_Dataset$Coder2 <- "G5"
-W032_G5_Dataset$Coder2 <- "G5"
-W033_G5_Dataset$Coder2 <- "G5"
-W034_G5_Dataset$Coder2 <- "G5"
-W035_G5_Dataset$Coder2 <- "G5"
-W036_G5_Dataset$Coder2 <- "G5"
-W037_G5_Dataset$Coder2 <- "G5"
-W038_G5_Dataset$Coder2 <- "G5"
-W039_G5_Dataset$Coder2 <- "G5"
-W040_G5_Dataset$Coder2 <- "G5"
-W041_G5_Dataset$Coder2 <- "G5"
-W042_G5_Dataset$Coder2 <- "G5"
-W043_G5_Dataset$Coder2 <- "G5"
-W044_G5_Dataset$Coder2 <- "G5"
-W045_G5_Dataset$Coder2 <- "G5"
-W046_G5_Dataset$Coder2 <- "G5"
-W047_G5_Dataset$Coder2 <- "G5"
-W048_G5_Dataset$Coder2 <- "G5"
-W049_G5_Dataset$Coder2 <- "G5"
-W050_G5_Dataset$Coder2 <- "G5"
-W051_G5_Dataset$Coder2 <- "G5"
-W000_G12A_Dataset$Coder2 <- "G12A"
-W001_G12A_Dataset$Coder2 <- "G12A"
-W002_G12A_Dataset$Coder2 <- "G12A"
-W003_G12A_Dataset$Coder2 <- "G12A"
-W004_G12A_Dataset$Coder2 <- "G12A"
-W005_G12A_Dataset$Coder2 <- "G12A"
-W000_G12B_Dataset$Coder2 <- "G12B"
-W001_G12B_Dataset$Coder2 <- "G12B"
-W002_G12B_Dataset$Coder2 <- "G12B"
-W003_G12B_Dataset$Coder2 <- "G12B"
-W004_G12B_Dataset$Coder2 <- "G12B"
-W005_G12B_Dataset$Coder2 <- "G12B"
-W000_G12C_Dataset$Coder2 <- "G12C"
-W001_G12C_Dataset$Coder2 <- "G12C"
-W002_G12C_Dataset$Coder2 <- "G12C"
-W003_G12C_Dataset$Coder2 <- "G12C"
-W004_G12C_Dataset$Coder2 <- "G12C"
-W005_G12C_Dataset$Coder2 <- "G12C"
+coder_ids <- c("G1", "G5", "G12A", "G12B", "G12C")
+# Loop through the coder IDs and dataset numbers
+for (coder_id in coder_ids) {
+  for (i in 0:51) {
+    df_name <- paste0("W", sprintf("%03d", i), "_", coder_id, "_Dataset")
+    if (exists(df_name)) {
+      assign(df_name, get(df_name) %>% mutate(Coder2 = coder_id), envir = .GlobalEnv)
+    }
+  }
+}
 
 #########################################################
 #####                    Controls                   #####
 #########################################################
-# Select the negative controls from each datasets
-# Dataset with 1 garment
-W000_G1_negative <- W000_G1_Dataset %>% filter(grepl('negative', Sample))
-W001_G1_negative <- W001_G1_Dataset %>% filter(grepl('negative', Sample))
-W002_G1_negative <- W002_G1_Dataset %>% filter(grepl('negative', Sample))
-W003_G1_negative <- W003_G1_Dataset %>% filter(grepl('negative', Sample))
-W004_G1_negative <- W004_G1_Dataset %>% filter(grepl('negative', Sample))
-W005_G1_negative <- W005_G1_Dataset %>% filter(grepl('negative', Sample))
-W006_G1_negative <- W006_G1_Dataset %>% filter(grepl('negative', Sample))
-W007_G1_negative <- W007_G1_Dataset %>% filter(grepl('negative', Sample))
-W009_G1_negative <- W009_G1_Dataset %>% filter(grepl('negative', Sample))
-W011_G1_negative <- W011_G1_Dataset %>% filter(grepl('negative', Sample))
-# W013_G1_negative <- W013_G1_Dataset %>% filter(grepl('negative', Sample))
-# W015_G1_negative <- W015_G1_Dataset %>% filter(grepl('negative', Sample))
-# Dataset with 5 garments
-W000_G5_negative <- W000_G5_Dataset %>% filter(grepl('negative', Sample))
-W001_G5_negative <- W001_G5_Dataset %>% filter(grepl('negative', Sample))
-W002_G5_negative <- W002_G5_Dataset %>% filter(grepl('negative', Sample))
-W003_G5_negative <- W003_G5_Dataset %>% filter(grepl('negative', Sample))
-W004_G5_negative <- W004_G5_Dataset %>% filter(grepl('negative', Sample))
-W005_G5_negative <- W005_G5_Dataset %>% filter(grepl('negative', Sample))
-W006_G5_negative <- W006_G5_Dataset %>% filter(grepl('negative', Sample))
-W007_G5_negative <- W007_G5_Dataset %>% filter(grepl('negative', Sample))
-W008_G5_negative <- W008_G5_Dataset %>% filter(grepl('negative', Sample))
-W009_G5_negative <- W009_G5_Dataset %>% filter(grepl('negative', Sample))
-W010_G5_negative <- W010_G5_Dataset %>% filter(grepl('negative', Sample))
-W011_G5_negative <- W011_G5_Dataset %>% filter(grepl('negative', Sample))
-W012_G5_negative <- W012_G5_Dataset %>% filter(grepl('negative', Sample))
-W013_G5_negative <- W013_G5_Dataset %>% filter(grepl('negative', Sample))
-W014_G5_negative <- W014_G5_Dataset %>% filter(grepl('negative', Sample))
-W015_G5_negative <- W015_G5_Dataset %>% filter(grepl('negative', Sample))
-W016_G5_negative <- W016_G5_Dataset %>% filter(grepl('negative', Sample))
-W017_G5_negative <- W017_G5_Dataset %>% filter(grepl('negative', Sample))
-W018_G5_negative <- W018_G5_Dataset %>% filter(grepl('negative', Sample))
-W019_G5_negative <- W019_G5_Dataset %>% filter(grepl('negative', Sample))
-W020_G5_negative <- W020_G5_Dataset %>% filter(grepl('negative', Sample))
-W021_G5_negative <- W021_G5_Dataset %>% filter(grepl('negative', Sample))
-W022_G5_negative <- W022_G5_Dataset %>% filter(grepl('negative', Sample))
-W023_G5_negative <- W023_G5_Dataset %>% filter(grepl('negative', Sample))
-W024_G5_negative <- W024_G5_Dataset %>% filter(grepl('negative', Sample))
-W025_G5_negative <- W025_G5_Dataset %>% filter(grepl('negative', Sample))
-W026_G5_negative <- W026_G5_Dataset %>% filter(grepl('negative', Sample))
-W027_G5_negative <- W027_G5_Dataset %>% filter(grepl('negative', Sample))
-W028_G5_negative <- W028_G5_Dataset %>% filter(grepl('negative', Sample))
-W029_G5_negative <- W029_G5_Dataset %>% filter(grepl('negative', Sample))
-W030_G5_negative <- W030_G5_Dataset %>% filter(grepl('negative', Sample))
-W031_G5_negative <- W031_G5_Dataset %>% filter(grepl('negative', Sample))
-W032_G5_negative <- W032_G5_Dataset %>% filter(grepl('negative', Sample))
-W033_G5_negative <- W033_G5_Dataset %>% filter(grepl('negative', Sample))
-W034_G5_negative <- W034_G5_Dataset %>% filter(grepl('negative', Sample))
-W035_G5_negative <- W035_G5_Dataset %>% filter(grepl('negative', Sample))
-W036_G5_negative <- W036_G5_Dataset %>% filter(grepl('negative', Sample))
-W037_G5_negative <- W037_G5_Dataset %>% filter(grepl('negative', Sample))
-W038_G5_negative <- W038_G5_Dataset %>% filter(grepl('negative', Sample))
-W039_G5_negative <- W039_G5_Dataset %>% filter(grepl('negative', Sample))
-W040_G5_negative <- W040_G5_Dataset %>% filter(grepl('negative', Sample))
-W041_G5_negative <- W041_G5_Dataset %>% filter(grepl('negative', Sample))
-W042_G5_negative <- W042_G5_Dataset %>% filter(grepl('negative', Sample))
-W043_G5_negative <- W043_G5_Dataset %>% filter(grepl('negative', Sample))
-W044_G5_negative <- W044_G5_Dataset %>% filter(grepl('negative', Sample))
-W045_G5_negative <- W045_G5_Dataset %>% filter(grepl('negative', Sample))
-W046_G5_negative <- W046_G5_Dataset %>% filter(grepl('negative', Sample))
-W047_G5_negative <- W047_G5_Dataset %>% filter(grepl('negative', Sample))
-W048_G5_negative <- W048_G5_Dataset %>% filter(grepl('negative', Sample))
-W049_G5_negative <- W049_G5_Dataset %>% filter(grepl('negative', Sample))
-W050_G5_negative <- W050_G5_Dataset %>% filter(grepl('negative', Sample))
-W051_G5_negative <- W051_G5_Dataset %>% filter(grepl('negative', Sample))
-# Dataset with 12 garments
-W000_G12A_negative <- W000_G12A_Dataset %>% filter(grepl('negative', Sample))
-W001_G12A_negative <- W001_G12A_Dataset %>% filter(grepl('negative', Sample))
-W002_G12A_negative <- W002_G12A_Dataset %>% filter(grepl('negative', Sample))
-W003_G12A_negative <- W003_G12A_Dataset %>% filter(grepl('negative', Sample))
-W004_G12A_negative <- W004_G12A_Dataset %>% filter(grepl('negative', Sample))
-W005_G12A_negative <- W005_G12A_Dataset %>% filter(grepl('negative', Sample))
-W000_G12B_negative <- W000_G12B_Dataset %>% filter(grepl('negative', Sample))
-W001_G12B_negative <- W001_G12B_Dataset %>% filter(grepl('negative', Sample))
-W002_G12B_negative <- W002_G12B_Dataset %>% filter(grepl('negative', Sample))
-W003_G12B_negative <- W003_G12B_Dataset %>% filter(grepl('negative', Sample))
-W004_G12B_negative <- W004_G12B_Dataset %>% filter(grepl('negative', Sample))
-W005_G12B_negative <- W005_G12B_Dataset %>% filter(grepl('negative', Sample))
-W000_G12C_negative <- W000_G12C_Dataset %>% filter(grepl('negative', Sample))
-W001_G12C_negative <- W001_G12C_Dataset %>% filter(grepl('negative', Sample))
-W002_G12C_negative <- W002_G12C_Dataset %>% filter(grepl('negative', Sample))
-W003_G12C_negative <- W003_G12C_Dataset %>% filter(grepl('negative', Sample))
-W004_G12C_negative <- W004_G12C_Dataset %>% filter(grepl('negative', Sample))
-W005_G12C_negative <- W005_G12C_Dataset %>% filter(grepl('negative', Sample))
+# Define a function to filter negative controls from a dataset
+filter_negative <- function(dataset) {
+  dataset %>% filter(grepl('negative', Sample))
+}
+
+# Select the negative controls from each dataset
+datasets <- c(
+  paste0("W", sprintf("%03d", c(0:7, 9, 11)), "_G1_Dataset"),
+  paste0("W", sprintf("%03d", c(0:51)), "_G5_Dataset"),
+  paste0("W", sprintf("%03d", 0:6), "_G12A_Dataset"),
+  paste0("W", sprintf("%03d", 0:6), "_G12B_Dataset"),
+  paste0("W", sprintf("%03d", 0:6), "_G12C_Dataset")
+)
+for (dataset in datasets) {
+  if (exists(dataset)) {
+    assign(paste0(dataset, "_negative"), filter_negative(get(dataset)))
+  }
+}
+# Combined negative swatches
+combined_negative <- bind_rows(mget(paste0(datasets, "_negative")))
 
 # Select the positive controls from each datasets
-# Dataset with 1 garment
-W000_G1_positive <- W000_G1_Dataset %>% filter(grepl('positive', Sample))
-W001_G1_positive <- W001_G1_Dataset %>% filter(grepl('positive', Sample))
-W002_G1_positive <- W002_G1_Dataset %>% filter(grepl('positive', Sample))
-W003_G1_positive <- W003_G1_Dataset %>% filter(grepl('positive', Sample))
-W004_G1_positive <- W004_G1_Dataset %>% filter(grepl('positive', Sample))
-W005_G1_positive <- W005_G1_Dataset %>% filter(grepl('positive', Sample))
-W006_G1_positive <- W006_G1_Dataset %>% filter(grepl('positive', Sample))
-W007_G1_positive <- W007_G1_Dataset %>% filter(grepl('positive', Sample))
-W009_G1_positive <- W009_G1_Dataset %>% filter(grepl('positive', Sample))
-W011_G1_positive <- W011_G1_Dataset %>% filter(grepl('positive', Sample))
-# W013_G1_positive <- W013_G1_Dataset %>% filter(grepl('positive', Sample))
-# W015_G1_positive <- W015_G1_Dataset %>% filter(grepl('positive', Sample))
-# Dataset with 5 garments
-W000_G5_positive <- W000_G5_Dataset %>% filter(grepl('positive', Sample))
-W001_G5_positive <- W001_G5_Dataset %>% filter(grepl('positive', Sample))
-W002_G5_positive <- W002_G5_Dataset %>% filter(grepl('positive', Sample))
-W003_G5_positive <- W003_G5_Dataset %>% filter(grepl('positive', Sample))
-W004_G5_positive <- W004_G5_Dataset %>% filter(grepl('positive', Sample))
-W005_G5_positive <- W005_G5_Dataset %>% filter(grepl('positive', Sample))
-W006_G5_positive <- W006_G5_Dataset %>% filter(grepl('positive', Sample))
-W007_G5_positive <- W007_G5_Dataset %>% filter(grepl('positive', Sample))
-W008_G5_positive <- W008_G5_Dataset %>% filter(grepl('positive', Sample))
-W009_G5_positive <- W009_G5_Dataset %>% filter(grepl('positive', Sample))
-W010_G5_positive <- W010_G5_Dataset %>% filter(grepl('positive', Sample))
-W011_G5_positive <- W011_G5_Dataset %>% filter(grepl('positive', Sample))
-W012_G5_positive <- W012_G5_Dataset %>% filter(grepl('positive', Sample))
-W013_G5_positive <- W013_G5_Dataset %>% filter(grepl('positive', Sample))
-W014_G5_positive <- W014_G5_Dataset %>% filter(grepl('positive', Sample))
-W015_G5_positive <- W015_G5_Dataset %>% filter(grepl('positive', Sample))
-W016_G5_positive <- W016_G5_Dataset %>% filter(grepl('positive', Sample))
-W017_G5_positive <- W017_G5_Dataset %>% filter(grepl('positive', Sample))
-W018_G5_positive <- W018_G5_Dataset %>% filter(grepl('positive', Sample))
-W019_G5_positive <- W019_G5_Dataset %>% filter(grepl('positive', Sample))
-W020_G5_positive <- W020_G5_Dataset %>% filter(grepl('positive', Sample))
-W021_G5_positive <- W021_G5_Dataset %>% filter(grepl('positive', Sample))
-W022_G5_positive <- W022_G5_Dataset %>% filter(grepl('positive', Sample))
-W023_G5_positive <- W023_G5_Dataset %>% filter(grepl('positive', Sample))
-W024_G5_positive <- W024_G5_Dataset %>% filter(grepl('positive', Sample))
-W025_G5_positive <- W025_G5_Dataset %>% filter(grepl('positive', Sample))
-W026_G5_positive <- W026_G5_Dataset %>% filter(grepl('positive', Sample))
-W027_G5_positive <- W027_G5_Dataset %>% filter(grepl('positive', Sample))
-W028_G5_positive <- W028_G5_Dataset %>% filter(grepl('positive', Sample))
-W029_G5_positive <- W029_G5_Dataset %>% filter(grepl('positive', Sample))
-W030_G5_positive <- W030_G5_Dataset %>% filter(grepl('positive', Sample))
-W031_G5_positive <- W031_G5_Dataset %>% filter(grepl('positive', Sample))
-W032_G5_positive <- W032_G5_Dataset %>% filter(grepl('positive', Sample))
-W033_G5_positive <- W033_G5_Dataset %>% filter(grepl('positive', Sample))
-W034_G5_positive <- W034_G5_Dataset %>% filter(grepl('positive', Sample))
-W035_G5_positive <- W035_G5_Dataset %>% filter(grepl('positive', Sample))
-W036_G5_positive <- W036_G5_Dataset %>% filter(grepl('positive', Sample))
-W037_G5_positive <- W037_G5_Dataset %>% filter(grepl('positive', Sample))
-W038_G5_positive <- W038_G5_Dataset %>% filter(grepl('positive', Sample))
-W039_G5_positive <- W039_G5_Dataset %>% filter(grepl('positive', Sample))
-W040_G5_positive <- W040_G5_Dataset %>% filter(grepl('positive', Sample))
-W041_G5_positive <- W041_G5_Dataset %>% filter(grepl('positive', Sample))
-W042_G5_positive <- W042_G5_Dataset %>% filter(grepl('positive', Sample))
-W043_G5_positive <- W043_G5_Dataset %>% filter(grepl('positive', Sample))
-W044_G5_positive <- W044_G5_Dataset %>% filter(grepl('positive', Sample))
-W045_G5_positive <- W045_G5_Dataset %>% filter(grepl('positive', Sample))
-W046_G5_positive <- W046_G5_Dataset %>% filter(grepl('positive', Sample))
-W047_G5_positive <- W047_G5_Dataset %>% filter(grepl('positive', Sample))
-W048_G5_positive <- W048_G5_Dataset %>% filter(grepl('positive', Sample))
-W049_G5_positive <- W049_G5_Dataset %>% filter(grepl('positive', Sample))
-W050_G5_positive <- W050_G5_Dataset %>% filter(grepl('positive', Sample))
-W051_G5_positive <- W051_G5_Dataset %>% filter(grepl('positive', Sample))
-# Dataset with 12 garments
-W000_G12A_positive <- W000_G12A_Dataset %>% filter(grepl('positive', Sample))
-W001_G12A_positive <- W001_G12A_Dataset %>% filter(grepl('positive', Sample))
-W002_G12A_positive <- W002_G12A_Dataset %>% filter(grepl('positive', Sample))
-W003_G12A_positive <- W003_G12A_Dataset %>% filter(grepl('positive', Sample))
-W004_G12A_positive <- W004_G12A_Dataset %>% filter(grepl('positive', Sample))
-W005_G12A_positive <- W005_G12A_Dataset %>% filter(grepl('positive', Sample))
-W000_G12B_positive <- W000_G12B_Dataset %>% filter(grepl('positive', Sample))
-W001_G12B_positive <- W001_G12B_Dataset %>% filter(grepl('positive', Sample))
-W002_G12B_positive <- W002_G12B_Dataset %>% filter(grepl('positive', Sample))
-W003_G12B_positive <- W003_G12B_Dataset %>% filter(grepl('positive', Sample))
-W004_G12B_positive <- W004_G12B_Dataset %>% filter(grepl('positive', Sample))
-W005_G12B_positive <- W005_G12B_Dataset %>% filter(grepl('positive', Sample))
-W000_G12C_positive <- W000_G12C_Dataset %>% filter(grepl('positive', Sample))
-W001_G12C_positive <- W001_G12C_Dataset %>% filter(grepl('positive', Sample))
-W002_G12C_positive <- W002_G12C_Dataset %>% filter(grepl('positive', Sample))
-W003_G12C_positive <- W003_G12C_Dataset %>% filter(grepl('positive', Sample))
-W004_G12C_positive <- W004_G12C_Dataset %>% filter(grepl('positive', Sample))
-W005_G12C_positive <- W005_G12C_Dataset %>% filter(grepl('positive', Sample))
+# Define a function to filter positive controls from a dataset
+filter_positive <- function(dataset) {
+  dataset %>% filter(grepl('positive', Sample))
+}
+# Select the positive controls from each dataset
+for (dataset in datasets) {
+  assign(paste0(dataset, "_positive"), filter_positive(get(dataset)))
+}
+# Combined positive swatches
+combined_positive <- bind_rows(mget(paste0(datasets, "_positive")))
 
-# Create a data frame with all the negative controls from all garments and washes
-Total_Negativecontrol <- rbind(W000_G1_negative,W001_G1_negative,W002_G1_negative,W003_G1_negative,W004_G1_negative,
-                               W005_G1_negative,W006_G1_negative,W007_G1_negative,W009_G1_negative,W011_G1_negative,
-                               W000_G5_negative,W001_G5_negative,W002_G5_negative,W003_G5_negative, W004_G5_negative,
-                               W005_G5_negative,W006_G5_negative,W007_G5_negative,W008_G5_negative,W009_G5_negative,
-                               W010_G5_negative,W011_G5_negative,W012_G5_negative,W013_G5_negative,W014_G5_negative,
-                               W015_G5_negative,W016_G5_negative,W017_G5_negative,W018_G5_negative,W019_G5_negative,
-                               W020_G5_negative,W021_G5_negative,W022_G5_negative,W023_G5_negative,W024_G5_negative,
-                               W025_G5_negative,W026_G5_negative,W027_G5_negative,W028_G5_negative,W029_G5_negative,
-                               W030_G5_negative,W031_G5_negative,W032_G5_negative,W033_G5_negative,W034_G5_negative,
-                               W035_G5_negative,W036_G5_negative,W037_G5_negative,W038_G5_negative,W039_G5_negative,
-                               W040_G5_negative,W041_G5_negative,W042_G5_negative,W043_G5_negative,W044_G5_negative,
-                               W045_G5_negative,W046_G5_negative,W047_G5_negative,W048_G5_negative,W049_G5_negative,
-                               W050_G5_negative,W051_G5_negative,
-                               W000_G12A_negative,W001_G12A_negative,W002_G12A_negative,W003_G12A_negative,W004_G12A_negative,
-                               W005_G12A_negative,
-                               W000_G12B_negative,W001_G12B_negative,W002_G12B_negative,W003_G12B_negative,W004_G12B_negative,
-                               W005_G12B_negative,
-                               W000_G12C_negative,W001_G12C_negative,W002_G12C_negative,W003_G12C_negative,W004_G12C_negative,
-                               W005_G12C_negative)
-
-# Create a data frame with all the positive controls from all garments and washes
-Total_Positivecontrol <- rbind(W000_G1_positive,W001_G1_positive,W002_G1_positive,W003_G1_positive,W004_G1_positive,
-                               W005_G1_positive,W006_G1_positive,W007_G1_positive,W009_G1_positive,W011_G1_positive,
-                               W000_G5_positive,W001_G5_positive,W002_G5_positive,W003_G5_positive, W004_G5_positive,
-                               W005_G5_positive,W006_G5_positive,W007_G5_positive,W008_G5_positive,W009_G5_positive,
-                               W010_G5_positive,W011_G5_positive,W012_G5_positive,W013_G5_positive,W014_G5_positive,
-                               W015_G5_positive,W016_G5_positive,W017_G5_positive,W018_G5_positive,W019_G5_positive,
-                               W020_G5_positive,W021_G5_positive,W022_G5_positive,W023_G5_positive,W024_G5_positive,
-                               W025_G5_positive,W026_G5_positive,W027_G5_positive,W028_G5_positive,W029_G5_positive,
-                               W030_G5_positive,W031_G5_positive,W032_G5_positive,W033_G5_positive,W034_G5_positive,
-                               W035_G5_positive,W036_G5_positive,W037_G5_positive,W038_G5_positive,W039_G5_positive,
-                               W040_G5_positive,W041_G5_positive,W042_G5_positive,W043_G5_positive,W044_G5_positive,
-                               W045_G5_positive,W046_G5_positive,W047_G5_positive,W048_G5_positive,W049_G5_positive,
-                               W050_G5_positive,W051_G5_positive,
-                               W000_G12A_positive,W001_G12A_positive,W002_G12A_positive,W003_G12A_positive,W004_G12A_positive,
-                               W005_G12A_positive,
-                               W000_G12B_positive,W001_G12B_positive,W002_G12B_positive,W003_G12B_positive,W004_G12B_positive,
-                               W005_G12B_positive,
-                               W000_G12C_positive,W001_G12C_positive,W002_G12C_positive,W003_G12C_positive,W004_G12C_positive,
-                               W005_G12C_positive)
-
-# Calculate the changes in number of fibres on both controls
-Total_Negativecontrol$Diff <- Total_Negativecontrol$`After transfer` - Total_Negativecontrol$`Before transfer`
-Total_Positivecontrol$Diff2 <- Total_Positivecontrol$`After transfer` - Total_Positivecontrol$`Before transfer`
-# if value = 0, no difference before and after transfer
-# if value > 0, more fibres after transfer than before transfer
-# if value < 0, more fibres before transfer than after transfer
+# Calculate the changes in number of fibers on both controls
+combined_negative$Diff <- combined_negative$`After transfer` - combined_negative$`Before transfer`
+combined_positive$Diff2 <- combined_positive$`After transfer` - combined_positive$`Before transfer`
 
 # Create a data frame with all the controls
-Total_controls <- data.frame(cbind(Sample = Total_Negativecontrol$Sample,
-                                   Coder = Total_Negativecontrol$Coder,
-                                   Coder2 = Total_Negativecontrol$Coder2,
-                                   Diffneg = Total_Negativecontrol$Diff,
-                                   Diffpos = Total_Positivecontrol$Diff2))
-Total_controls$Diffneg <- as.numeric(as.character(Total_controls$Diffneg))
-Total_controls$Diffpos <- as.numeric(as.character(Total_controls$Diffpos))
+Total_controls <- data.frame(
+  Sample = combined_negative$Sample,
+  Coder = combined_negative$Coder,
+  Coder2 = combined_negative$Coder2,
+  Diffneg = as.numeric(as.character(combined_negative$Diff)),
+  Diffpos = as.numeric(as.character(combined_positive$Diff2))
+)
 
-# Categorisation of the controls
-A <- Total_controls[Total_controls$Diffneg>'0' & Total_controls$Diffpos == 0,] 
-A$Coder3 <- "Contamination on negative control"
-B <- Total_controls[Total_controls$Diffneg>'0' & Total_controls$Diffpos >'0',]
-B$Coder3 <- "Contamination on both controls"
-C <- Total_controls[Total_controls$Diffneg>'0' & Total_controls$Diffpos <'0',]
-C$Coder3 <- "Possible fibre(s) movement from + to -"
-D <- Total_controls[Total_controls$Diffneg<'0' & Total_controls$Diffpos == 0,]
-D$Coder3 <- "Fibre loss on negative control only"
-E <- Total_controls[Total_controls$Diffneg<'0' & Total_controls$Diffpos >'0',]
-E$Coder3 <- "Possible fibre(s) movement from - to + "
-F <- Total_controls[Total_controls$Diffneg<'0' & Total_controls$Diffpos <'0',]
-F$Coder3 <- "Fibre loss on both controls"
-G <- Total_controls[Total_controls$Diffneg == 0 & Total_controls$Diffpos <'0',]
-G$Coder3 <- "Fibre loss on both controls"
-H <- Total_controls[Total_controls$Diffneg == 0 & Total_controls$Diffpos >'0',]
-H$Coder3 <- "Contamination on positive control"
-Controls_contamination <- rbind(A,B,H)
-Controls_loss <- rbind(D,F,G)
-Controls_movement <- rbind(C,E)
+# Categorize the controls
+control_categories <- c(
+  "Contamination on negative control",
+  "Contamination on positive control",
+  "Contamination on both controls",
+  "Possible fibre(s) movement from + to -",
+  "Possible fibre(s) movement from - to +",
+  "Fibre loss on negative control only",
+  "Fibre loss on positive controls only",
+  "Fibre loss on both controls",
+  "no changes"
+)
+  
+# Create a new column for categorization
+Total_controls$Coder3 <- control_categories[1]
+for (i in 2:length(control_categories)) {
+  Total_controls$Coder3[Total_controls$Diffneg > 0 & Total_controls$Diffpos == 0] <- control_categories[1]
+  Total_controls$Coder3[Total_controls$Diffneg > 0 & Total_controls$Diffpos > 0] <- control_categories[3]
+  Total_controls$Coder3[Total_controls$Diffneg > 0 & Total_controls$Diffpos < 0] <- control_categories[4]
+  Total_controls$Coder3[Total_controls$Diffneg < 0 & Total_controls$Diffpos == 0] <- control_categories[6]
+  Total_controls$Coder3[Total_controls$Diffneg < 0 & Total_controls$Diffpos > 0] <- control_categories[5]
+  Total_controls$Coder3[Total_controls$Diffneg < 0 & Total_controls$Diffpos < 0] <- control_categories[8]
+  Total_controls$Coder3[Total_controls$Diffneg == 0 & Total_controls$Diffpos < 0] <- control_categories[7]
+  Total_controls$Coder3[Total_controls$Diffneg == 0 & Total_controls$Diffpos > 0] <- control_categories[2]
+  Total_controls$Coder3[Total_controls$Diffneg == 0 & Total_controls$Diffpos  ==  0] <- control_categories[9]
+}
+
+# Separate controls into different data frames based on categories
+Controls_contamination <- Total_controls[Total_controls$Coder3 %in% control_categories[1:3], ]
+Controls_movement <- Total_controls[Total_controls$Coder3 %in% control_categories[4:5], ]
+Controls_loss <- Total_controls[Total_controls$Coder3 %in% control_categories[6:8], ]
 
 # plot the controls
 Controls_contamination <-  aggregate(Controls_contamination$Sample,list(Controls_contamination$Coder3), FUN=length)
 Plot_Controls <- ggplot(Controls_contamination, aes(x = Group.1, y = x)) + 
   geom_bar(stat="identity", position=position_dodge(), width = 0.5) + 
+  geom_text(aes(label = x), vjust = -0.5)+
   geom_hline(yintercept=0,linetype="dashed", color = "black")+
   labs(y= "Occurence", x="\nWash")+
   theme_bw(base_size = 12)+
@@ -444,7 +137,8 @@ show(Plot_Controls)
 
 Controls_loss <-  aggregate(Controls_loss$Sample,list(Controls_loss$Coder3), FUN=length)
 Plot_Controls_2 <- ggplot(Controls_loss, aes(x = Group.1, y = x)) + 
-  geom_bar(stat="identity", position=position_dodge(), width = 0.5) + 
+  geom_bar(stat="identity", position=position_dodge(), width = 0.5) +
+  geom_text(aes(label = x), vjust = -0.5)+
   geom_hline(yintercept=0,linetype="dashed", color = "black")+
   labs(y= "Occurence", x="\nWash")+
   theme_bw(base_size = 12)+
@@ -461,6 +155,7 @@ show(Plot_Controls_2)
 Controls_movement <-  aggregate(Controls_movement$Sample,list(Controls_movement$Coder3), FUN=length)
 Plot_Controls_3 <- ggplot(Controls_movement, aes(x = Group.1, y = x)) + 
   geom_bar(stat="identity", position=position_dodge(), width = 0.5) + 
+  geom_text(aes(label = x), vjust = -0.5)+
   geom_hline(yintercept=0,linetype="dashed", color = "black")+
   labs(y= "Occurence", x="\nWash")+
   theme_bw(base_size = 12)+
@@ -491,8 +186,7 @@ pControls <- annotate_figure(pControls_pending, left = textGrob("Number of fibre
 #########################################################
 #####           ANALYSE OF THE BACKGROUND           #####
 #########################################################
-# Removing the controls from the datasets
-# Dataset with 1 garments
+
 forFibreCount0_G1<- W000_G1_Dataset[!(W000_G1_Dataset$Sample=="MP_W000_G1_positive_B" | W000_G1_Dataset$Sample=="MP_W000_G1_negative_B"),]
 forFibreCount1_G1<- W001_G1_Dataset[!(W001_G1_Dataset$Sample=="MP_W001_G1_positive_B" | W001_G1_Dataset$Sample=="MP_W001_G1_negative_B"),]
 forFibreCount2_G1<- W002_G1_Dataset[!(W002_G1_Dataset$Sample=="MP_W002_G1_positive_B" | W002_G1_Dataset$Sample=="MP_W002_G1_negative_B"),]
