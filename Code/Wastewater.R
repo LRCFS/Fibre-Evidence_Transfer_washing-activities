@@ -76,7 +76,7 @@ merge.dat_G5 <- cbind(Wastewaterfibres_G5$Filter,merge.dat_G5)
 merge.dat_G5 <- merge.dat_G5[1:100,]
 names(merge.dat_G5)[names(merge.dat_G5) == 'Wastewaterfibres_G5$Filter'] <- 'Filter'
 merge.dat_G12 <- cbind(Wastewaterfibres_G12$Filter,merge.dat_G12)
-merge.dat_G12 <- merge.dat_G12[1:16,]
+merge.dat_G12 <- merge.dat_G12[1:30,]
 names(merge.dat_G12)[names(merge.dat_G12) == 'Wastewaterfibres_G12$Filter'] <- 'Filter'
 
 # Calculate difference and U.F
@@ -169,7 +169,7 @@ pVolume_G1 <- ggplot(data = Wastewatervolume_G1, aes(x =Washnumber, y = Total)) 
   geom_smooth(method = lm, se = FALSE,formula = y ~ x, color="black", linetype="dashed", size=0.5)+
   labs(x="Wash number", y="Volume of water (L)")+
   scale_y_continuous(breaks = seq(0, 35, by = 1), limits = c(18, 29),expand = c(0,0))+
-  scale_x_continuous(breaks = seq(1, 15, by = 2), limits = c(1, 15),expand = c(0.01,0))+
+  scale_x_continuous(breaks = seq(1, 15, by = 2), limits = c(1, 15),expand = c(0.03,0))+
   theme_bw(base_size = 12) +
   theme(legend.position = "bottom",
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
@@ -190,7 +190,7 @@ pVolume_G5 <- ggplot(data = Wastewatervolume_G5, aes(x =Washnumber, y = Total)) 
   geom_smooth(method = lm, se = FALSE,formula = y ~ x, color="black", linetype="dashed", size=0.5)+
   labs(x="Wash number", y="Volume of water (L)")+
   scale_y_continuous(breaks = seq(0, 35, by = 1), limits = c(18, 29),expand = c(0,0))+
-  scale_x_continuous(breaks = seq(1, 51, by = 2), limits = c(1, 51),expand = c(0.01,0))+
+  scale_x_continuous(breaks = seq(1, 51, by = 2), limits = c(1, 51),expand = c(0.03,0))+
   theme_bw(base_size = 12) +
   theme(legend.position = "bottom",
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
@@ -211,7 +211,7 @@ pVolume_G12 <- ggplot(data = Wastewatervolume_G12, aes(x =Washnumber, y = Total)
   geom_smooth(method = lm, se = FALSE,formula = y ~ x, color="black", linetype="dashed", size=0.5)+
   labs(x="Wash number", y="Volume of water (L)")+
   scale_y_continuous(breaks = seq(0, 35, by = 1), limits = c(18, 29),expand = c(0,0))+
-  scale_x_continuous(breaks = seq(1, 10, by = 2), limits = c(1, 10),expand = c(0.01,0))+
+  scale_x_continuous(breaks = seq(1, 16, by = 2), limits = c(1, 16),expand = c(0.03,0))+
   theme_bw(base_size = 12) +
   theme(legend.position = "bottom",
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
@@ -231,7 +231,7 @@ lm(Diff.FN~Experiment, data=Wastewaterfibres_G1p4)
 pfibres_G1 <- ggplot(data = Wastewaterfibres_G1p4, aes(x =Experiment, y = Diff.FN)) +
   geom_line(colour = "Tomato")+
   labs(x="Wash number", y="Fibres (mg)")+
-  scale_y_continuous(breaks = seq(0, 80, by = 10), limits = c(0, 80),expand = c(0,0))+
+  scale_y_continuous(breaks = seq(0, 120, by = 10), limits = c(0, 120),expand = c(0,0))+
   scale_x_continuous(breaks = seq(1, 15, by = 2), limits = c(1, 15),expand = c(0.01,0))+
   theme_bw( base_size = 12) +
   theme(legend.position = "bottom",
@@ -271,7 +271,7 @@ lm(Diff.FN~Experiment, data=Wastewaterfibres_G12p4)
 pfibres_G12 <- ggplot(data = Wastewaterfibres_G12p4, aes(x =Experiment, y = Diff.FN)) +
   geom_line(colour = "Tomato")+
   labs(x="Wash number", y="Fibres (mg)")+
-  scale_y_continuous(breaks = seq(0, 80, by = 10), limits = c(0, 80),expand = c(0,0))+
+  scale_y_continuous(breaks = seq(0, 80, by = 120), limits = c(0, 120),expand = c(0,0))+
   scale_x_continuous(breaks = seq(1, 15, by = 2), limits = c(1, 15),expand = c(0.01,0))+
   theme_bw( base_size = 12) +
   theme(legend.position = "bottom",
@@ -293,22 +293,36 @@ Wastewaterfibres_G5p4$norm <- Wastewaterfibres_G5p4$Diff.FN/1.500
 Wastewaterfibres_G5p4$Coder <- "5 garments"
 Wastewaterfibres_G12p4$norm <- Wastewaterfibres_G12p4$Diff.FN/3.000
 Wastewaterfibres_G12p4$Coder <- "12 garments"
+Wastewaterfibres_Total <- rbind(Wastewaterfibres_G1p4,Wastewaterfibres_G5p4,Wastewaterfibres_G12p4)
 
-pfibres_Total <- ggplot(data = Wastewaterfibres_Total, aes(x =Experiment, y = norm, colour=Coder)) +
-  geom_line()+
-  labs(x="Wash number", y="Fibres (mg)")+
-  scale_y_continuous(breaks = seq(0, 200, by = 10), limits = c(0, 200),expand = c(0,0))+
-  scale_x_continuous(breaks = seq(1, 51, by = 2), limits = c(1, 51),expand = c(0.01,0))+
-  scale_colour_brewer(palette = "Dark2")+
-  theme_bw( base_size = 12) +
+# Set different shapes for points based on the coder variable
+coder_shapes <- c(16, 17, 15)  # You can add more shape codes if needed
+
+# Set different colors for the linear regression lines based on the coder variable
+coder_colors <- c("#469990", "darkred", "black")  # You can add more colors if needed
+
+# Change the ggplot code to plot all linear regression lines with equations
+pfibres_Total <- ggplot(data = Wastewaterfibres_Total, aes(x = Experiment, y = norm, color = Coder)) +
+  geom_point(shape = coder_shapes[1], size = 2) +     # Use the first shape code for all points
+  labs(x = "Wash number", y = "Fibres (mg)") +
+  guides(color = guide_legend(title = NULL)) +
+  scale_y_continuous(breaks = seq(0, 200, by = 10), limits = c(0, 200), expand = c(0, 0)) +
+  scale_x_continuous(breaks = seq(1, 51, by = 2), limits = c(1, 51), expand = c(0.01, 0)) +
+  scale_color_manual(values = coder_colors) +   # Set different colors for the linear regression lines
+  theme_bw(base_size = 12) +
   theme(legend.position = "bottom",
-        legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
-        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5),
+        legend.background = element_rect(fill = "grey95", size = 1, linetype = "solid", colour = "grey80"),
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),
         axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
-        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)))+ # top, right,bottom,left
-  geom_errorbar(aes(ymin=norm-U.C3, ymax=norm+U.C3), width=0.5)+
-  geom_smooth(method = lm, se = FALSE,formula = y ~ x, color="black", linetype="dashed", size=0.5)+
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +  # top, right, bottom, left
+  geom_errorbar(aes(ymin = norm - U.C3, ymax = norm + U.C3), width = 0.5) +
+  geom_smooth(method = lm, se = FALSE, size = 0.8) +  # Add all linear regression lines
+  # Add regression equations as annotations using annotate()
+  annotate(geom = "text", x = 45, y = 190, label = "y = 2.5 + 0.25 * x", color = "#469990") +
+  annotate(geom = "text", x = 45, y = 180, label = "y = 2.0 + 0.30 * x", color = "darkred") +
+  annotate(geom = "text", x = 45, y = 170, label = "y = 1.8 + 0.35 * x", color = "black")
 show(pfibres_Total)
+
 ggsave("Wastewater fibres_Total normalised.png", pfibres_Total, width = 7, height = 4, units = "in", dpi=600, path = "Results")
 
 ### GRAPH - Pearson correlation
