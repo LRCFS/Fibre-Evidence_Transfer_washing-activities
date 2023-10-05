@@ -28,10 +28,10 @@ process_dataset <- function(file_prefix) {
 }
 
 # List of prefixes for the datasets
-prefixes <- c(paste0("W", sprintf("%03d", c(0, 1, 2, 3, 4, 5, 6, 7, 9, 11)), "_G1"),
-              paste0("W", sprintf("%03d", c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)), "_G12A"),
-              paste0("W", sprintf("%03d", c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)), "_G12B"),
-              paste0("W", sprintf("%03d", c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)), "_G12C"))
+prefixes <- c(paste0("W", sprintf("%03d", c(0, 1, 2, 3, 4, 5, 6, 7, 9, 11, 13, 15)), "_G1"),
+              paste0("W", sprintf("%03d", c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)), "_G12A"),
+              paste0("W", sprintf("%03d", c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)), "_G12B"),
+              paste0("W", sprintf("%03d", c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)), "_G12C"))
 
 # Process and store the datasets in separate data frames
 for (prefix in prefixes) {
@@ -67,3 +67,4 @@ for (i in 0:51) {
   file_prefix <- sprintf("W%03d", i)
   assign(paste0(file_prefix, "_G5_Dataset"), process_dataset(file_prefix))
 }
+

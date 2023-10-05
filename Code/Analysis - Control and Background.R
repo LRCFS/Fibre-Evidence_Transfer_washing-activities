@@ -3,16 +3,16 @@
 #########################################################
 # Assign a Coder to each wash number
 coder_ids <- list(
-  G1 = c("W000", "W001", "W002", "W003", "W004", "W005", "W006", "W007", "W009", "W011"),
+  G1 = c("W000", "W001", "W002", "W003", "W004", "W005", "W006", "W007", "W009", "W011","W013","W015"),
   G5 = c("W000", "W001", "W002", "W003", "W004", "W005", "W006", "W007", "W008", "W009",
          "W010", "W011", "W012", "W013", "W014", "W015", "W016", "W017", "W018", "W019",
          "W020", "W021", "W022", "W023", "W024", "W025", "W026", "W027", "W028", "W029",
          "W030", "W031", "W032", "W033", "W034", "W035", "W036", "W037", "W038", "W039",
          "W040", "W041", "W042", "W043", "W044", "W045", "W046", "W047", "W048", "W049",
          "W050", "W051"),
-  G12A = c("W000", "W001", "W002", "W003", "W004", "W005", "W006","W007", "W008", "W009","W010", "W011", "W012", "W013"),
-  G12B = c("W000", "W001", "W002", "W003", "W004", "W005", "W006","W007", "W008", "W009","W010", "W011", "W012", "W013"),
-  G12C = c("W000", "W001", "W002", "W003", "W004", "W005", "W006","W007", "W008", "W009","W010", "W011", "W012", "W013")
+  G12A = c("W000", "W001", "W002", "W003", "W004", "W005", "W006","W007", "W008", "W009","W010", "W011", "W012", "W013", "W014", "W015"),
+  G12B = c("W000", "W001", "W002", "W003", "W004", "W005", "W006","W007", "W008", "W009","W010", "W011", "W012", "W013", "W014", "W015"),
+  G12C = c("W000", "W001", "W002", "W003", "W004", "W005", "W006","W007", "W008", "W009","W010", "W011", "W012", "W013", "W014", "W015")
 )
 # Iterate over the coder_ids list and modify the respective data frames
 lapply(names(coder_ids), function(coder) {
@@ -46,7 +46,7 @@ filter_negative <- function(dataset) {
 
 # Select the negative controls from each dataset
 datasets <- c(
-  paste0("W", sprintf("%03d", c(0:7, 9, 11)), "_G1_Dataset"),
+  paste0("W", sprintf("%03d", c(0:7, 9, 11, 13, 15)), "_G1_Dataset"),
   paste0("W", sprintf("%03d", c(0:51)), "_G5_Dataset"),
   paste0("W", sprintf("%03d", 0:6), "_G12A_Dataset"),
   paste0("W", sprintf("%03d", 0:6), "_G12B_Dataset"),
@@ -192,7 +192,7 @@ pControls <- annotate_figure(pControls_pending, left = textGrob("Number of fibre
 dataset_names <- c("W000_G1_Dataset", "W001_G1_Dataset", "W002_G1_Dataset",
                    "W003_G1_Dataset", "W004_G1_Dataset", "W005_G1_Dataset",
                    "W006_G1_Dataset", "W007_G1_Dataset", "W009_G1_Dataset",
-                   "W011_G1_Dataset")
+                   "W011_G1_Dataset","W013_G1_Dataset", "W015_G1_Dataset")
 
 # Filter the datasets and create variables
 filtered_datasets <- lapply(mget(dataset_names, envir = .GlobalEnv), function(dataset) {
@@ -210,6 +210,10 @@ for (i in 1:length(filtered_datasets)) {
       assign("forFibreCount9_G1", filtered_datasets[[i]])
     } else if (i == 10) {
       assign("forFibreCount11_G1", filtered_datasets[[i]])
+    } else if (i == 11) {
+      assign("forFibreCount13_G1", filtered_datasets[[i]])
+    } else if (i == 12) {
+      assign("forFibreCount15_G1", filtered_datasets[[i]])
     } else if (i == 8) {
       assign("forFibreCount7_G1", filtered_datasets[[i]])
     } else {
@@ -253,7 +257,8 @@ dataset_names <- c("W000_G12A_Dataset", "W001_G12A_Dataset", "W002_G12A_Dataset"
                    "W003_G12A_Dataset", "W004_G12A_Dataset", "W005_G12A_Dataset",
                    "W006_G12A_Dataset","W007_G12A_Dataset","W008_G12A_Dataset",
                    "W009_G12A_Dataset","W010_G12A_Dataset","W011_G12A_Dataset",
-                   "W012_G12A_Dataset","W013_G12A_Dataset")
+                   "W012_G12A_Dataset","W013_G12A_Dataset","W014_G12A_Dataset",
+                   "W015_G12A_Dataset")
 
 # Loop through the dataset names
 for (i in 1:length(dataset_names)) {
@@ -267,7 +272,8 @@ dataset_names <- c("W000_G12B_Dataset", "W001_G12B_Dataset", "W002_G12B_Dataset"
                    "W003_G12B_Dataset", "W004_G12B_Dataset", "W005_G12B_Dataset",
                    "W006_G12B_Dataset","W007_G12B_Dataset","W008_G12B_Dataset",
                    "W009_G12B_Dataset","W010_G12B_Dataset","W011_G12B_Dataset",
-                   "W012_G12B_Dataset","W013_G12B_Dataset")
+                   "W012_G12B_Dataset","W013_G12B_Dataset","W014_G12B_Dataset",
+                   "W015_G12B_Dataset")
 
 # Loop through the dataset names
 for (i in 1:length(dataset_names)) {
@@ -281,7 +287,8 @@ dataset_names <- c("W000_G12C_Dataset", "W001_G12C_Dataset", "W002_G12C_Dataset"
                    "W003_G12C_Dataset", "W004_G12C_Dataset", "W005_G12C_Dataset",
                    "W006_G12C_Dataset","W007_G12C_Dataset","W008_G12C_Dataset",
                    "W009_G12C_Dataset","W010_G12C_Dataset","W011_G12C_Dataset",
-                   "W012_G12C_Dataset","W013_G12C_Dataset")
+                   "W012_G12C_Dataset","W013_G12C_Dataset","W014_G12C_Dataset",
+                   "W015_G12C_Dataset")
 
 # Loop through the dataset names
 for (i in 1:length(dataset_names)) {
@@ -296,6 +303,7 @@ for (i in 1:length(dataset_names)) {
 # Create a vector of dataset names
 data_list <- list(forFibreCount0_G1,forFibreCount1_G1,forFibreCount2_G1,forFibreCount3_G1,forFibreCount4_G1,
                      forFibreCount5_G1,forFibreCount6_G1,forFibreCount7_G1,forFibreCount9_G1,forFibreCount11_G1,
+                     forFibreCount13_G1,forFibreCount15_G1,
                      
                      forFibreCount0_G5,forFibreCount1_G5,forFibreCount2_G5,forFibreCount3_G5,forFibreCount4_G5,
                      forFibreCount5_G5,forFibreCount6_G5,forFibreCount7_G5,forFibreCount8_G5,forFibreCount9_G5,
@@ -311,15 +319,18 @@ data_list <- list(forFibreCount0_G1,forFibreCount1_G1,forFibreCount2_G1,forFibre
                   
                   forFibreCount0_G12A,forFibreCount1_G12A,forFibreCount2_G12A,forFibreCount3_G12A,forFibreCount4_G12A,
                   forFibreCount5_G12A,forFibreCount6_G12A,forFibreCount7_G12A,forFibreCount8_G12A,forFibreCount9_G12A,
-                  forFibreCount10_G12A,forFibreCount11_G12A,forFibreCount12_G12A,forFibreCount13_G12A,
+                  forFibreCount10_G12A,forFibreCount11_G12A,forFibreCount12_G12A,forFibreCount13_G12A,forFibreCount14_G12A,
+                  forFibreCount15_G12A,
                   
                   forFibreCount0_G12B,forFibreCount1_G12B,forFibreCount2_G12B,forFibreCount3_G12B,forFibreCount4_G12B,
                   forFibreCount5_G12B,forFibreCount6_G12B,forFibreCount7_G12B,forFibreCount8_G12B,forFibreCount9_G12B,
-                  forFibreCount10_G12B,forFibreCount11_G12B,forFibreCount12_G12B,forFibreCount13_G12B,
+                  forFibreCount10_G12B,forFibreCount11_G12B,forFibreCount12_G12B,forFibreCount13_G12B,forFibreCount14_G12B,
+                  forFibreCount15_G12B,
                   
                   forFibreCount0_G12C,forFibreCount1_G12C,forFibreCount2_G12C,forFibreCount3_G12C,forFibreCount4_G12C,
                   forFibreCount5_G12C,forFibreCount6_G12C,forFibreCount7_G12C,forFibreCount8_G12C,forFibreCount9_G12C,
-                  forFibreCount10_G12C,forFibreCount11_G12C,forFibreCount12_G12C,forFibreCount13_G12C)
+                  forFibreCount10_G12C,forFibreCount11_G12C,forFibreCount12_G12C,forFibreCount13_G12C,forFibreCount14_G12C,
+                  forFibreCount15_G12C)
 
 # apply the select function to each data frame to extract the columns:
 #"Coder, Coder2, and Before transfer"
@@ -333,3 +344,4 @@ combined_data_Background <- bind_rows(Background)
 
 # Count the number of fibres found on the background images
 combined_data_Background <- aggregate(combined_data_Background$Coder,list(combined_data_Background$`Before transfer`), FUN=length) 
+
