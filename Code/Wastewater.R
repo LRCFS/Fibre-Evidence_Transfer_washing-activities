@@ -26,6 +26,48 @@ Wastewaterfibres_G12 <- read.csv('./Data_filtration_fibre weight_G12.csv', sep="
 Wastewaterfibres_G12$Date<-as.factor(Wastewaterfibres_G12$Date)
 Wastewatervolume_G12 <- read.csv('./Data_filtration_water volume_G12.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
+###### Wastewater volume ######
+# 1) Uncertainty related to the graduation of the barrel (calibration)
+# To calibrate the barrel, a 500 ml burette was filled up to the 500 ml graduation and pour into the barrel.
+# At the first calibration line on the barrel, the uncertainty on the position of the line corresponds to the uncertainty...
+#... on the measured volume (standard uncertainty of reading): Uread = (1 graduation/√12)
+# The burette used was graduated every 10 mL
+Uread <- 10/sqrt(12)
+
+#The second graduation was obtained by adding again 500 ml of water using the same burette, and so on until the Nth graduation
+# the uncertainty is therefore calculated as: Ucalibration = √N*Uread
+Wastewatervolume_G1$Ucalibration <- sqrt(Wastewatervolume_G1$Total)*Uread
+Wastewatervolume_G5$Ucalibration <- sqrt(Wastewatervolume_G5$Total)*Uread
+Wastewatervolume_G12$Ucalibration <- sqrt(Wastewatervolume_G12$Total)*Uread
+
+#2)	Uncertainty related to the reading of the volume in the barrel
+# The barrel was not graduated with consistent precision and therefore if a reading was done between graduations N and (N+1)
+# the standard reading uncertainty was calculated as: Ureadbarrel = (1 graduation)/√12
+# The barrel was  graduated every 500 mL, therefore:
+Ureadbarrel <- 500/sqrt(12)
+
+# 3) Considering calibration and reading uncertainty
+#To consider these uncertainties (calibration and reading) on the estimation of the volume V, between V(N+1) and V(N):
+# U(V) = √(Ucalibration)^2+ (Ureadbarrel)^2 )
+Wastewatervolume_G1$U.V <- (sqrt((Wastewatervolume_G1$Ucalibration)^2 +(Ureadbarrel)^2))/1000 #the division by 1000 is to convert ml to L
+Wastewatervolume_G5$U.V <- (sqrt((Wastewatervolume_G5$Ucalibration)^2 +(Ureadbarrel)^2))/1000 
+Wastewatervolume_G12$U.V <- (sqrt((Wastewatervolume_G12$Ucalibration)^2 +(Ureadbarrel)^2))/1000
+
+# 4) Confidence interval
+# One single measure of the volume of water in the barrel was done each wash.
+# the Guide to the expression of Uncertainty in Measurement (GUM) recommends to calculate the confidence interval from the standard reading uncertainty (U(V))...
+#...taking into account the uniform distribution associated with this type of uncertainty (uncertainty of B type), as follow : I=[-2U(V)  ; + 2U(V)]
+# In our particular situation, Wastewatervolume_G1$U.V2 is used for the interval
+Wastewatervolume_G1$U.V2 <-Wastewatervolume_G1$U.V*2
+Wastewatervolume_G5$U.V2 <-Wastewatervolume_G5$U.V*2
+Wastewatervolume_G12$U.V2 <-Wastewatervolume_G12$U.V*2
+#write.table(Wastewatervolume_G1, file = "Data_filtration_Volume_analysed_red.csv", quote = F, sep = ",", row.names = F)
+
+# max(Wastewatervolume_G1$Total)
+# min(Wastewatervolume_G1$Total)
+# mean(Wastewatervolume_G1$Total)
+# SD(Wastewatervolume_G1$Total)
+
 ###### Wastewater fibres ######
 # mean for each rows (selected columns)
 Wastewaterfibres_G1$meanValue <- rowMeans(subset(Wastewaterfibres_G1, select = c(mass1: mass5)), na.rm = TRUE)
@@ -76,7 +118,7 @@ merge.dat_G5 <- cbind(Wastewaterfibres_G5$Filter,merge.dat_G5)
 merge.dat_G5 <- merge.dat_G5[1:100,]
 names(merge.dat_G5)[names(merge.dat_G5) == 'Wastewaterfibres_G5$Filter'] <- 'Filter'
 merge.dat_G12 <- cbind(Wastewaterfibres_G12$Filter,merge.dat_G12)
-merge.dat_G12 <- merge.dat_G12[1:56,]
+merge.dat_G12 <- merge.dat_G12[1:62,]
 names(merge.dat_G12)[names(merge.dat_G12) == 'Wastewaterfibres_G12$Filter'] <- 'Filter'
 
 # Calculate difference and U.F
@@ -121,47 +163,6 @@ write.table(Wastewaterfibres_G1p4, file = "Data_filtration G1_fibre weight_proce
 write.table(Wastewaterfibres_G5p4, file = "Data_filtration G5_fibre weight_processed.csv", quote = F, sep = ",", row.names = F)
 write.table(Wastewaterfibres_G12p4, file = "Data_filtration G12_fibre weigh_processed.csv", quote = F, sep = ",", row.names = F)
 
-###### Wastewater volume ######
-  # 1) Uncertainty related to the graduation of the barrel (calibration)
-# To calibrate the barrel, a 500 ml burette was filled up to the 500 ml graduation and pour into the barrel.
-# At the first calibration line on the barrel, the uncertainty on the position of the line corresponds to the uncertainty...
-#... on the measured volume (standard uncertainty of reading): Uread = (1 graduation/√12)
-# The burette used was graduated every 10 mL
-Uread <- 10/sqrt(12)
-
-#The second graduation was obtained by adding again 500 ml of water using the same burette, and so on until the Nth graduation
-# the uncertainty is therefore calculated as: Ucalibration = √N*Uread
-Wastewatervolume_G1$Ucalibration <- sqrt(Wastewatervolume_G1$Total)*Uread
-Wastewatervolume_G5$Ucalibration <- sqrt(Wastewatervolume_G5$Total)*Uread
-Wastewatervolume_G12$Ucalibration <- sqrt(Wastewatervolume_G12$Total)*Uread
-  
-  #2)	Uncertainty related to the reading of the volume in the barrel
-# The barrel was not graduated with consistent precision and therefore if a reading was done between graduations N and (N+1)
-# the standard reading uncertainty was calculated as: Ureadbarrel = (1 graduation)/√12
-# The barrel was  graduated every 500 mL, therefore:
-Ureadbarrel <- 500/sqrt(12)
-
-  # 3) Considering calibration and reading uncertainty
-#To consider these uncertainties (calibration and reading) on the estimation of the volume V, between V(N+1) and V(N):
-# U(V) = √(Ucalibration)^2+ (Ureadbarrel)^2 )
-Wastewatervolume_G1$U.V <- (sqrt((Wastewatervolume_G1$Ucalibration)^2 +(Ureadbarrel)^2))/1000 #the division by 1000 is to convert ml to L
-Wastewatervolume_G5$U.V <- (sqrt((Wastewatervolume_G5$Ucalibration)^2 +(Ureadbarrel)^2))/1000 
-Wastewatervolume_G12$U.V <- (sqrt((Wastewatervolume_G12$Ucalibration)^2 +(Ureadbarrel)^2))/1000
-
-  # 4) Confidence interval
-# One single measure of the volume of water in the barrel was done each wash.
-# the Guide to the expression of Uncertainty in Measurement (GUM) recommends to calculate the confidence interval from the standard reading uncertainty (U(V))...
-#...taking into account the uniform distribution associated with this type of uncertainty (uncertainty of B type), as follow : I=[-2U(V)  ; + 2U(V)]
-# In our particular situation, Wastewatervolume_G1$U.V2 is used for the interval
-Wastewatervolume_G1$U.V2 <-Wastewatervolume_G1$U.V*2
-Wastewatervolume_G5$U.V2 <-Wastewatervolume_G5$U.V*2
-Wastewatervolume_G12$U.V2 <-Wastewatervolume_G12$U.V*2
-#write.table(Wastewatervolume_G1, file = "Data_filtration_Volume_analysed_red.csv", quote = F, sep = ",", row.names = F)
-
-# max(Wastewatervolume_G1$Total)
-# min(Wastewatervolume_G1$Total)
-# mean(Wastewatervolume_G1$Total)
-# SD(Wastewatervolume_G1$Total)
 
 ###### GRAPH - Volume ######
 # exclude wash W034 from Wastewaterfibres_G5p4 and Wastewatervolume_G5
@@ -239,7 +240,7 @@ pVolume_combined_pending <- ggarrange(pVolume_G1+ rremove("ylab") + rremove("xla
                                       vjust = 0.9, hjust = 0.9)+
   theme(plot.margin = margin(0.5,0,0,0, "cm")) # in order (Top,left,bottom,right)
 
-pVolume_combined <- annotate_figure(pVolume_combined_pending, left = textGrob("Volume of water (L)\n", rot = 90, vjust = 0.5, hjust = 0.5, gp = gpar(cex =1)),
+pVolume_combined <- annotate_figure(pVolume_combined_pending, left = textGrob("Volume of wastewater (L)\n", rot = 90, vjust = 0.5, hjust = 0.5, gp = gpar(cex =1)),
                                     bottom = textGrob("\nWash number", vjust = 0.5, hjust = 0.5,gp = gpar(cex = 1)));pVolume_combined
 
 ggsave("pVolume_combined.png", pVolume_combined, width = 8, height = 7, units = "in", dpi=300, path = "Results")
