@@ -80,6 +80,7 @@ Transfer_G12[3,] <- c("W024", "GA4", NA)
 Transfer_G12[4,] <- c("W026", "GA4", NA)
 Transfer_G12[5,] <- c("W028", "GA4", NA)
 Transfer_G12[6,] <- c("W030", "GA4", NA)
+Transfer_G12[6,] <- c("W032", "GA4", NA)
 
 pAtr_G12 <- ggplot(Transfer_G12, aes(x=as.factor(wash), y=as.numeric(value))) +
   geom_boxplot() +
@@ -202,3 +203,276 @@ pGarment_combined <- annotate_figure(pGarment_combined_pending,
 pGarment_combined
 ggsave("pGarment_combined.png", pGarment_combined, width = 7, height = 7, units = "in", dpi=300, path = "Results")
 
+#############################################################
+#####       Repetitive Transfer - control garment       #####
+#############################################################
+# substract background
+RT_Dataset$value <-  RT_Dataset$`After transfer` -  RT_Dataset$`Before transfer`
+
+#Assign a Coder to each wash
+RTB1_Dataset<- RT_Dataset %>% filter(grepl('G1_1', Sample))
+RTB3_Dataset<- RT_Dataset %>% filter(grepl('G1_3', Sample))
+RTB6_Dataset<- RT_Dataset %>% filter(grepl('G1_6', Sample))
+RTB8_Dataset<- RT_Dataset %>% filter(grepl('G1_8', Sample))
+
+RTB1_Dataset$Coder <- "RTB1"
+RTB3_Dataset$Coder <- "RTB3"
+RTB6_Dataset$Coder <- "RTB6"
+RTB8_Dataset$Coder <- "RTB8"
+
+# Create a new column in all dataframe
+numS <- data.frame(seq(1,100, by = 1))
+names(numS) <- c("Time")
+
+# add the column "Time" from "numS" to all dataframe
+RTB1_Dataset <- cbind(RTB1_Dataset,numS)
+RTB3_Dataset <- cbind(RTB3_Dataset,numS)
+RTB6_Dataset <- cbind(RTB6_Dataset,numS)
+RTB8_Dataset <- cbind(RTB8_Dataset,numS)
+
+TransferRTB1 <- RTB1_Dataset %>%
+  dplyr::select(Coder,`After transfer`,Time)
+TransferRTB6 <- RTB6_Dataset %>%
+  dplyr::select(Coder,`After transfer`, Time)
+TransferRTB3 <- RTB3_Dataset %>%
+  dplyr::select(Coder,`After transfer`, Time)
+TransferRTB8 <- RTB8_Dataset %>%
+  dplyr::select(Coder,`After transfer`, Time)
+
+names(TransferRTB1) <- c("group", "value", "Transfer")
+names(TransferRTB6) <- c("group", "value", "Transfer")
+names(TransferRTB3) <- c("group", "value", "Transfer")
+names(TransferRTB8) <- c("group", "value", "Transfer")
+
+Tot <-rbind(TransferRTB1,TransferRTB3,TransferRTB6,TransferRTB8)
+
+Totpara <-rbind(TransferRTB1,TransferRTB3)
+Totperp <-rbind(TransferRTB6,TransferRTB8)
+
+df_means <- ddply(Tot, "group", summarise, mean_value = mean(value)) ; df_means
+df_SD <- ddply(Tot, "group", summarise, mean_value = sd(value)) ; df_SD
+df_meanspara <- ddply(Totpara, "group", summarise, mean_value = mean(value)) ; df_meanspara
+df_meansperp <- ddply(Totperp, "group", summarise, mean_value = mean(value)) ; df_meansperp
+
+#### GRAPH ####
+pRTB1 <-ggplot(data = TransferRTB1, aes(Transfer, value)) +
+  geom_line(size=0.3)+geom_point(size=0.1, colour= "darkred")+
+  labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
+  theme_bw(base_family = "Arial", base_size = 10) +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom",
+        legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Parallel strip 1")+
+  geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
+mean <- round(mean(TransferRTB1$value),digits = 2)
+pRTB1 <-pRTB1 + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
+pRTB1
+
+pRTB3 <-ggplot(data = TransferRTB3, aes(Transfer, value)) +
+  geom_line(size=0.3)+geom_point(size=0.1, colour= "darkred")+
+  labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
+  theme_bw(base_family = "Arial", base_size = 10) +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom",
+        legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Parallel strip 2")+
+  geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
+mean <- round(mean(TransferRTB3$value),digits = 2)
+pRTB3 <-pRTB3 + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
+pRTB3
+
+pRTB6 <-ggplot(data = TransferRTB6, aes(Transfer, value)) +
+  geom_line(size=0.3)+geom_point(size=0.1, colour= "darkred")+
+  labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
+  theme_bw(base_family = "Arial", base_size = 10) +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom",
+        legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Perpendicular strip 1")+
+  geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
+mean <- round(mean(TransferRTB6$value),digits = 2)
+pRTB6 <-pRTB6 + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
+pRTB6
+
+pRTB8 <-ggplot(data = TransferRTB8, aes(Transfer, value)) +
+  geom_line(size=0.3)+geom_point(size=0.1, colour= "darkred")+
+  labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
+  theme_bw(base_family = "Arial", base_size = 10) +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom",
+        legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Perpendicular strip 2")+
+  geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
+mean <- round(mean(TransferRTB8$value),digits = 2)
+pRTB8 <-pRTB8 + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
+pRTB8
+
+#### Combined grap ####
+pCombinedRT_pending <- ggarrange(pRTB1+ rremove("ylab") + rremove("xlab"),
+                                 pRTB3+ rremove("ylab") + rremove("xlab"),
+                                 pRTB6+ rremove("ylab") + rremove("xlab"),
+                                 pRTB8+ rremove("ylab") + rremove("xlab"),
+                                 labels = NULL,
+                                 common.legend = TRUE, legend = "bottom",
+                                 align = "hv",
+                                 ncol = 2, nrow = 2,
+                                 font.label = list(size = 8, color = "black", family = NULL, position = "top"))
+
+pCombinedRT <- annotate_figure(pCombinedRT_pending, left = textGrob("Number of fibres", rot = 90, vjust = 0.5, hjust = 0.5, gp = gpar(cex =1)),
+                               bottom = textGrob("Wash number", vjust = 0.5, hjust = 0.5,gp = gpar(cex = 1)))
+pCombinedRT
+
+#############################################################
+#####            Repetitive Transfer vs. Wash           #####
+#############################################################
+# combined graph
+n=51
+numS <- data.frame(setdiff(0:n, c()))
+meanTotRT<- aggregate(value ~  Transfer, Tot, function(x) {round(mean(x), digits=2)})
+meanTotRT <- meanTotRT[1:52,]
+forplotTotRT <- data.frame(cbind(numS, value =meanTotRT$value))
+names(forplotTotRT) <- c("Transfer", "value")
+forplotTotRT$group <- "Repetitive transfer"
+
+n=15
+numS <- data.frame(setdiff(0:n, c(8,10,12,14)))
+Transfer_G1 <- Transfer_G1[!is.na(Transfer_G1$value), ]
+Transfer_G1$value <- as.numeric(Transfer_G1$value)
+meanAtrG1 <- aggregate(value ~ wash, Transfer_G1, function(x) round(mean(x), digits = 2))
+forplotTotG1 <- data.frame(cbind(numS, value =meanAtrG1$value))
+names(forplotTotG1) <- c("Transfer", "value")
+forplotTotG1$group <- c("1 garment")
+
+n=51
+numS <- data.frame(setdiff(0:n, c()))
+Transfer_G5 <- Transfer_G5[!is.na(Transfer_G5$value), ]
+Transfer_G5$value <- as.numeric(Transfer_G5$value)
+meanAtrG5 <- aggregate(value ~ wash, Transfer_G5, function(x) round(mean(x), digits = 2))
+forplotTotG5 <- data.frame(cbind(numS, value =meanAtrG5$value))
+names(forplotTotG5) <- c("Transfer", "value")
+forplotTotG5$group <- c("5 garments")
+
+n=33
+numS <- data.frame(setdiff(0:n, c(16,17,24,26,28,30,32)))
+Transfer_G12 <- Transfer_G12[!is.na(Transfer_G12$value), ]
+Transfer_G12$value <- as.numeric(Transfer_G12$value)
+meanAtrG12 <- aggregate(value ~ wash, Transfer_G12, function(x) round(mean(x), digits = 2))
+forplotTotG12 <- data.frame(cbind(numS, value =meanAtrG12$value))
+names(forplotTotG12) <- c("Transfer", "value")
+forplotTotG12$group <- c("12 garments")
+
+Toplot <- rbind(forplotTotRT,forplotTotG1,forplotTotG5,forplotTotG12)
+Toplot$Transfer <- as.numeric(Toplot$Transfer)
+Toplot$value <- as.numeric(Toplot$value)
+Toplot$group <- as.factor(Toplot$group)
+
+# find the best fit
+#fit polynomial regression models up to degree 5
+fit1 <- lm(value~Transfer, data=forplotTotRT)
+
+# 1 garment
+# fit1 <- lm(value~poly(Transfer,1,raw=TRUE), data=forplotTotG1)
+# fit2 <- lm(value~poly(Transfer,2,raw=TRUE), data=forplotTotG1)
+# fit3 <- lm(value~poly(Transfer,3,raw=TRUE), data=forplotTotG1)
+# fit4 <- lm(value~poly(Transfer,4,raw=TRUE), data=forplotTotG1)
+# fit5 <- lm(value~poly(Transfer,5,raw=TRUE), data=forplotTotG1)
+# fit6 <- lm(value~poly(Transfer,6,raw=TRUE), data=forplotTotG1)
+# fit7 <- lm(value~poly(Transfer,7,raw=TRUE), data=forplotTotG1)
+# fit8 <- lm(value~poly(Transfer,8,raw=TRUE), data=forplotTotG1)
+# fit9 <- lm(value~poly(Transfer,9,raw=TRUE), data=forplotTotG1)
+fit10 <- lm(value~poly(Transfer,10,raw=TRUE), data=forplotTotG1)
+
+# a <- summary(fit1)$adj.r.squared;a
+# b <- summary(fit2)$adj.r.squared;b
+# c <- summary(fit3)$adj.r.squared;c
+# d <- summary(fit4)$adj.r.squared;d
+# e <- summary(fit5)$adj.r.squared;e
+# f <- summary(fit6)$adj.r.squared;f
+# g <- summary(fit7)$adj.r.squared;g
+# h <- summary(fit8)$adj.r.squared;h
+# i <- summary(fit9)$adj.r.squared;i
+j <- summary(fit10)$adj.r.squared;j
+
+# 5 garments
+# fit1 <- lm(value~poly(Transfer,1,raw=TRUE), data=forplotTotG5)
+# fit2 <- lm(value~poly(Transfer,2,raw=TRUE), data=forplotTotG5)
+# fit3 <- lm(value~poly(Transfer,3,raw=TRUE), data=forplotTotG5)
+# fit4 <- lm(value~poly(Transfer,4,raw=TRUE), data=forplotTotG5)
+# fit5 <- lm(value~poly(Transfer,5,raw=TRUE), data=forplotTotG5)
+# fit6 <- lm(value~poly(Transfer,6,raw=TRUE), data=forplotTotG5)
+# fit7 <- lm(value~poly(Transfer,7,raw=TRUE), data=forplotTotG5)
+# fit8 <- lm(value~poly(Transfer,8,raw=TRUE), data=forplotTotG5)
+fit9 <- lm(value~poly(Transfer,9,raw=TRUE), data=forplotTotG5)
+# fit10 <- lm(value~poly(Transfer,10,raw=TRUE), data=forplotTotG5)
+
+# a <- summary(fit1)$adj.r.squared;a
+# b <- summary(fit2)$adj.r.squared;b
+# c <- summary(fit3)$adj.r.squared;c
+# d <- summary(fit4)$adj.r.squared;d
+# e <- summary(fit5)$adj.r.squared;e
+# f <- summary(fit6)$adj.r.squared;f
+# g <- summary(fit7)$adj.r.squared;g
+# h <- summary(fit8)$adj.r.squared;h
+i <- summary(fit9)$adj.r.squared;i
+# j <- summary(fit10)$adj.r.squared;j
+
+#12 garments
+# fit1 <- lm(value~poly(Transfer,1,raw=TRUE), data=forplotTotG12)
+# fit2 <- lm(value~poly(Transfer,2,raw=TRUE), data=forplotTotG12)
+# fit3 <- lm(value~poly(Transfer,3,raw=TRUE), data=forplotTotG12)
+# fit4 <- lm(value~poly(Transfer,4,raw=TRUE), data=forplotTotG12)
+# fit5 <- lm(value~poly(Transfer,5,raw=TRUE), data=forplotTotG12)
+# fit6 <- lm(value~poly(Transfer,6,raw=TRUE), data=forplotTotG12)
+fit7 <- lm(value~poly(Transfer,7,raw=TRUE), data=forplotTotG12)
+# fit8 <- lm(value~poly(Transfer,8,raw=TRUE), data=forplotTotG12)
+# fit9 <- lm(value~poly(Transfer,9,raw=TRUE), data=forplotTotG12)
+# fit10 <- lm(value~poly(Transfer,10,raw=TRUE), data=forplotTotG12)
+
+# a <- summary(fit1)$adj.r.squared;a
+# b <- summary(fit2)$adj.r.squared;b
+# c <- summary(fit3)$adj.r.squared;c
+# d <- summary(fit4)$adj.r.squared;d
+# e <- summary(fit5)$adj.r.squared;e
+# f <- summary(fit6)$adj.r.squared;f
+g <- summary(fit7)$adj.r.squared;g
+# h <- summary(fit8)$adj.r.squared;h
+# i <- summary(fit9)$adj.r.squared;i
+# j <- summary(fit10)$adj.r.squared;j
+
+# create a scatterplot
+colors <- c("#469990",
+            "darkred",
+            "#000000",
+            "grey")
+
+plot(Toplot$Transfer, Toplot$value, col=colors[Toplot$group],
+     pch=19,
+     xlab='\nExperiment number',
+     ylab='Average number of Fibres',
+     xaxt='n',
+     cex.axis = 1.2,
+     cex.lab = 1.2)
+axis(1, xaxp=c(0, 51, 51), las=1,cex.axis = 1.2) +theme_bw()
+# add legend
+legend(35, 24, legend=c("1 garment", "12 garments", "5 garments", "Control garment"),
+       col=c("#469990", "darkred","#000000","grey" ), lty=1:2, cex=1.2)
+
+#fit polynomial regression models up to degree 5
+fitRT <- lm(value~Transfer, data=forplotTotRT)
+fitG1<- lm(value ~ poly(Transfer, 5, raw = TRUE), data = forplotTotG1)
+fitG5 <- lm(value ~ poly(Transfer, 9, raw = TRUE), data = forplotTotG5)
+fitG12 <- lm(value ~ poly(Transfer, 7, raw = TRUE), data = forplotTotG12)
+
+#define x-axis values
+x_axis <- seq(1, 51, length=51)
+lines(x_axis, predict(fitRT, data.frame(Transfer=x_axis)), col='grey')
+
+x_range_G1 <- seq(1, 15, length = 51)  # Adjust the range as needed
+predictions_G1 <- predict(fitG1, data.frame(Transfer = x_range_G1))
+lines(x_range_G1, predictions_G1, col = '#469990')
+
+lines(x_axis, predict(fitG5, data.frame(Transfer=x_axis)), col='#000000')
+
+x_range <- seq(1, 33, length = 51)  # Adjust the range as needed
+predictions <- predict(fitG12, data.frame(Transfer = x_range))
+lines(x_range, predictions, col = 'darkred')

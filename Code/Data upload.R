@@ -86,3 +86,31 @@ G12_Dataset[,2:3] = apply(G12_Dataset[,2:3], 2, function(x) as.numeric(as.charac
 
 # remove unused dataframe
 rm(G12,G12B,G12Atr,G12_Dataset_pending)
+
+###_________________Data loading_________________###
+RT <- read.csv('./Fibre count Summary NEW/RT_Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+
+# removing the ".TIF" in RT
+RT$Slice<- gsub(".TIF","",RT$Slice)
+
+text_to_remove <- "_negative"
+RT <- RT[!grepl(text_to_remove, RT$Slice), ]
+text_to_remove <- "_positive"
+RT <- RT[!grepl(text_to_remove, RT$Slice), ]
+
+# Creating the different dataframe before and after transfer
+RTB<- RT %>% filter(grepl('_B', Slice))
+RTAtr <- RT %>% filter(grepl('_Atr', Slice))
+
+# Create table
+RT_Dataset_pending <- data.frame(rbind(RTB$Slice, RTB$Count, RTAtr$Count))
+RT_Dataset<-as.data.frame(t(RT_Dataset_pending))
+
+names(RT_Dataset) <- c("Sample", "Before transfer", "After transfer")
+
+# change factor to numeric in the column 2 to 3
+RT_Dataset[,2:3] = apply(RT_Dataset[,2:3], 2, function(x) as.numeric(as.character(x)));
+
+# remove unused dataframe
+rm(RT,RTB,RTAtr,RT_Dataset_pending)
+
