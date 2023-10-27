@@ -82,6 +82,7 @@ Transfer_G12[845,] <- c("W028", "GA4", NA, NA)
 Transfer_G12[846,] <- c("W030", "GA4", NA, NA)
 Transfer_G12[847,] <- c("W032", "GA4", NA, NA)
 Transfer_G12[848,] <- c("W034", "GA4", NA, NA)
+Transfer_G12[849,] <- c("W035", "GA4", NA, NA)
 
 pAtr_G12 <- ggplot(Transfer_G12, aes(x=as.factor(wash), y=as.numeric(value))) +
   geom_boxplot() +
