@@ -74,15 +74,17 @@ pAtr_G5 <- ggplot(Transfer_G5, aes(x=wash, y=value)) +
 show(pAtr_G5)
 ggsave("Fibre Count boxplot_ATr_G5.png", pAtr_G5, width = 6, height = 7, units = "in", dpi=150, path = "Results")
 
-Transfer_G12[841,] <- c("W016", "GA4", NA, NA)
-Transfer_G12[842,] <- c("W017", "GA4", NA, NA)
-Transfer_G12[843,] <- c("W024", "GA4", NA, NA)
-Transfer_G12[844,] <- c("W026", "GA4", NA, NA)
-Transfer_G12[845,] <- c("W028", "GA4", NA, NA)
-Transfer_G12[846,] <- c("W030", "GA4", NA, NA)
-Transfer_G12[847,] <- c("W032", "GA4", NA, NA)
-Transfer_G12[848,] <- c("W034", "GA4", NA, NA)
-Transfer_G12[849,] <- c("W035", "GA4", NA, NA)
+Transfer_G12[931,] <- c("W016", "GA4", NA, NA)
+Transfer_G12[932,] <- c("W017", "GA4", NA, NA)
+Transfer_G12[933,] <- c("W024", "GA4", NA, NA)
+Transfer_G12[934,] <- c("W026", "GA4", NA, NA)
+Transfer_G12[935,] <- c("W028", "GA4", NA, NA)
+Transfer_G12[936,] <- c("W030", "GA4", NA, NA)
+Transfer_G12[937,] <- c("W032", "GA4", NA, NA)
+Transfer_G12[938,] <- c("W034", "GA4", NA, NA)
+Transfer_G12[939,] <- c("W036", "GA4", NA, NA)
+Transfer_G12[940,] <- c("W038", "GA4", NA, NA)
+Transfer_G12[941,] <- c("W040", "GA4", NA, NA)
 
 pAtr_G12 <- ggplot(Transfer_G12, aes(x=as.factor(wash), y=as.numeric(value))) +
   geom_boxplot() +
@@ -133,6 +135,9 @@ meanGarment4_Transfer_G5$`Contact area` <- "4"
 meanGarment5_Transfer_G5 <- aggregate(value~  wash, Garment5_Transfer_G5, FUN = function(x) {round(mean(x), digits = 2)})
 meanGarment5_Transfer_G5$`Contact area` <- "5"
 MeanTotG5 <- rbind(meanGarment1_Transfer_G5,meanGarment2_Transfer_G5,meanGarment3_Transfer_G5,meanGarment4_Transfer_G5,meanGarment5_Transfer_G5)
+MeanTotG5_Tosave <- as.data.frame(cbind(meanGarment1_Transfer_G5$wash,meanGarment1_Transfer_G5$value,meanGarment2_Transfer_G5$value,
+                           meanGarment3_Transfer_G5$value,meanGarment4_Transfer_G5$value,meanGarment5_Transfer_G5$value))
+write.table(MeanTotG5_Tosave, file = "G5_Fibre per garment_export.csv", quote = F, sep = ",", row.names = F)
 
 #### GRAPH - FIGURE XXX ####
 pGarment_G5 <-ggplot(data = MeanTotG5, aes(x =wash, y = value, color=`Contact area`, group=`Contact area`)) +
@@ -173,6 +178,9 @@ meanGarment2_Transfer_G12$`Contact area` <- "2"
 meanGarment3_Transfer_G12 <- aggregate(value~  wash, Garment3_Transfer_G12, FUN = function(x) {round(mean(x), digits = 2)})
 meanGarment3_Transfer_G12$`Contact area` <- "3"
 MeanTotG12 <- rbind(meanGarment1_Transfer_G12,meanGarment2_Transfer_G12,meanGarment3_Transfer_G12)
+MeanTotG12_Tosave <- as.data.frame(cbind(meanGarment1_Transfer_G12$wash,meanGarment1_Transfer_G12$value,meanGarment2_Transfer_G12$value,
+                                        meanGarment3_Transfer_G12$value))
+write.table(MeanTotG12_Tosave, file = "G12_Fibre per garment_export.csv", quote = F, sep = ",", row.names = F)
 
 #### GRAPH - FIGURE XXX ####
 pGarment_G12 <-ggplot(data = MeanTotG12, aes(x =wash, y = value, color=`Contact area`, group=`Contact area`)) +
@@ -501,15 +509,17 @@ mean(G12_meanPara$value)
 mean(G12_meanPerp$value)
 
 #### Graph ####
-G12_MeanTotpara[141,] <- c("W016", NA, NA)
-G12_MeanTotpara[142,] <- c("W017", NA, NA)
-G12_MeanTotpara[143,] <- c("W024", NA, NA)
-G12_MeanTotpara[144,] <- c("W026", NA, NA)
-G12_MeanTotpara[145,] <- c("W028", NA, NA)
-G12_MeanTotpara[146,] <- c("W030", NA, NA)
-G12_MeanTotpara[147,] <- c("W032", NA, NA)
-G12_MeanTotpara[148,] <- c("W034", NA, NA)
-G12_MeanTotpara[149,] <- c("W036", NA, NA)
+G12_MeanTotpara[156,] <- c("W016", NA, NA)
+G12_MeanTotpara[157,] <- c("W017", NA, NA)
+G12_MeanTotpara[158,] <- c("W024", NA, NA)
+G12_MeanTotpara[159,] <- c("W026", NA, NA)
+G12_MeanTotpara[160,] <- c("W028", NA, NA)
+G12_MeanTotpara[161,] <- c("W030", NA, NA)
+G12_MeanTotpara[162,] <- c("W032", NA, NA)
+G12_MeanTotpara[163,] <- c("W034", NA, NA)
+G12_MeanTotpara[164,] <- c("W036", NA, NA)
+G12_MeanTotpara[165,] <- c("W038", NA, NA)
+G12_MeanTotpara[166,] <- c("W040", NA, NA)
 
 pG12_bandspara <-ggplot(data = G12_MeanTotpara, aes(x =as.factor(wash), y = as.numeric(value), color=`Contact area`, group=`Contact area`)) +
   geom_line(aes(linetype=`Contact area`, color=`Contact area`))+
@@ -527,14 +537,17 @@ pG12_bandspara <-ggplot(data = G12_MeanTotpara, aes(x =as.factor(wash), y = as.n
 pG12_bandspara
 #ggsave("Fibre Count_bandspara.png", pG12_bandspara, width = 6, height = 4, units = "in", dpi=200, path = "Results")
 
-G12_MeanTotperp[141,] <- c("W016", NA, NA)
-G12_MeanTotperp[142,] <- c("W017", NA, NA)
-G12_MeanTotperp[143,] <- c("W024", NA, NA)
-G12_MeanTotperp[144,] <- c("W026", NA, NA)
-G12_MeanTotperp[145,] <- c("W028", NA, NA)
-G12_MeanTotperp[146,] <- c("W030", NA, NA)
-G12_MeanTotperp[147,] <- c("W032", NA, NA)
-G12_MeanTotperp[148,] <- c("W034", NA, NA)
+G12_MeanTotperp[156,] <- c("W016", NA, NA)
+G12_MeanTotperp[157,] <- c("W017", NA, NA)
+G12_MeanTotperp[158,] <- c("W024", NA, NA)
+G12_MeanTotperp[159,] <- c("W026", NA, NA)
+G12_MeanTotperp[160,] <- c("W028", NA, NA)
+G12_MeanTotperp[161,] <- c("W030", NA, NA)
+G12_MeanTotperp[162,] <- c("W032", NA, NA)
+G12_MeanTotperp[163,] <- c("W034", NA, NA)
+G12_MeanTotperp[164,] <- c("W036", NA, NA)
+G12_MeanTotperp[165,] <- c("W038", NA, NA)
+G12_MeanTotperp[166,] <- c("W040", NA, NA)
 
 # Modify the levels of the `Contact area` variable
 G12_MeanTotperp$`Contact area` <- factor(G12_MeanTotperp$`Contact area`, levels = c(6, 7, 8, 9, 10))
@@ -667,7 +680,6 @@ pRTB1 <-ggplot(data = TransferRTB1, aes(Transfer, value)) +
   labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
   theme_bw(base_family = "Arial", base_size = 10) +
   theme(legend.title = element_blank(),
-        legend.title = element_blank(),
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
         axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Parallel strip 1")+
   geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
@@ -680,7 +692,6 @@ pRTB3 <-ggplot(data = TransferRTB3, aes(Transfer, value)) +
   labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
   theme_bw(base_family = "Arial", base_size = 10) +
   theme(legend.title = element_blank(),
-        legend.title = element_blank(),
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
         axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Parallel strip 2")+
   geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
@@ -693,7 +704,6 @@ pRTB6 <-ggplot(data = TransferRTB6, aes(Transfer, value)) +
   labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
   theme_bw(base_family = "Arial", base_size = 10) +
   theme(legend.title = element_blank(),
-        legend.title = element_blank(),
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
         axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Perpendicular strip 1")+
   geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
@@ -706,7 +716,6 @@ pRTB8 <-ggplot(data = TransferRTB8, aes(Transfer, value)) +
   labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
   theme_bw(base_family = "Arial", base_size = 10) +
   theme(legend.title = element_blank(),
-        legend.title = element_blank(),
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
         axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Perpendicular strip 2")+
   geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
@@ -759,8 +768,8 @@ forplotTotG5 <- data.frame(cbind(numS, value =meanAtrG5$value))
 names(forplotTotG5) <- c("Transfer", "value")
 forplotTotG5$group <- c("5 garments")
 
-n=33
-numS <- data.frame(setdiff(0:n, c(16,17,24,26,28,30,32)))
+n=41
+numS <- data.frame(setdiff(0:n, c(16,17,24,26,28,30,32,34,36,38,40)))
 Transfer_G12 <- Transfer_G12[!is.na(Transfer_G12$value), ]
 Transfer_G12$value <- as.numeric(Transfer_G12$value)
 meanAtrG12 <- aggregate(value ~ wash, Transfer_G12, function(x) round(mean(x), digits = 2))
@@ -880,6 +889,6 @@ lines(x_range_G1, predictions_G1, col = '#469990')
 
 lines(x_axis, predict(fitG5, data.frame(Transfer=x_axis)), col='#000000')
 
-x_range <- seq(1, 33, length = 51)  # Adjust the range as needed
+x_range <- seq(1, 41, length = 51)  # Adjust the range as needed
 predictions <- predict(fitG12, data.frame(Transfer = x_range))
 lines(x_range, predictions, col = 'darkred')
