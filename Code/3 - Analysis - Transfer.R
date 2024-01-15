@@ -81,7 +81,7 @@ MeanTotG5_forCorrPlot <- cbind(G1=meanGarment1_Transfer_G5$value,G2=meanGarment2
                                G3=meanGarment3_Transfer_G5$value,G4=meanGarment4_Transfer_G5$value,
                                G5=meanGarment5_Transfer_G5$value)
 
-#### Split each garment by parallel and perpendicular strips ####
+#### Split each garment by parallel and perpendicular contact areas ####
 Garment1_Transfer_G5_para <- Garment1_Transfer_G5 %>% filter(grepl('^[1-5]$', band))
 Garment2_Transfer_G5_para <- Garment2_Transfer_G5 %>% filter(grepl('^[1-5]$', band))
 Garment3_Transfer_G5_para <- Garment3_Transfer_G5 %>% filter(grepl('^[1-5]$', band))
@@ -110,6 +110,7 @@ meanGarment5_Transfer_G5_perp <- aggregate(value ~ wash + garment, Garment5_Tran
 MeanTotG5_perp <- rbind(meanGarment1_Transfer_G5_perp,meanGarment2_Transfer_G5_perp,meanGarment3_Transfer_G5_perp,meanGarment4_Transfer_G5_perp,meanGarment5_Transfer_G5_perp)
 
 #### GRAPH  ####
+#pGarment_G5_para
 pGarment_G5_para <-ggplot(data = MeanTotG5_para, aes(x =wash, y = value, color=garment, group=garment)) +
   geom_line(aes(linetype=garment), size=0.3)+
   scale_x_discrete(labels = every_n_labeler(5)) +
@@ -121,8 +122,7 @@ pGarment_G5_para <-ggplot(data = MeanTotG5_para, aes(x =wash, y = value, color=g
   theme(legend.title = element_blank(),
         legend.position = "bottom",
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=0.5))
-#pGarment_G5_para
-ggsave("Fibre Count per Garment_G5_para.png", pGarment_G5_para, width = 6, height = 7, units = "in", dpi=150, path = "Results")
+pGarment_G5_para
 
 pGarment_G5_perp <-ggplot(data = MeanTotG5_perp, aes(x =wash, y = value, color=garment, group=garment)) +
   geom_line(aes(linetype=garment), size=0.3)+
@@ -135,8 +135,7 @@ pGarment_G5_perp <-ggplot(data = MeanTotG5_perp, aes(x =wash, y = value, color=g
   theme(legend.title = element_blank(),
         legend.position = "bottom",
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=0.5))
-#pGarment_G5_perp
-ggsave("Fibre Count per Garment_G5_perp.png", pGarment_G5_perp, width = 6, height = 7, units = "in", dpi=150, path = "Results")
+pGarment_G5_perp
 
 pG5combined_pending <- ggarrange(pGarment_G5_para+rremove("ylab")+rremove("xlab"),
                                  pGarment_G5_perp+rremove("ylab")+rremove("xlab"),
@@ -164,7 +163,8 @@ meanGarment2_Transfer_G12 <- aggregate(value ~ wash, Garment2_Transfer_G12, FUN 
 meanGarment3_Transfer_G12 <- aggregate(value ~ wash, Garment3_Transfer_G12, FUN = function(x) {round(mean(x), digits = 2)})
 MeanTotG12_forCorrPlot <- cbind(G1=meanGarment1_Transfer_G12$value,G2=meanGarment2_Transfer_G12$value,
                                G3=meanGarment3_Transfer_G12$value)
-#### Split each garment by parallel and perpendicular strips ####
+
+#### Split each garment by parallel and perpendicular contact areas ####
 Garment1_Transfer_G12_para <- Garment1_Transfer_G12 %>% filter(grepl('^[1-5]$', band))
 Garment2_Transfer_G12_para <- Garment2_Transfer_G12 %>% filter(grepl('^[1-5]$', band))
 Garment3_Transfer_G12_para <- Garment3_Transfer_G12 %>% filter(grepl('^[1-5]$', band))
@@ -196,8 +196,6 @@ pGarment_G12_para <-ggplot(data = MeanTotG12_para, aes(x =wash, y = value, color
   theme(legend.title = element_blank(),
         legend.position = "bottom",
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=0.5))
-#pGarment_G12_para
-ggsave("Fibre Count per Garment_G12_para.png", pGarment_G12_para, width = 6, height = 7, units = "in", dpi=150, path = "Results")
 
 pGarment_G12_perp <-ggplot(data = MeanTotG12_perp, aes(x =wash, y = value, color=garment, group=garment)) +
   geom_line(aes(linetype=garment), size=0.3)+
@@ -210,8 +208,6 @@ pGarment_G12_perp <-ggplot(data = MeanTotG12_perp, aes(x =wash, y = value, color
   theme(legend.title = element_blank(),
         legend.position = "bottom",
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=0.5))
-#pGarment_G12_perp
-ggsave("Fibre Count per Garment_G12_perp.png", pGarment_G12_perp, width = 6, height = 7, units = "in", dpi=150, path = "Results")
 
 pG12combined_pending <- ggarrange(pGarment_G12_para+rremove("ylab")+rremove("xlab"),
                                  pGarment_G12_perp+rremove("ylab")+rremove("xlab"),
@@ -356,8 +352,7 @@ pG1_bandspara <-ggplot(data = G1_MeanTotpara, aes(x = as.factor(wash), y = as.nu
   theme_bw(base_family = "Arial", base_size = 12) +
   theme(legend.title = element_blank(),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
-  #annotate(geom = "text", x = 15, y = 38, label = "1 garment", color = "#469990")
-#pG1_bandspara
+pG1_bandspara
 
 G1_MeanTotperp[61,] <- c("W008", NA, NA)
 G1_MeanTotperp[62,] <- c("W010", NA, NA)
@@ -375,8 +370,7 @@ pG1_bandsperp <- ggplot(data = G1_MeanTotperp, aes(x = as.factor(wash), y = as.n
   theme_bw(base_family = "Arial", base_size = 12) +
   theme(legend.title = element_blank(),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
-  #annotate(geom = "text", x = 15, y = 38, label = "1 garment", color = "#469990")
-#pG1_bandsperp
+pG1_bandsperp
 
 #### GRAPH - Figure 4-11 ####
 pbandscombinedG1_pending <- ggarrange(pG1_bandspara+ rremove("ylab") + rremove("xlab"),
@@ -454,9 +448,7 @@ pG5_bandspara <-ggplot(data = G5_MeanTotpara, aes(x =wash, y = value, color=as.f
   theme_bw(base_family = "Arial", base_size = 12) +
   theme(legend.title = element_blank(),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=0.5))
-  #annotate(geom = "text", x = 47.5, y = 38, label = "5 garments", color = "#000000")
 pG5_bandspara
-#ggsave("Fibre Count_bandspara.png", pG5_bandspara, width = 6, height = 4, units = "in", dpi=200, path = "Results")
 
 pG5_bandsperp <-ggplot(data = G5_MeanTotperp, aes(x =wash, y = value, color=as.factor(`Contact area`), group=as.factor(`Contact area`))) +
   geom_line(aes(linetype=as.factor(`Contact area`), color=as.factor(`Contact area`)))+
@@ -468,9 +460,7 @@ pG5_bandsperp <-ggplot(data = G5_MeanTotperp, aes(x =wash, y = value, color=as.f
   theme_bw(base_family = "Arial", base_size = 12) +
   theme(legend.title = element_blank(),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=0.5))
-  #annotate(geom = "text", x = 47.5, y = 38, label = "5 garments", color = "#000000")
 pG5_bandsperp
-#ggsave("Fibre Count_bandserp.png", pG5_bandsperp, width = 8, height = 6, units = "in", dpi=150, path = "Results")
 
 #### GRAPH - Figure 4-11 ####
 pbandscombinedG5_pending <- ggarrange(pG5_bandspara+ rremove("ylab") + rremove("xlab"),
@@ -573,9 +563,7 @@ pG12_bandspara <-ggplot(data = G12_MeanTotpara, aes(x =as.factor(wash), y = as.n
   theme_bw(base_family = "Arial", base_size = 12) +
   theme(legend.title = element_blank(),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=0.5))
-  #annotate(geom = "text", x = 30.5, y = 38, label = "12 garments", color = "darkred")
 pG12_bandspara
-#ggsave("Fibre Count_bandspara.png", pG12_bandspara, width = 6, height = 4, units = "in", dpi=200, path = "Results")
 
 G12_MeanTotperp[156,] <- c("W016", NA, NA)
 G12_MeanTotperp[157,] <- c("W017", NA, NA)
@@ -602,9 +590,7 @@ pG12_bandsperp <-ggplot(data = G12_MeanTotperp, aes(x =as.factor(wash), y = as.n
   theme_bw(base_family = "Arial", base_size = 12) +
   theme(legend.title = element_blank(),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=0.5))
-  #annotate(geom = "text", x = 30.5, y = 38, label = "12 garments", color = "darkred")
 pG12_bandsperp
-#ggsave("Fibre Count_bandserp.png", pG12_bandsperp, width = 8, height = 6, units = "in", dpi=150, path = "Results")
 
 #### GRAPH ####
 pbandscombinedG12_pending <- ggarrange(pG12_bandspara+ rremove("ylab") + rremove("xlab"),
@@ -690,20 +676,6 @@ pairs.panels(MeanTotBG1_forCorrPlot[,1:2],
              ellipses = F # show correlation ellipses
 )
 
-# # G  VS G  - Garment 1 OFFSET
-# MeanTotG1_forCorrPlot$G1paraoffset <- MeanTotG1_forCorrPlot$G1para+10
-# MeanTotG1_forCorrPlot$G1perpoffset <- MeanTotG1_forCorrPlot$G1perp+10
-# cor_matrix <- cor(MeanTotG1_forCorrPlot)
-# pairs.panels(MeanTotG1_forCorrPlot[,1:4],
-#              stars = TRUE, # If TRUE, adds significance level with stars
-#              pch=20, # points shape
-#              lm=T, # Plot the linear fit rather than the LOESS smoothed fits
-#              method = "pearson", # correlation method
-#              hist.col = "#6BAED6",
-#              density = TRUE,  # show density plots
-#              ellipses = F # show correlation ellipses
-# )
-
 # Comparison between load
 mean_Transfer_G5 <- aggregate(value ~ wash, Transfer_G5, FUN = function(x) {round(mean(x), digits = 2)})
 specific_values <- c("W000", "W001","W002","W003","W004","W005","W006","W007","W009","W011","W013","W015")
@@ -733,9 +705,6 @@ pairs.panels(LoadComparison_forCorrPlot[,1:3],
 #----------------------------------------------------------------------------------#
 # substract background
 RT_Dataset$value <-  RT_Dataset$`After transfer` -  RT_Dataset$`Before transfer`
-
-# to export
-write.table(RT_Dataset, file = "Results/Transfer_control.csv", quote = F, sep = ",", row.names = F)
 
 #Assign a Coder to each wash
 RTB1_Dataset<- RT_Dataset %>% filter(grepl('G1_1', Sample))
@@ -776,60 +745,60 @@ names(TransferRTB6) <- c("group", "value", "Transfer")
 names(TransferRTB3) <- c("group", "value", "Transfer")
 names(TransferRTB8) <- c("group", "value", "Transfer")
 
-Tot <-rbind(TransferRTB1,TransferRTB3,TransferRTB6,TransferRTB8)
+TotRT <-rbind(TransferRTB1,TransferRTB3,TransferRTB6,TransferRTB8)
 
-Totpara <-rbind(TransferRTB1,TransferRTB3)
-Totperp <-rbind(TransferRTB6,TransferRTB8)
+TotRTpara <-rbind(TransferRTB1,TransferRTB3)
+TotRTperp <-rbind(TransferRTB6,TransferRTB8)
 
-df_means <- ddply(Tot, "group", summarise, mean_value = mean(value)) ; df_means
-df_SD <- ddply(Tot, "group", summarise, mean_value = sd(value)) ; df_SD
-df_meanspara <- ddply(Totpara, "group", summarise, mean_value = mean(value)) ; df_meanspara
-df_meansperp <- ddply(Totperp, "group", summarise, mean_value = mean(value)) ; df_meansperp
+df_means <- ddply(TotRT, "group", summarise, mean_value = mean(value)) ; df_means
+df_SD <- ddply(TotRT, "group", summarise, mean_value = sd(value)) ; df_SD
+df_meanspara <- ddply(TotRTpara, "group", summarise, mean_value = mean(value)) ; df_meanspara
+df_meansperp <- ddply(TotRTperp, "group", summarise, mean_value = mean(value)) ; df_meansperp
 
 #### GRAPH ####
 pRTB1 <-ggplot(data = TransferRTB1, aes(Transfer, value)) +
-  geom_line(size=0.3)+geom_point(size=0.1, colour= "darkred")+
+  geom_line(size=0.3)+geom_point(size=0.3, colour= "darkred")+
   labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
   theme_bw(base_family = "Arial", base_size = 10) +
   theme(legend.title = element_blank(),
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
-        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Parallel strip 1")+
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Parallel contact area 1")+
   geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
 mean <- round(mean(TransferRTB1$value),digits = 2)
 pRTB1 <-pRTB1 + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
 pRTB1
 
 pRTB3 <-ggplot(data = TransferRTB3, aes(Transfer, value)) +
-  geom_line(size=0.3)+geom_point(size=0.1, colour= "darkred")+
+  geom_line(size=0.3)+geom_point(size=0.3, colour= "darkred")+
   labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
   theme_bw(base_family = "Arial", base_size = 10) +
   theme(legend.title = element_blank(),
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
-        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Parallel strip 2")+
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Parallel contact area 2")+
   geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
 mean <- round(mean(TransferRTB3$value),digits = 2)
 pRTB3 <-pRTB3 + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
 pRTB3
 
 pRTB6 <-ggplot(data = TransferRTB6, aes(Transfer, value)) +
-  geom_line(size=0.3)+geom_point(size=0.1, colour= "darkred")+
+  geom_line(size=0.3)+geom_point(size=0.3, colour= "darkred")+
   labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
   theme_bw(base_family = "Arial", base_size = 10) +
   theme(legend.title = element_blank(),
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
-        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Perpendicular strip 1")+
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Perpendicular contact area 1")+
   geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
 mean <- round(mean(TransferRTB6$value),digits = 2)
 pRTB6 <-pRTB6 + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
 pRTB6
 
 pRTB8 <-ggplot(data = TransferRTB8, aes(Transfer, value)) +
-  geom_line(size=0.3)+geom_point(size=0.1, colour= "darkred")+
+  geom_line(size=0.3)+geom_point(size=0.3, colour= "darkred")+
   labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
   theme_bw(base_family = "Arial", base_size = 10) +
   theme(legend.title = element_blank(),
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
-        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Perpendicular strip 2")+
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Perpendicular contact area 2")+
   geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
 mean <- round(mean(TransferRTB8$value),digits = 2)
 pRTB8 <-pRTB8 + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
@@ -851,16 +820,267 @@ pCombinedRT <- annotate_figure(pCombinedRT_pending, left = textGrob("Number of f
 pCombinedRT
 
 #----------------------------------------------------------------------------------#
+####                  Repetitive Transfer - washing activities                    #####
+#----------------------------------------------------------------------------------#
+# substract background
+RTWash_Dataset$value <-  RTWash_Dataset$`After transfer` -  RTWash_Dataset$`Before transfer`
+
+# Assign a Coder to each wash
+RTWashB1_Dataset <- RTWash_Dataset %>% filter(grepl("\\_B1_B\\b", Sample))
+RTWashB2_Dataset <- RTWash_Dataset %>% filter(grepl("\\_B2_B\\b", Sample))
+RTWashB3_Dataset <- RTWash_Dataset %>% filter(grepl("\\_B3_B\\b", Sample))
+RTWashB4_Dataset <- RTWash_Dataset %>% filter(grepl("\\_B4_B\\b", Sample))
+
+# Select the 15 repetitive transfers performed after washing 1 garment one time
+RToneWashB1_Dataset <- subset(RTWashB1_Dataset, !grepl("_RTWash_W015|_RTWash_W000", Sample))
+RToneWashB2_Dataset <- subset(RTWashB2_Dataset, !grepl("_RTWash_W015|_RTWash_W000", Sample))
+RToneWashB3_Dataset <- subset(RTWashB3_Dataset, !grepl("_RTWash_W015|_RTWash_W000", Sample))
+RToneWashB4_Dataset <- subset(RTWashB4_Dataset, !grepl("_RTWash_W015|_RTWash_W000", Sample))
+
+# Select the 15 repetitive transfers performed after washing 1 garment 15 time
+RT15WashB1_Dataset <- subset(RTWashB1_Dataset, !grepl("_RTWash_W001|_RTWash_W000", Sample))
+RT15WashB2_Dataset <- subset(RTWashB2_Dataset, !grepl("_RTWash_W001|_RTWash_W000", Sample))
+RT15WashB3_Dataset <- subset(RTWashB3_Dataset, !grepl("_RTWash_W001|_RTWash_W000", Sample))
+RT15WashB4_Dataset <- subset(RTWashB4_Dataset, !grepl("_RTWash_W001|_RTWash_W000", Sample))
+
+# Add a coder
+RToneWashB1_Dataset$Coder <- "One wash"
+RToneWashB2_Dataset$Coder <- "One wash"
+RToneWashB3_Dataset$Coder <- "One wash"
+RToneWashB4_Dataset$Coder <- "One wash"
+
+RT15WashB1_Dataset$Coder <- "15 wash"
+RT15WashB2_Dataset$Coder <- "15 wash"
+RT15WashB3_Dataset$Coder <- "15 wash"
+RT15WashB4_Dataset$Coder <- "15 wash"
+
+# Create a new column in all dataframe
+numS <- data.frame(seq(1,15, by = 1))
+names(numS) <- c("Time")
+
+# add the column "Time" from "numS" to all dataframe
+RToneWashB1_Dataset <- cbind(RToneWashB1_Dataset,numS)
+RToneWashB2_Dataset <- cbind(RToneWashB2_Dataset,numS)
+RToneWashB3_Dataset <- cbind(RToneWashB3_Dataset,numS)
+RToneWashB4_Dataset <- cbind(RToneWashB4_Dataset,numS)
+
+RT15WashB1_Dataset <- cbind(RT15WashB1_Dataset,numS)
+RT15WashB2_Dataset <- cbind(RT15WashB2_Dataset,numS)
+RT15WashB3_Dataset <- cbind(RT15WashB3_Dataset,numS)
+RT15WashB4_Dataset <- cbind(RT15WashB4_Dataset,numS)
+
+# Select the useful variables
+TransferRToneWashB1 <- RToneWashB1_Dataset %>%
+  dplyr::select(Coder,`After transfer`,Time)
+TransferRToneWashB3 <- RToneWashB3_Dataset %>%
+  dplyr::select(Coder,`After transfer`, Time)
+TransferRToneWashB2 <- RToneWashB2_Dataset %>%
+  dplyr::select(Coder,`After transfer`, Time)
+TransferRToneWashB4 <- RToneWashB4_Dataset %>%
+  dplyr::select(Coder,`After transfer`, Time)
+
+TransferRT15WashB1 <- RT15WashB1_Dataset %>%
+  dplyr::select(Coder,`After transfer`,Time)
+TransferRT15WashB3 <- RT15WashB3_Dataset %>%
+  dplyr::select(Coder,`After transfer`, Time)
+TransferRT15WashB2 <- RT15WashB2_Dataset %>%
+  dplyr::select(Coder,`After transfer`, Time)
+TransferRT15WashB4 <- RT15WashB4_Dataset %>%
+  dplyr::select(Coder,`After transfer`, Time)
+
+# Rename the variables
+names(TransferRToneWashB1) <- c("group", "value", "Transfer")
+names(TransferRToneWashB3) <- c("group", "value", "Transfer")
+names(TransferRToneWashB2) <- c("group", "value", "Transfer")
+names(TransferRToneWashB4) <- c("group", "value", "Transfer")
+
+names(TransferRT15WashB1) <- c("group", "value", "Transfer")
+names(TransferRT15WashB3) <- c("group", "value", "Transfer")
+names(TransferRT15WashB2) <- c("group", "value", "Transfer")
+names(TransferRT15WashB4) <- c("group", "value", "Transfer")
+
+# Create dataframe with data from all bands
+TotRToneWash <-rbind(TransferRToneWashB1,TransferRToneWashB2,TransferRToneWashB3,TransferRToneWashB4)
+TotRT15Wash <-rbind(TransferRT15WashB1,TransferRT15WashB2,TransferRT15WashB3,TransferRT15WashB4)
+
+# Create dataframe with data from all bands, split by orientation
+TotRToneWashpara <-rbind(TransferRToneWashB1,TransferRToneWashB2)
+TotRToneWashperp <-rbind(TransferRToneWashB3,TransferRToneWashB4)
+
+TotRT15Washpara <-rbind(TransferRT15WashB1,TransferRT15WashB2)
+TotRT15Washperp <-rbind(TransferRT15WashB3,TransferRT15WashB4)
+
+# some stats
+df_means <- ddply(TotRToneWash, "group", summarise, mean_value = mean(value)) ; df_means
+df_SD <- ddply(TotRToneWash, "group", summarise, mean_value = sd(value)) ; df_SD
+df_meanspara <- ddply(TotRToneWashpara, "group", summarise, mean_value = mean(value)) ; df_meanspara
+df_meansperp <- ddply(TotRToneWashperp, "group", summarise, mean_value = mean(value)) ; df_meansperp
+
+df_means <- ddply(TotRT15Wash, "group", summarise, mean_value = mean(value)) ; df_means
+df_SD <- ddply(TotRT15Wash, "group", summarise, mean_value = sd(value)) ; df_SD
+df_meanspara <- ddply(TotRT15Washpara, "group", summarise, mean_value = mean(value)) ; df_meanspara
+df_meansperp <- ddply(TotRT15Washperp, "group", summarise, mean_value = mean(value)) ; df_meansperp
+
+#### GRAPH ####
+#### Band 1
+# plot data with both B1 from the three dataset
+TransferRTB1_15 <- head(TransferRTB1, 15)
+TransferRTB1_15$group<- gsub("RTB1","No wash",TransferRTB1_15$group)
+TransferRTWashB1_combined <-rbind(TransferRToneWashB1,TransferRT15WashB1,TransferRTB1_15)
+
+# Set different shapes for points based on the coder variable
+coder_shapes <- c(15,16,2)  # You can add more shape codes if needed
+# Set different colors for the linear regression lines based on the coder variable
+coder_colors <- c("black", "black","black")  # You can add more colors if needed
+# Set different line types for the linear regression lines based on the coder variable
+coder_linetypes <- c("solid", "dashed", "dotted")  # You can add more linetypes if needed
+
+#### GRAPH ####
+pRTWashB1_combined <- ggplot(data = TransferRTWashB1_combined, aes(x = Transfer, y = value, color = as.factor(group), shape = as.factor(group), linetype = as.factor(group))) +
+  geom_point(size = 1.5) +
+  ggtitle("Parallel contact area 1")+
+  labs(x = "Repetitive experiments", y = "Number of transferred fibres") +
+  guides(color = guide_legend(title = NULL, override.aes = list(shape = coder_shapes, linetype = coder_linetypes))) +
+  scale_y_continuous(breaks = seq(-1, 28, by = 5), limits = c(-1, 28), expand = c(0, 0)) +
+  scale_x_continuous(breaks = seq(1, 16, by = 2), limits = c(1, 16), expand = c(0.01, 0)) +
+  scale_color_manual(values = coder_colors, guide = FALSE) +
+  scale_shape_manual(values = coder_shapes, guide = FALSE) +  
+  scale_linetype_manual(values = coder_linetypes, guide = FALSE) +  # Set different line types for the regression lines
+  theme_bw(base_size = 12) +
+  theme(panel.grid.major = element_line(color = "grey90"),
+        panel.grid.minor = element_line(color = "white"),
+        legend.position = "bottom",
+        legend.background = element_rect(fill = "grey95", size = 1, linetype = "solid", colour = "grey80"),
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),
+        axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+        plot.title = element_text(size = 12)) +
+  geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)
+show(pRTWashB1_combined)
+
+#### Band 2
+# plot data with both B2 from the three dataset
+TransferRTB2_15 <- head(TransferRTB3, 15)
+TransferRTB2_15$group<- gsub("RTB3","No wash",TransferRTB2_15$group)
+TransferRTWashB2_combined <-rbind(TransferRToneWashB2,TransferRT15WashB2,TransferRTB2_15)
+
+#### GRAPH ####
+pRTWashB2_combined <- ggplot(data = TransferRTWashB2_combined, aes(x = Transfer, y = value, color = group, shape = group, linetype = group)) +
+  geom_point(size = 1.5) +
+  ggtitle("Parallel contact area 2")+
+  labs(x = "Repetitive experiments", y = "Number of transferred fibres") +
+  guides(color = guide_legend(title = NULL, override.aes = list(shape = coder_shapes, linetype = coder_linetypes))) +
+  scale_y_continuous(breaks = seq(-1, 28, by = 5), limits = c(-1, 28), expand = c(0, 0)) +
+  scale_x_continuous(breaks = seq(1, 16, by = 2), limits = c(1, 16), expand = c(0.01, 0)) +
+  scale_color_manual(values = coder_colors, guide = FALSE) +
+  scale_shape_manual(values = coder_shapes, guide = FALSE) +  
+  scale_linetype_manual(values = coder_linetypes, guide = FALSE) +  # Set different line types for the regression lines
+  theme_bw(base_size = 12) +
+  theme(panel.grid.major = element_line(color = "grey90"),
+        panel.grid.minor = element_line(color = "white"),
+        legend.position = "bottom",
+        legend.background = element_rect(fill = "grey95", size = 1, linetype = "solid", colour = "grey80"),
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),
+        axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+        plot.title = element_text(size = 12)) +
+    geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)
+show(pRTWashB2_combined)
+
+#### Band 3
+# plot data with both B3 from the three dataset
+TransferRTB3_15 <- head(TransferRTB6, 15)
+TransferRTB3_15$group<- gsub("RTB6","No wash",TransferRTB3_15$group)
+TransferRTWashB3_combined <-rbind(TransferRToneWashB3,TransferRT15WashB3,TransferRTB3_15)
+
+#### GRAPH ####
+pRTWashB3_combined <- ggplot(data = TransferRTWashB3_combined, aes(x = Transfer, y = value, color = group, shape = group, linetype = group)) +
+  geom_point(size = 1.5) +  
+  ggtitle("Perpendicular contact area 1")+
+  labs(x = "Repetitive experiments", y = "Number of transferred fibres") +
+  guides(color = guide_legend(title = NULL, override.aes = list(shape = coder_shapes, linetype = coder_linetypes))) +
+  scale_y_continuous(breaks = seq(-1, 28, by = 5), limits = c(-1, 28), expand = c(0, 0)) +
+  scale_x_continuous(breaks = seq(1, 16, by = 2), limits = c(1, 16), expand = c(0.01, 0)) +
+  scale_color_manual(values = coder_colors, guide = FALSE) +
+  scale_shape_manual(values = coder_shapes, guide = FALSE) +  
+  scale_linetype_manual(values = coder_linetypes, guide = FALSE) +  # Set different line types for the regression lines
+  theme_bw(base_size = 12) +
+  theme(panel.grid.major = element_line(color = "grey90"),
+        panel.grid.minor = element_line(color = "white"),
+        legend.position = "bottom",
+        legend.background = element_rect(fill = "grey95", size = 1, linetype = "solid", colour = "grey80"),
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),
+        axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+        plot.title = element_text(size = 12)) + 
+  geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)
+show(pRTWashB3_combined)
+#ggsave("Wastewater fibres_Total normalised.png", pRTWashB3_combined, width = 7, height = 5, units = "in", dpi=600, path = "Results")
+
+#### Band 4
+# plot data with both B4 from the three dataset
+TransferRTB4_15 <- head(TransferRTB8, 15)
+TransferRTB4_15$group<- gsub("RTB8","No wash",TransferRTB4_15$group)
+TransferRTWashB4_combined <-rbind(TransferRToneWashB4,TransferRT15WashB4,TransferRTB4_15)
+
+#### GRAPH ####
+pRTWashB4_combined <- ggplot(data = TransferRTWashB4_combined, aes(x = Transfer, y = value, color = as.factor(group), shape = as.factor(group), linetype = as.factor(group))) +
+  geom_point(size = 1.5) + 
+  ggtitle("Perpendicular contact area 2")+
+  labs(x = "Repetitive experiments", y = "Number of transferred fibres") +
+  guides(color = guide_legend(title = NULL, override.aes = list(shape = coder_shapes, linetype = coder_linetypes))) +
+  scale_y_continuous(breaks = seq(-1, 5, by = 20), limits = c(-1, 28), expand = c(0, 0)) +
+  scale_x_continuous(breaks = seq(1, 16, by = 2), limits = c(1, 16), expand = c(0.01, 0)) +
+  scale_color_manual(values = coder_colors, guide = FALSE) +
+  scale_shape_manual(values = coder_shapes, guide = FALSE) +  
+  scale_linetype_manual(values = coder_linetypes, guide = FALSE) +  # Set different line types for the regression lines
+  theme_bw(base_size = 12) +
+  theme(panel.grid.major = element_line(color = "grey90"),
+        panel.grid.minor = element_line(color = "white"),
+        legend.position = "bottom",
+        legend.background = element_rect(fill = "grey95", size = 1, linetype = "solid", colour = "grey80"),
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),
+        axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)), # top, right, bottom, left
+        plot.title = element_text(size = 12)) +  
+  geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)
+show(pRTWashB4_combined)
+
+#### Combined grap ####
+pCombinedRTWash_pending <- ggarrange(pRTWashB1_combined+ rremove("ylab") + rremove("xlab"),
+                                     pRTWashB2_combined+ rremove("ylab") + rremove("xlab"),
+                                     pRTWashB3_combined+ rremove("ylab") + rremove("xlab"),
+                                     pRTWashB4_combined+ rremove("ylab") + rremove("xlab"),
+                                     labels = NULL,
+                                     common.legend = TRUE, legend = "bottom",
+                                     align = "hv",
+                                     ncol = 2, nrow = 2,
+                                     font.label = list(size = 8, color = "black", family = NULL, position = "top"))
+
+pCombinedRTWash <- annotate_figure(pCombinedRTWash_pending, left = textGrob("Number of fibres", rot = 90, vjust = 0.5, hjust = 0.5, gp = gpar(cex =1)),
+                                   bottom = textGrob("\nRepetitive transfer number", vjust = 0.5, hjust = 0.5,gp = gpar(cex = 1)))
+pCombinedRTWash
+ggsave("Repetitive transfer with wash.png", pCombinedRTWash, width =7, height = 6, units = "in", dpi=300,path = "Results")
+
+#----------------------------------------------------------------------------------#
 ####                  Repetitive Transfer vs. Wash                    #####
 #----------------------------------------------------------------------------------#
 # combined graph
 n=51
 numS <- data.frame(setdiff(0:n, c()))
-meanTotRT<- aggregate(value ~  Transfer, Tot, function(x) {round(mean(x), digits=2)})
+meanTotRT<- aggregate(value ~  Transfer, TotRT, function(x) {round(mean(x), digits=2)})
 meanTotRT <- meanTotRT[1:52,]
 forplotTotRT <- data.frame(cbind(numS, value =meanTotRT$value))
 names(forplotTotRT) <- c("Transfer", "value")
 forplotTotRT$group <- "Repetitive transfer"
+
+n=16
+numS <- data.frame(setdiff(0:n, c()))
+meanTotRTWash<- aggregate(value ~  Transfer, TotRTWash, function(x) {round(mean(x), digits=2)})
+meanTotRTWash <- TotRTWash[1:17,]
+forplotTotRTWash <- data.frame(cbind(numS, value =meanTotRTWash$value))
+names(forplotTotRTWash) <- c("Transfer", "value")
+forplotTotRTWash$group <- "Wash + Repetitive transfer"
 
 n=15
 numS <- data.frame(setdiff(0:n, c(8,10,12,14)))
@@ -889,7 +1109,7 @@ forplotTotG12 <- data.frame(cbind(numS, value =meanAtrG12$value))
 names(forplotTotG12) <- c("Transfer", "value")
 forplotTotG12$group <- c("12 garments")
 
-Toplot <- rbind(forplotTotRT,forplotTotG1,forplotTotG5,forplotTotG12)
+Toplot <- rbind(forplotTotRT,forplotTotRTWash,forplotTotG1,forplotTotG5,forplotTotG12)
 Toplot$Transfer <- as.numeric(Toplot$Transfer)
 Toplot$value <- as.numeric(Toplot$value)
 Toplot$group <- as.factor(Toplot$group)
@@ -897,6 +1117,7 @@ Toplot$group <- as.factor(Toplot$group)
 # find the best fit
 #fit polynomial regression models up to degree 5
 fit1 <- lm(value~Transfer, data=forplotTotRT);fit1
+fitRTWash <- lm(value~Transfer, data=forplotTotRTWash);fitRTWash
 
 # 1 garment
 # fit1 <- lm(value~poly(Transfer,1,raw=TRUE), data=forplotTotG1)
@@ -971,7 +1192,8 @@ g <- summary(fit7)$adj.r.squared;g
 colors <- c("#469990",
             "darkred",
             "#000000",
-            "grey")
+            "grey",
+            "blue")
 
 plot(Toplot$Transfer, Toplot$value, col=colors[Toplot$group],
      pch=19,
@@ -982,11 +1204,12 @@ plot(Toplot$Transfer, Toplot$value, col=colors[Toplot$group],
      cex.lab = 1.2)
 axis(1, xaxp=c(0, 51, 51), las=1,cex.axis = 1.2) +theme_bw()
 # add legend
-legend(35, 24, legend=c("Control garment","1 garment", "5 garments", "12 garments"),
-       col=c("grey","#469990", "#000000","darkred"), lty=1:1, cex=1.2)
+legend(35, 24, legend=c("Control garment","1 garment", "5 garments", "12 garments","RT + wash"),
+       col=c("grey","#469990", "#000000","darkred", "blue"), lty=1:1, cex=1.2)
 
 #fit polynomial regression models up to degree 5
 fitRT <- lm(value~Transfer, data=forplotTotRT)
+fitRTWash <- lm(value~Transfer, data=forplotTotRTWash)
 fitG1<- lm(value ~ poly(Transfer, 5, raw = TRUE), data = forplotTotG1)
 fitG5 <- lm(value ~ poly(Transfer, 9, raw = TRUE), data = forplotTotG5)
 fitG12 <- lm(value ~ poly(Transfer, 7, raw = TRUE), data = forplotTotG12)
@@ -994,6 +1217,9 @@ fitG12 <- lm(value ~ poly(Transfer, 7, raw = TRUE), data = forplotTotG12)
 #define x-axis values
 x_axis <- seq(1, 51, length=51)
 lines(x_axis, predict(fitRT, data.frame(Transfer=x_axis)), col='grey')
+
+x_axis <- seq(1, 16, length=16)
+lines(x_axis, predict(fitRTWash, data.frame(Transfer=x_axis)), col='blue')
 
 x_range_G1 <- seq(1, 15, length = 51)  # Adjust the range as needed
 predictions_G1 <- predict(fitG1, data.frame(Transfer = x_range_G1))

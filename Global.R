@@ -49,6 +49,7 @@ library(corrplot)
 library(MASS)
 library(psych)
 
+
 #############################################################
 #####                      Function                     #####
 #############################################################
@@ -70,5 +71,5 @@ Results.dir <- "Results/"
 #####                       Codes                       #####
 #############################################################
 # This codes can be run subsequently as each create necessary outputs for the next codes.  
-source("Code/Data upload.R")
+# source("Code/Data upload.R")
 #source("Code/Analysis - Transfer.R")

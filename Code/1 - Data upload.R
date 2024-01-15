@@ -144,6 +144,36 @@ RT_Dataset[,2:3] = apply(RT_Dataset[,2:3], 2, function(x) as.numeric(as.characte
 rm(RT,RTB,RTAtr,RT_Dataset_pending)
 
 #-----------------------------------------------------------#
+####          Repetitive transfer without washing       #####
+#-----------------------------------------------------------#
+###_________________Data loading_________________###
+RTWash <- read.csv('./Fibre count Summary/RTWash_Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+
+# removing the ".TIF" in RTWash
+RTWash$Slice<- gsub(".TIF","",RTWash$Slice)
+
+text_to_remove <- "_negative"
+RTWash <- RTWash[!grepl(text_to_remove, RTWash$Slice), ]
+text_to_remove <- "_positive"
+RTWash <- RTWash[!grepl(text_to_remove, RTWash$Slice), ]
+
+# Creating the different dataframe before and after transfer
+RTWashB <- RTWash %>% filter(grepl("\\_B\\b", Slice))
+RTWashAtr <- RTWash %>% filter(grepl("\\_Atr\\b", Slice))
+
+# Create table
+RTWash_Dataset_pending <- data.frame(rbind(RTWashB$Slice, RTWashB$Count, RTWashAtr$Count))
+RTWash_Dataset<-as.data.frame(t(RTWash_Dataset_pending))
+
+names(RTWash_Dataset) <- c("Sample", "Before transfer", "After transfer")
+
+# change factor to numeric in the column 2 to 3
+RTWash_Dataset[,2:3] = apply(RTWash_Dataset[,2:3], 2, function(x) as.numeric(as.character(x)));
+
+# remove unused dataframe
+rm(RTWash,RTWashB,RTWashAtr,RTWash_Dataset_pending)
+
+#-----------------------------------------------------------#
 ####        Secondary transfer through wash             #####
 #-----------------------------------------------------------#
 ###_________________Data loading_________________###
