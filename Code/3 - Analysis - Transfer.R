@@ -27,9 +27,6 @@ Transfer_G12$garment<- gsub("G4C","G3",Transfer_G12$garment)
 Transfer_G1 <- Transfer_G1 %>% dplyr::select(wash, garment,`Before transfer`,`After transfer`,value,band)
 Transfer_G5 <- Transfer_G5 %>% dplyr::select(wash, garment,`Before transfer`,`After transfer`,value,band)
 Transfer_G12 <- Transfer_G12 %>% dplyr::select(wash, garment,`Before transfer`,`After transfer`,value,band)
-# write.table(Transfer_G1, file = "Results/Transfer_G1.csv", quote = F, sep = ",", row.names = F)
-# write.table(Transfer_G5, file = "Results/Transfer_G5.csv", quote = F, sep = ",", row.names = F)
-# write.table(Transfer_G12, file = "Results/Transfer_G12.csv", quote = F, sep = ",", row.names = F)
 
 # Select important column
 Transfer_G1 <-  Transfer_G1 %>% dplyr::select(wash, garment,value,band)
@@ -57,7 +54,7 @@ compute_and_write_stats <- function(df, filename) {
 
 # Loop through the dataframes and compute/write statistics
 for (i in 1:length(dataframes)) {
-  compute_and_write_stats(dataframes[[i]], paste("Results/Stats-Atr-G", c(1, 5, 12)[i], ".csv", sep = ""))
+  compute_and_write_stats(dataframes[[i]], paste("Results/Stats-Garment", c(1, 5, 12)[i], ".csv", sep = ""))
 }
 
 ##############################################################################################
@@ -711,10 +708,6 @@ RTB1_Dataset<- RT_Dataset %>% filter(grepl('G1_1', Sample))
 RTB3_Dataset<- RT_Dataset %>% filter(grepl('G1_3', Sample))
 RTB6_Dataset<- RT_Dataset %>% filter(grepl('G1_6', Sample))
 RTB8_Dataset<- RT_Dataset %>% filter(grepl('G1_8', Sample))
-write.table(RTB1_Dataset, file = "Results/RT_B1.csv", quote = F, sep = ",", row.names = F)
-write.table(RTB3_Dataset, file = "Results/RT_B2.csv", quote = F, sep = ",", row.names = F)
-write.table(RTB6_Dataset, file = "Results/RT_B3.csv", quote = F, sep = ",", row.names = F)
-write.table(RTB8_Dataset, file = "Results/RT_B4.csv", quote = F, sep = ",", row.names = F)
 
 RTB1_Dataset$Coder <- "RTB1"
 RTB3_Dataset$Coder <- "RTB3"
@@ -1074,14 +1067,6 @@ forplotTotRT <- data.frame(cbind(numS, value =meanTotRT$value))
 names(forplotTotRT) <- c("Transfer", "value")
 forplotTotRT$group <- "Repetitive transfer"
 
-n=16
-numS <- data.frame(setdiff(0:n, c()))
-meanTotRTWash<- aggregate(value ~  Transfer, TotRTWash, function(x) {round(mean(x), digits=2)})
-meanTotRTWash <- TotRTWash[1:17,]
-forplotTotRTWash <- data.frame(cbind(numS, value =meanTotRTWash$value))
-names(forplotTotRTWash) <- c("Transfer", "value")
-forplotTotRTWash$group <- "Wash + Repetitive transfer"
-
 n=15
 numS <- data.frame(setdiff(0:n, c(8,10,12,14)))
 Transfer_G1 <- Transfer_G1[!is.na(Transfer_G1$value), ]
@@ -1109,7 +1094,7 @@ forplotTotG12 <- data.frame(cbind(numS, value =meanAtrG12$value))
 names(forplotTotG12) <- c("Transfer", "value")
 forplotTotG12$group <- c("12 garments")
 
-Toplot <- rbind(forplotTotRT,forplotTotRTWash,forplotTotG1,forplotTotG5,forplotTotG12)
+Toplot <- rbind(forplotTotRT,forplotTotG1,forplotTotG5,forplotTotG12)
 Toplot$Transfer <- as.numeric(Toplot$Transfer)
 Toplot$value <- as.numeric(Toplot$value)
 Toplot$group <- as.factor(Toplot$group)
@@ -1117,7 +1102,6 @@ Toplot$group <- as.factor(Toplot$group)
 # find the best fit
 #fit polynomial regression models up to degree 5
 fit1 <- lm(value~Transfer, data=forplotTotRT);fit1
-fitRTWash <- lm(value~Transfer, data=forplotTotRTWash);fitRTWash
 
 # 1 garment
 # fit1 <- lm(value~poly(Transfer,1,raw=TRUE), data=forplotTotG1)
@@ -1192,8 +1176,7 @@ g <- summary(fit7)$adj.r.squared;g
 colors <- c("#469990",
             "darkred",
             "#000000",
-            "grey",
-            "blue")
+            "grey")
 
 plot(Toplot$Transfer, Toplot$value, col=colors[Toplot$group],
      pch=19,
@@ -1204,12 +1187,11 @@ plot(Toplot$Transfer, Toplot$value, col=colors[Toplot$group],
      cex.lab = 1.2)
 axis(1, xaxp=c(0, 51, 51), las=1,cex.axis = 1.2) +theme_bw()
 # add legend
-legend(35, 24, legend=c("Control garment","1 garment", "5 garments", "12 garments","RT + wash"),
-       col=c("grey","#469990", "#000000","darkred", "blue"), lty=1:1, cex=1.2)
+legend(32, 24, legend=c("Control garment","1 garment", "5 garments", "12 garments"),
+       col=c("grey","#469990", "#000000","darkred"), lty=1:1, cex=1.2)
 
 #fit polynomial regression models up to degree 5
 fitRT <- lm(value~Transfer, data=forplotTotRT)
-fitRTWash <- lm(value~Transfer, data=forplotTotRTWash)
 fitG1<- lm(value ~ poly(Transfer, 5, raw = TRUE), data = forplotTotG1)
 fitG5 <- lm(value ~ poly(Transfer, 9, raw = TRUE), data = forplotTotG5)
 fitG12 <- lm(value ~ poly(Transfer, 7, raw = TRUE), data = forplotTotG12)
@@ -1217,9 +1199,6 @@ fitG12 <- lm(value ~ poly(Transfer, 7, raw = TRUE), data = forplotTotG12)
 #define x-axis values
 x_axis <- seq(1, 51, length=51)
 lines(x_axis, predict(fitRT, data.frame(Transfer=x_axis)), col='grey')
-
-x_axis <- seq(1, 16, length=16)
-lines(x_axis, predict(fitRTWash, data.frame(Transfer=x_axis)), col='blue')
 
 x_range_G1 <- seq(1, 15, length = 51)  # Adjust the range as needed
 predictions_G1 <- predict(fitG1, data.frame(Transfer = x_range_G1))

@@ -69,7 +69,6 @@ pVolume_G1 <- ggplot(data = Wastewatervolume_G1, aes(x =Washnumber, y = Total)) 
 meanVolume_G1 <- round(mean(Wastewatervolume_G1$Total),digits = 2)
 pVolume_G1 <-pVolume_G1 + annotate("text",  x=Inf, y = Inf, label = meanVolume_G1, vjust=2, hjust=1.5)
 show(pVolume_G1)
-ggsave("Wastewater volume_G1.png", pVolume_G1, width = 7, height = 4, units = "in", dpi=600, path = "Results")
 
 # Data obtained with 5 garments
 lm(Total~Washnumber, data=Wastewatervolume_G5)
@@ -90,7 +89,6 @@ pVolume_G5 <- ggplot(data = Wastewatervolume_G5, aes(x =Washnumber, y = Total)) 
 meanVolume_G5 <- round(mean(Wastewatervolume_G5$Total),digits = 2)
 pVolume_G5 <-pVolume_G5 + annotate("text",  x=Inf, y = Inf, label = meanVolume_G5, vjust=2, hjust=1.5)
 show(pVolume_G5)
-ggsave("Wastewater volume_G5.png", pVolume_G5, width = 7, height = 4, units = "in", dpi=600, path = "Results")
 
 # Data obtained with 12 garments
 lm(Total~Washnumber, data=Wastewatervolume_G12)
@@ -111,7 +109,6 @@ pVolume_G12 <- ggplot(data = Wastewatervolume_G12, aes(x =Washnumber, y = Total)
 meanVolume_G12 <- round(mean(Wastewatervolume_G12$Total),digits = 2)
 pVolume_G12 <-pVolume_G12 + annotate("text",  x=Inf, y = Inf, label = meanVolume_G12, vjust=2, hjust=1.5)
 show(pVolume_G12)
-ggsave("Wastewater volume_G12.png", pVolume_G12, width = 7, height = 4, units = "in", dpi=600, path = "Results")
 
 #### Combined results ####
 pVolume_combined_pending <- ggarrange(pVolume_G1+ rremove("ylab") + rremove("xlab"),
@@ -124,7 +121,6 @@ pVolume_combined_pending <- ggarrange(pVolume_G1+ rremove("ylab") + rremove("xla
 pVolume_combined <- annotate_figure(pVolume_combined_pending, left = textGrob("Volume of wastewater (L)\n", rot = 90, vjust = 0.5, hjust = 0.5, gp = gpar(cex =1)),
                                     bottom = textGrob("Wash number", vjust = 0.5, hjust = 0.5,gp = gpar(cex = 1)));pVolume_combined
 pVolume_combined
-
 ggsave("pVolume_combined.png", pVolume_combined, width = 8, height = 8, units = "in", dpi=300, path = "Results")
 
 #----------------------------------------------------------------------------------#
@@ -243,7 +239,6 @@ pfibres_G1 <- ggplot(data = Wastewaterfibres_G1p4, aes(x =Experiment, y = Diff.F
   annotate(geom="text", x=7, y=25, label="y = - 3.771 x + 68.608 ", # values obtained with lm(Diff.FN~Experiment, data=Wastewaterfibres_G1p4) above
                color="black")
 pfibres_G1
-ggsave("Wastewater fibres_G1.png", pfibres_G1, width = 7, height = 4, units = "in", dpi=600, path = "Results")
 
 # obtained with 5 garment
 lm(Diff.FN~Experiment, data=Wastewaterfibres_G5p4)
@@ -263,7 +258,6 @@ pfibres_G5 <- ggplot(data = Wastewaterfibres_G5p4, aes(x =Experiment, y = Diff.F
   annotate(geom="text", x=7, y=25, label="y = - 0.155 x + 114.5321 ", # values obtained with lm(Diff.FN~Experiment, data=Wastewaterfibres_G5p4) above
            color="black")
 show(pfibres_G5)
-ggsave("Wastewater fibres_G5.png", pfibres_G5, width = 7, height = 4, units = "in", dpi=600, path = "Results")
 
 meanfibre_G5 <- round(mean(Wastewaterfibres_G5p4$Diff.FN),digits = 2);meanfibre_G5
 meanfibre_G5_norm <-meanfibre_G5
@@ -289,7 +283,6 @@ pfibres_G12 <- ggplot(data = Wastewaterfibres_G12p4, aes(x =Experiment, y = Diff
 meanfibre_G12 <- round(mean(Wastewaterfibres_G12p4$Diff.FN),digits = 2)
 pfibres_G12 <-pfibres_G12 + annotate("text",  x=Inf, y = Inf, label = meanfibre_G12, vjust=2, hjust=1.5)
 show(pfibres_G12)
-ggsave("Wastewater fibres_G12.png", pfibres_G12, width = 7, height = 4, units = "in", dpi=600, path = "Results")
 
 #### GRAPH - Pearson correlation ####
 # Null hypothesis – There is no significant correlation between the volume and the wash number
@@ -309,8 +302,7 @@ PearsonFW_G1 <- ggscatter(PersonG1, x = "Volume", y = "Diff.FN",
                           xlim = c(21, 23.5),
                           cor.coef = TRUE,
                           cor.coeff.args = list(method = "pearson", label.x = 23.25,label.y = 30, label.sep = "\n"))
-PearsonFW_G1                 
-ggsave("Pearson fibre VS wash number_G1.png", PearsonFW_G1, width = 7, height = 4, units = "in", dpi=600, path = "Results")
+PearsonFW_G1     
 
 # obtained with 5 garments
 PearsonFW_G5 <- ggscatter(PersonG5, x = "Volume", y = "Diff.FN",
@@ -320,8 +312,7 @@ PearsonFW_G5 <- ggscatter(PersonG5, x = "Volume", y = "Diff.FN",
                           xlim = c(19.5, 27.5),
                           cor.coef = TRUE,
                           cor.coeff.args = list(method = "pearson", label.x = 26.25,label.y = 65, label.sep = "\n"))
-PearsonFW_G5                 
-ggsave("Pearson fibre VS wash number_G5.png", PearsonFW_G5, width = 7, height = 4, units = "in", dpi=600, path = "Results")
+PearsonFW_G5       
 
 # obtained with 12 garments
 PearsonFW_G12 <- ggscatter(PersonG12, x = "Volume", y = "Diff.FN",
@@ -332,7 +323,6 @@ PearsonFW_G12 <- ggscatter(PersonG12, x = "Volume", y = "Diff.FN",
                            cor.coef = TRUE,
                            cor.coeff.args = list(method = "pearson", label.x = 25.25,label.y = 55, label.sep = "\n"))
 PearsonFW_G12                 
-ggsave("Pearson fibre VS wash number_G12.png", PearsonFW_G12, width = 7, height = 4, units = "in", dpi=600, path = "Results")
 
 # Combined results 
 pPearson_combined_pending <- ggarrange(PearsonFW_G1+ rremove("ylab") + rremove("xlab"),
