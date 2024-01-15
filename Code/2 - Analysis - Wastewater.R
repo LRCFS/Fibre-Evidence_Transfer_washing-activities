@@ -5,7 +5,6 @@
 # the volume of water every wash
 # the fibres released in the wastewater
 # the fibres released in the wastewater normalised to the weight of the garment
-# the fibres released in the wastewater VS number of transferred fibres (this part of the code needs to be run after Analysis - Transfer.R)
 
 #----------------------------------------------------------------------------------#
 ####                            Wastewater volume                              #####
@@ -44,7 +43,6 @@ Wastewatervolume_G12$U.V <- (sqrt((Wastewatervolume_G12$Ucalibration)^2 +(Ureadb
 Wastewatervolume_G1$U.V2 <-Wastewatervolume_G1$U.V*2
 Wastewatervolume_G5$U.V2 <-Wastewatervolume_G5$U.V*2
 Wastewatervolume_G12$U.V2 <-Wastewatervolume_G12$U.V*2
-#write.table(Wastewatervolume_G1, file = "Data_filtration_Volume_analysed_red.csv", quote = F, sep = ",", row.names = F)
 
 ###### GRAPH ######
 # exclude wash W034 from  Wastewatervolume_G5
@@ -212,10 +210,6 @@ Wastewaterfibres_G5p4$U.C3 <- round(Wastewaterfibres_G5p4$U.C*3, digit=2)
 Wastewaterfibres_G12p4$Wf <- round(Wastewaterfibres_G12p4$Diff.FN-Wastewaterfibres_G12p4$Diff.FA, digit=2)
 Wastewaterfibres_G12p4$U.C <- sqrt((Wastewaterfibres_G12p4$U.F.FA*Wastewaterfibres_G12p4$U.F.FA)+ (Wastewaterfibres_G12p4$U.F.FN*Wastewaterfibres_G12p4$U.F.FN))
 Wastewaterfibres_G12p4$U.C3 <- round(Wastewaterfibres_G12p4$U.C*3, digit=2)
-
-write.table(Wastewaterfibres_G1p4, file = "Data_filtration G1_fibre weight_export.csv", quote = F, sep = ",", row.names = F)
-write.table(Wastewaterfibres_G5p4, file = "Data_filtration G5_fibre weight_export.csv", quote = F, sep = ",", row.names = F)
-write.table(Wastewaterfibres_G12p4, file = "Data_filtration G12_fibre weigh_export.csv", quote = F, sep = ",", row.names = F)
 
 ###### GRAPH ######
 # exclude wash W034 from Wastewaterfibres_G5p4
@@ -401,76 +395,3 @@ SDVolume_Total <- aggregate(Total ~  Coder, TotalWastewatervolume, function(x) {
 medianVolume_Total <- aggregate(Total ~  Coder, TotalWastewatervolume, median)
 Table_Volume_Total <- cbind(meanVolume_Total, SDVolume_Total$Total, medianVolume_Total$Total)
 
-#-------------------------------------------------------------------------------------#
-####       Fibres released in the wastewater VS number of transferred fibres      #####
-#-------------------------------------------------------------------------------------#
-#### This part of the code has to be run after the code "Analysis - Transfer" has been ran ####
-# create a new variable for the fibres released in the wastewater, normalised to the volume of water
-Garment1_mgvol <- data.frame(cbind(Wastewatervolume_G1$Washnumber, Wastewatervolume_G1$Total, Wastewaterfibres_G1p4$Diff.FN))
-Garment1_mgvol$mgvol <- round(Garment1_mgvol$X2/Garment1_mgvol$X1, digits =2)
-
-Garment5_mgvol <- data.frame(cbind(Wastewatervolume_G5$Washnumber,Wastewatervolume_G5$Total, Wastewaterfibres_G5p4$Diff.FN))
-Garment5_mgvol$mgvol <- round(Garment5_mgvol$X2/Garment5_mgvol$X1, digits =2)
-
-Garment12_mgvol <- data.frame(cbind(Wastewatervolume_G12$Washnumber,Wastewatervolume_G12$Total, Wastewaterfibres_G12p4$Diff.FN))
-Garment12_mgvol$mgvol <- round(Garment12_mgvol$X2/Garment12_mgvol$X1, digits =2)
-
-#### add in each dataframe the average number of transferred fibres (all CA and garment combined)
-specific_values <- c("1","2","3","4","5","6","7","9","11","13","15")
-Garment1_mgvol <- subset(Garment1_mgvol, X1 %in% specific_values)
-text_to_remove <- "W000"
-meanAtrG1 <- meanAtrG1[!grepl(text_to_remove, meanAtrG1$wash), ]
-Garment1_mgvol <- data.frame(cbind(Garment1_mgvol, fibre=meanAtrG1$value))
-
-text_to_remove2 <-"W034"
-meanAtrG5 <- meanAtrG5[!grepl(text_to_remove, meanAtrG5$wash), ]
-meanAtrG5 <- meanAtrG5[!grepl(text_to_remove2, meanAtrG5$wash), ]
-Garment5_mgvol <- data.frame(cbind(Garment5_mgvol, fibre=meanAtrG5$value))
-
-meanAtrG12 <- meanAtrG12[!grepl(text_to_remove, meanAtrG12$wash), ]
-text_to_remove <- c(16,17,24,26,28,30,32,34,36,38,40)
-Garment12_mgvol <- Garment12_mgvol[!as.character(Garment12_mgvol$X1) %in% as.character(text_to_remove), ]
-Garment12_mgvol <- data.frame(cbind(Garment12_mgvol, fibre=meanAtrG12$value))
-
-#### GRAPH ####
-PearsonpmgvolG1 <- ggscatter(Garment1_mgvol, x = "fibre", y = "mgvol",
-                           add = "reg.line",
-                           xlab = "Number of fibres transferred", ylab = "fibre released per volume of wastewater(mg/L)",
-                           ylim = c(0,30),
-                           xlim = c(0,10),
-                           cor.coef = TRUE,
-                           cor.coeff.args = list(method = "pearson", label.x = 1,label.y = 28, label.sep = "\n"))
-PearsonpmgvolG1                 
-#ggsave("Pearson fibre VS wash number_G12.png", PearsonFW_G12, width = 7, height = 4, units = "in", dpi=600, path = "Results")
-
-PearsonpmgvolG5 <- ggscatter(Garment5_mgvol, x = "fibre", y = "mgvol",
-                             add = "reg.line",
-                             xlab = "Number of fibres transferred", ylab = "Fibre released per volume of wastewater(mg/L)",
-                             ylim = c(0,12),
-                             xlim = c(0,30),
-                             cor.coef = TRUE,
-                             cor.coeff.args = list(method = "pearson", label.x = 1,label.y = 11, label.sep = "\n"))
-PearsonpmgvolG5                 
-#ggsave("Pearson fibre VS wash number_G12.png", PearsonFW_G12, width = 7, height = 4, units = "in", dpi=600, path = "Results")
-
-PearsonpmgvolG12 <- ggscatter(Garment12_mgvol, x = "fibre", y = "mgvol",
-                             add = "reg.line",
-                             xlab = "Number of fibres transferred", ylab = "fibre released per volume of wastewater(mg/L)",
-                             ylim = c(0,12),
-                             xlim = c(0,20),
-                             cor.coef = TRUE,
-                             cor.coeff.args = list(method = "pearson", label.x = 1,label.y = 11, label.sep = "\n"))
-PearsonpmgvolG12  
-
-#### Combined results 
-pPearson_combined_pending <- ggarrange(PearsonpmgvolG1+ rremove("ylab") + rremove("xlab"),
-                                       PearsonpmgvolG5+ rremove("ylab") + rremove("xlab"),
-                                       PearsonpmgvolG12+ rremove("ylab") + rremove("xlab"),
-                                       nrow = 3, labels = c("A", "B", "C"),
-                                       vjust = 0.9, hjust = 0.9)+
-  theme(plot.margin = margin(0.5,0,0,0, "cm")) # in order (Top,left,bottom,right)
-
-pPearson_combined <- annotate_figure(pPearson_combined_pending, left = textGrob("Mass of fibre released per volume of wastewater(mg/L)\n", rot = 90, vjust = 0.5, hjust = 0.5, gp = gpar(cex =1)),
-                                     bottom = textGrob("\nAverage Number of fibres transferred", vjust = 0.5, hjust = 0.5,gp = gpar(cex = 1)));pVolume_combined
-pPearson_combined
-ggsave("pPearson_combined_waterVStransfer.png", pPearson_combined, width = 6, height = 9, units = "in", dpi=300, path = "Results")

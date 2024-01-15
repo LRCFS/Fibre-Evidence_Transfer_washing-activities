@@ -65,5 +65,5 @@ STplot <- ggplot(SumFibreTotal, aes(x= Garment, y=value, group=1)) +
             vjust = -1.05, hjust = -0.25,
             show.legend = FALSE)
 STplot
-ggsave("Secondary transfer_Fibre Count total.png", STplot, width = 7, height = 5, units = "in", dpi=150, path = "Results/Persistence")
+ggsave("Secondary transfer_Fibre Count total.png", STplot, width = 7, height = 5, units = "in", dpi=150, path = "Results/")
 

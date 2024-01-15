@@ -72,4 +72,7 @@ Results.dir <- "Results/"
 #############################################################
 # This codes can be run subsequently as each create necessary outputs for the next codes.  
 source("Code/1 - Data upload.R")
-# source("Code/Analysis - Transfer.R")
+source("Code/2 - Analysis - Wastewater.R")
+source("Code/3 - Analysis - Transfer.R")
+source("Code/4 - Analysis - Secondary transfer.R")
+

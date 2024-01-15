@@ -4,6 +4,9 @@
 # This R script is to generate the figures related to:
 # the transfer of fibres following washing
 # Repetitive transfer (control garment)
+# Repetitive Transfer - washing activities
+# Repetitive Transfer vs. Wash 
+# the fibres released in the wastewater VS number of transferred fibres (this part of the code needs to be run after Analysis - Transfer.R)
 
 #----------------------------------------------------------------------------------#
 ####                   Transfer of fibres following washing                    #####
@@ -316,7 +319,6 @@ G1_meanB10$`Contact area` <- 10
 G1_MeanTotContactArea <- rbind(G1_meanB1,G1_meanB2,G1_meanB3,G1_meanB4,G1_meanB5,G1_meanB6,G1_meanB7,G1_meanB8,G1_meanB9,G1_meanB10)
 
 G1_MeanTotContactArea_export <- cbind(G1_meanB1$wash,G1_meanB1$value,G1_meanB2$value,G1_meanB3$value,G1_meanB4$value,G1_meanB5$value,G1_meanB6$value,G1_meanB7$value,G1_meanB8$value,G1_meanB9$value,G1_meanB10$value)
-write.table(G1_MeanTotContactArea_export, file = "G1_Fibre per strip_export.csv", quote = F, sep = ",", row.names = F)
 
 # parallel contact area
 G1_MeanTotpara <- rbind(G1_meanB1,G1_meanB2,G1_meanB3,G1_meanB4,G1_meanB5)
@@ -417,7 +419,6 @@ G5_meanB9$`Contact area` <- 9
 G5_meanB10 <- aggregate(value ~  wash, G5_DatasetB10, FUN = function(x) {round(mean(x), digits = 2)})
 G5_meanB10$`Contact area` <- 10
 G5_MeanTotContactArea <- rbind(G5_meanB1,G5_meanB2,G5_meanB3,G5_meanB4,G5_meanB5,G5_meanB6,G5_meanB7,G5_meanB8,G5_meanB9,G5_meanB10)
-write.table(G5_MeanTotContactArea, file = "G5_Fibre per strip_export.csv", quote = F, sep = ",", row.names = F)
 
 # parallel contact area
 G5_MeanTotpara <- rbind(G5_meanB1,G5_meanB2,G5_meanB3,G5_meanB4,G5_meanB5)
@@ -520,7 +521,6 @@ G12_meanB10 <- aggregate(value ~  wash, G12_DatasetB10, FUN = function(x) {round
 G12_meanB10$`Contact area` <- 10
 G12_MeanTotContactArea <- rbind(G12_meanB1,G12_meanB2,G12_meanB3,G12_meanB4,G12_meanB5,G12_meanB6,G12_meanB7,G12_meanB8,G12_meanB9,G12_meanB10)
 G12_MeanTotContactArea_export <- cbind(G12_meanB1$wash,G12_meanB1$value,G12_meanB2$value,G12_meanB3$value,G12_meanB4$value,G12_meanB5$value,G12_meanB6$value,G12_meanB7$value,G12_meanB8$value,G12_meanB9$value,G12_meanB10$value)
-write.table(G12_MeanTotContactArea_export, file = "G12_Fibre per strip_export.csv", quote = F, sep = ",", row.names = F)
 
 # parallel contact area
 G12_MeanTotpara <- rbind(G12_meanB1,G12_meanB2,G12_meanB3,G12_meanB4,G12_meanB5)
@@ -636,7 +636,6 @@ MeanTotBG1_forCorrPlot <-data.frame(cbind(G1para=as.numeric(Garment1_Transfer_G1
 # B vs B - Garment 5
 cor_matrix <- cor(MeanTotBG5_forCorrPlot,use = "complete.obs")
 head(cor_matrix)
-write.matrix(cor_matrix,file="BvsB_G5.csv", sep = ",")
 pairs.panels(MeanTotBG5_forCorrPlot[,1:10],
              stars = TRUE, # If TRUE, adds significance level with stars
              pch=20, # points shape
@@ -650,7 +649,6 @@ pairs.panels(MeanTotBG5_forCorrPlot[,1:10],
 # B vs B - Garment 12
 cor_matrix <- cor(MeanTotBG12_forCorrPlot,use = "complete.obs")
 head(cor_matrix)
-write.matrix(cor_matrix,file="BvsB_G12.csv", sep = ",")
 pairs.panels(MeanTotBG12_forCorrPlot[,1:6],
              stars = TRUE, # If TRUE, adds significance level with stars
              pch=20, # points shape
@@ -813,7 +811,7 @@ pCombinedRT <- annotate_figure(pCombinedRT_pending, left = textGrob("Number of f
 pCombinedRT
 
 #----------------------------------------------------------------------------------#
-####                  Repetitive Transfer - washing activities                    #####
+####                 Repetitive Transfer - washing activities                  #####
 #----------------------------------------------------------------------------------#
 # substract background
 RTWash_Dataset$value <-  RTWash_Dataset$`After transfer` -  RTWash_Dataset$`Before transfer`
@@ -1056,7 +1054,7 @@ pCombinedRTWash
 ggsave("Repetitive transfer with wash.png", pCombinedRTWash, width =7, height = 6, units = "in", dpi=300,path = "Results")
 
 #----------------------------------------------------------------------------------#
-####                  Repetitive Transfer vs. Wash                    #####
+####                        Repetitive Transfer vs. Wash                       #####
 #----------------------------------------------------------------------------------#
 # combined graph
 n=51
@@ -1210,3 +1208,75 @@ x_range <- seq(1, 41, length = 51)  # Adjust the range as needed
 predictions <- predict(fitG12, data.frame(Transfer = x_range))
 lines(x_range, predictions, col = 'darkred')
 
+#-------------------------------------------------------------------------------------#
+####       Fibres released in the wastewater VS number of transferred fibres      #####
+#-------------------------------------------------------------------------------------#
+# create a new variable for the fibres released in the wastewater, normalised to the volume of water
+Garment1_mgvol <- data.frame(cbind(Wastewatervolume_G1$Washnumber, Wastewatervolume_G1$Total, Wastewaterfibres_G1p4$Diff.FN))
+Garment1_mgvol$mgvol <- round(Garment1_mgvol$X2/Garment1_mgvol$X1, digits =2)
+
+Garment5_mgvol <- data.frame(cbind(Wastewatervolume_G5$Washnumber,Wastewatervolume_G5$Total, Wastewaterfibres_G5p4$Diff.FN))
+Garment5_mgvol$mgvol <- round(Garment5_mgvol$X2/Garment5_mgvol$X1, digits =2)
+
+Garment12_mgvol <- data.frame(cbind(Wastewatervolume_G12$Washnumber,Wastewatervolume_G12$Total, Wastewaterfibres_G12p4$Diff.FN))
+Garment12_mgvol$mgvol <- round(Garment12_mgvol$X2/Garment12_mgvol$X1, digits =2)
+
+#### add in each dataframe the average number of transferred fibres (all CA and garment combined)
+specific_values <- c("1","2","3","4","5","6","7","9","11","13","15")
+Garment1_mgvol <- subset(Garment1_mgvol, X1 %in% specific_values)
+text_to_remove <- "W000"
+meanAtrG1 <- meanAtrG1[!grepl(text_to_remove, meanAtrG1$wash), ]
+Garment1_mgvol <- data.frame(cbind(Garment1_mgvol, fibre=meanAtrG1$value))
+
+text_to_remove2 <-"W034"
+meanAtrG5 <- meanAtrG5[!grepl(text_to_remove, meanAtrG5$wash), ]
+meanAtrG5 <- meanAtrG5[!grepl(text_to_remove2, meanAtrG5$wash), ]
+Garment5_mgvol <- data.frame(cbind(Garment5_mgvol, fibre=meanAtrG5$value))
+
+meanAtrG12 <- meanAtrG12[!grepl(text_to_remove, meanAtrG12$wash), ]
+text_to_remove <- c(16,17,24,26,28,30,32,34,36,38,40)
+Garment12_mgvol <- Garment12_mgvol[!as.character(Garment12_mgvol$X1) %in% as.character(text_to_remove), ]
+Garment12_mgvol <- data.frame(cbind(Garment12_mgvol, fibre=meanAtrG12$value))
+
+#### GRAPH ####
+PearsonpmgvolG1 <- ggscatter(Garment1_mgvol, x = "fibre", y = "mgvol",
+                             add = "reg.line",
+                             xlab = "Number of fibres transferred", ylab = "fibre released per volume of wastewater(mg/L)",
+                             ylim = c(0,30),
+                             xlim = c(0,10),
+                             cor.coef = TRUE,
+                             cor.coeff.args = list(method = "pearson", label.x = 1,label.y = 28, label.sep = "\n"))
+PearsonpmgvolG1                 
+#ggsave("Pearson fibre VS wash number_G12.png", PearsonFW_G12, width = 7, height = 4, units = "in", dpi=600, path = "Results")
+
+PearsonpmgvolG5 <- ggscatter(Garment5_mgvol, x = "fibre", y = "mgvol",
+                             add = "reg.line",
+                             xlab = "Number of fibres transferred", ylab = "Fibre released per volume of wastewater(mg/L)",
+                             ylim = c(0,12),
+                             xlim = c(0,30),
+                             cor.coef = TRUE,
+                             cor.coeff.args = list(method = "pearson", label.x = 1,label.y = 11, label.sep = "\n"))
+PearsonpmgvolG5                 
+#ggsave("Pearson fibre VS wash number_G12.png", PearsonFW_G12, width = 7, height = 4, units = "in", dpi=600, path = "Results")
+
+PearsonpmgvolG12 <- ggscatter(Garment12_mgvol, x = "fibre", y = "mgvol",
+                              add = "reg.line",
+                              xlab = "Number of fibres transferred", ylab = "fibre released per volume of wastewater(mg/L)",
+                              ylim = c(0,12),
+                              xlim = c(0,20),
+                              cor.coef = TRUE,
+                              cor.coeff.args = list(method = "pearson", label.x = 1,label.y = 11, label.sep = "\n"))
+PearsonpmgvolG12  
+
+#### Combined results 
+pPearson_combined_pending <- ggarrange(PearsonpmgvolG1+ rremove("ylab") + rremove("xlab"),
+                                       PearsonpmgvolG5+ rremove("ylab") + rremove("xlab"),
+                                       PearsonpmgvolG12+ rremove("ylab") + rremove("xlab"),
+                                       nrow = 3, labels = c("A", "B", "C"),
+                                       vjust = 0.9, hjust = 0.9)+
+  theme(plot.margin = margin(0.5,0,0,0, "cm")) # in order (Top,left,bottom,right)
+
+pPearson_combined <- annotate_figure(pPearson_combined_pending, left = textGrob("Mass of fibre released per volume of wastewater(mg/L)\n", rot = 90, vjust = 0.5, hjust = 0.5, gp = gpar(cex =1)),
+                                     bottom = textGrob("\nAverage Number of fibres transferred", vjust = 0.5, hjust = 0.5,gp = gpar(cex = 1)));pVolume_combined
+pPearson_combined
+ggsave("pPearson_combined_waterVStransfer.png", pPearson_combined, width = 6, height = 9, units = "in", dpi=300, path = "Results")
