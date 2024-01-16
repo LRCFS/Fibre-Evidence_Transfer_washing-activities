@@ -835,15 +835,15 @@ RT15WashB3_Dataset <- subset(RTWashB3_Dataset, !grepl("_RTWash_W001|_RTWash_W000
 RT15WashB4_Dataset <- subset(RTWashB4_Dataset, !grepl("_RTWash_W001|_RTWash_W000", Sample))
 
 # Add a coder
-RToneWashB1_Dataset$Coder <- "One wash"
-RToneWashB2_Dataset$Coder <- "One wash"
-RToneWashB3_Dataset$Coder <- "One wash"
-RToneWashB4_Dataset$Coder <- "One wash"
+RToneWashB1_Dataset$Coder <- "After one wash"
+RToneWashB2_Dataset$Coder <- "After one wash"
+RToneWashB3_Dataset$Coder <- "After one wash"
+RToneWashB4_Dataset$Coder <- "After one wash"
 
-RT15WashB1_Dataset$Coder <- "15 wash"
-RT15WashB2_Dataset$Coder <- "15 wash"
-RT15WashB3_Dataset$Coder <- "15 wash"
-RT15WashB4_Dataset$Coder <- "15 wash"
+RT15WashB1_Dataset$Coder <- "After 15 washes"
+RT15WashB2_Dataset$Coder <- "After 15 washes"
+RT15WashB3_Dataset$Coder <- "After 15 washes"
+RT15WashB4_Dataset$Coder <- "After 15 washes"
 
 # Create a new column in all dataframe
 numS <- data.frame(seq(1,15, by = 1))
@@ -912,13 +912,32 @@ df_SD <- ddply(TotRT15Wash, "group", summarise, mean_value = sd(value)) ; df_SD
 df_meanspara <- ddply(TotRT15Washpara, "group", summarise, mean_value = mean(value)) ; df_meanspara
 df_meansperp <- ddply(TotRT15Washperp, "group", summarise, mean_value = mean(value)) ; df_meansperp
 
-#### GRAPH ####
-#### Band 1
+#### Parallel contact areas ####
 # plot data with both B1 from the three dataset
 TransferRTB1_15 <- head(TransferRTB1, 15)
-TransferRTB1_15$group<- gsub("RTB1","No wash",TransferRTB1_15$group)
-TransferRTWashB1_combined <-rbind(TransferRToneWashB1,TransferRT15WashB1,TransferRTB1_15)
+TransferRTB1_15$group<- gsub("RTB1","Unwashed",TransferRTB1_15$group)
+TransferRTWashB1_combined <-rbind(TransferRTB1_15,TransferRToneWashB1,TransferRT15WashB1)
+meanTransferRTWashB1_combined<- aggregate(value ~  group, TransferRTWashB1_combined, function(x) {round(mean(x), digits=2)})
 
+# plot data with both B2 from the three dataset
+TransferRTB2_15 <- head(TransferRTB3, 15)
+TransferRTB2_15$group<- gsub("RTB3","Unwashed",TransferRTB2_15$group)
+TransferRTWashB2_combined <-rbind(TransferRTB2_15,TransferRToneWashB2,TransferRT15WashB2)
+meanTransferRTWashB2_combined<- aggregate(value ~  group, TransferRTWashB2_combined, function(x) {round(mean(x), digits=2)})
+
+# plot data with both B3 from the three dataset
+TransferRTB3_15 <- head(TransferRTB6, 15)
+TransferRTB3_15$group<- gsub("RTB6","Unwashed",TransferRTB3_15$group)
+TransferRTWashB3_combined <-rbind(TransferRTB3_15,TransferRToneWashB3,TransferRT15WashB3)
+meanTransferRTWashB3_combined<- aggregate(value ~  group, TransferRTWashB3_combined, function(x) {round(mean(x), digits=2)})
+
+# plot data with both B4 from the three dataset
+TransferRTB4_15 <- head(TransferRTB8, 15)
+TransferRTB4_15$group<- gsub("RTB8","Unwashed",TransferRTB4_15$group)
+TransferRTWashB4_combined <-rbind(TransferRTB4_15,TransferRToneWashB4,TransferRT15WashB4)
+meanTransferRTWashB4_combined<- aggregate(value ~  group, TransferRTWashB4_combined, function(x) {round(mean(x), digits=2)})
+
+#---------------------------GRAPH---------------------------#
 # Set different shapes for points based on the coder variable
 coder_shapes <- c(15,16,2)  # You can add more shape codes if needed
 # Set different colors for the linear regression lines based on the coder variable
@@ -926,13 +945,64 @@ coder_colors <- c("black", "black","black")  # You can add more colors if needed
 # Set different line types for the linear regression lines based on the coder variable
 coder_linetypes <- c("solid", "dashed", "dotted")  # You can add more linetypes if needed
 
-#### GRAPH ####
+#Parallel contact area 1
 pRTWashB1_combined <- ggplot(data = TransferRTWashB1_combined, aes(x = Transfer, y = value, color = as.factor(group), shape = as.factor(group), linetype = as.factor(group))) +
   geom_point(size = 1.5) +
   ggtitle("Parallel contact area 1")+
   labs(x = "Repetitive experiments", y = "Number of transferred fibres") +
   guides(color = guide_legend(title = NULL, override.aes = list(shape = coder_shapes, linetype = coder_linetypes))) +
-  scale_y_continuous(breaks = seq(-1, 28, by = 5), limits = c(-1, 28), expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(-2, 28, by = 5), limits = c(-1, 28), expand = c(0, 0)) +
+  scale_x_continuous(breaks = seq(1, 16, by = 2), limits = c(1, 16), expand = c(0.01, 0)) +
+  scale_color_manual(values = coder_colors, guide = FALSE) +
+  scale_shape_manual(values = coder_shapes, guide = FALSE) +
+  scale_linetype_manual(values = coder_linetypes, guide = FALSE) +  # Set different line types for the regression lines
+  theme_bw(base_size = 12) +
+  theme(panel.grid.major = element_line(color = "grey90"),
+        panel.grid.minor = element_line(color = "white"),
+        legend.position = "bottom",
+        legend.background = element_rect(fill = "grey95", size = 1, linetype = "solid", colour = "grey80"),
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),
+        axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+        plot.title = element_text(size = 12)) +
+  geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)
+show(pRTWashB1_combined)
+
+#Parallel contact area 2
+pRTWashB2_combined <- ggplot(data = TransferRTWashB2_combined, aes(x = Transfer, y = value, color = group, shape = group, linetype = group)) +
+  geom_point(size = 1.5) +
+  ggtitle("Parallel contact area 2")+
+  labs(x = "Repetitive experiments", y = "Number of transferred fibres") +
+  guides(color = guide_legend(title = NULL, override.aes = list(shape = coder_shapes, linetype = coder_linetypes))) +
+  scale_y_continuous(breaks = seq(-2, 28, by = 5), limits = c(-1, 28), expand = c(0, 0)) +
+  scale_x_continuous(breaks = seq(1, 16, by = 2), limits = c(1, 16), expand = c(0.01, 0)) +
+  scale_color_manual(values = coder_colors, guide = FALSE) +
+  scale_shape_manual(values = coder_shapes, guide = FALSE) +
+  scale_linetype_manual(values = coder_linetypes, guide = FALSE) +  # Set different line types for the regression lines
+  theme_bw(base_size = 12) +
+  theme(panel.grid.major = element_line(color = "grey90"),
+        panel.grid.minor = element_line(color = "white"),
+        legend.position = "bottom",
+        legend.background = element_rect(fill = "grey95", size = 1, linetype = "solid", colour = "grey80"),
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),
+        axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+        plot.title = element_text(size = 12)) +
+    geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)
+show(pRTWashB2_combined)
+
+# Parallel contact areas combined
+TransferRTBpara_combined <- rbind(TransferRTWashB1_combined, TransferRTWashB2_combined)
+
+# Specify the desired order for the legend
+#legend_order <- c("Unwashed", "After one wash", "After 15 washes")
+
+pRTWashBpara_combined <- ggplot(data = TransferRTBpara_combined, aes(x = Transfer, y = value, color = group, shape = group, linetype = group)) +
+  geom_point(size = 1.5) +
+  ggtitle("Parallel contact areas")+
+  labs(x = "Repetitive experiments", y = "Number of transferred fibres") +
+  guides(color = guide_legend(title = NULL, override.aes = list(shape = coder_shapes, linetype = coder_linetypes))) +
+  scale_y_continuous(breaks = seq(-2, 28, by = 5), limits = c(-1, 28), expand = c(0, 0)) +
   scale_x_continuous(breaks = seq(1, 16, by = 2), limits = c(1, 16), expand = c(0.01, 0)) +
   scale_color_manual(values = coder_colors, guide = FALSE) +
   scale_shape_manual(values = coder_shapes, guide = FALSE) +  
@@ -947,50 +1017,17 @@ pRTWashB1_combined <- ggplot(data = TransferRTWashB1_combined, aes(x = Transfer,
         axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
         plot.title = element_text(size = 12)) +
   geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)
-show(pRTWashB1_combined)
+mean <- round(mean(TransferRTBpara_combined$value),digits = 2)
+pRTWashBpara_combined <-pRTWashBpara_combined + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
+pRTWashBpara_combined
 
-#### Band 2
-# plot data with both B2 from the three dataset
-TransferRTB2_15 <- head(TransferRTB3, 15)
-TransferRTB2_15$group<- gsub("RTB3","No wash",TransferRTB2_15$group)
-TransferRTWashB2_combined <-rbind(TransferRToneWashB2,TransferRT15WashB2,TransferRTB2_15)
-
-#### GRAPH ####
-pRTWashB2_combined <- ggplot(data = TransferRTWashB2_combined, aes(x = Transfer, y = value, color = group, shape = group, linetype = group)) +
-  geom_point(size = 1.5) +
-  ggtitle("Parallel contact area 2")+
-  labs(x = "Repetitive experiments", y = "Number of transferred fibres") +
-  guides(color = guide_legend(title = NULL, override.aes = list(shape = coder_shapes, linetype = coder_linetypes))) +
-  scale_y_continuous(breaks = seq(-1, 28, by = 5), limits = c(-1, 28), expand = c(0, 0)) +
-  scale_x_continuous(breaks = seq(1, 16, by = 2), limits = c(1, 16), expand = c(0.01, 0)) +
-  scale_color_manual(values = coder_colors, guide = FALSE) +
-  scale_shape_manual(values = coder_shapes, guide = FALSE) +  
-  scale_linetype_manual(values = coder_linetypes, guide = FALSE) +  # Set different line types for the regression lines
-  theme_bw(base_size = 12) +
-  theme(panel.grid.major = element_line(color = "grey90"),
-        panel.grid.minor = element_line(color = "white"),
-        legend.position = "bottom",
-        legend.background = element_rect(fill = "grey95", size = 1, linetype = "solid", colour = "grey80"),
-        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),
-        axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
-        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
-        plot.title = element_text(size = 12)) +
-    geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)
-show(pRTWashB2_combined)
-
-#### Band 3
-# plot data with both B3 from the three dataset
-TransferRTB3_15 <- head(TransferRTB6, 15)
-TransferRTB3_15$group<- gsub("RTB6","No wash",TransferRTB3_15$group)
-TransferRTWashB3_combined <-rbind(TransferRToneWashB3,TransferRT15WashB3,TransferRTB3_15)
-
-#### GRAPH ####
+#Perpendicular contact area 1
 pRTWashB3_combined <- ggplot(data = TransferRTWashB3_combined, aes(x = Transfer, y = value, color = group, shape = group, linetype = group)) +
   geom_point(size = 1.5) +  
   ggtitle("Perpendicular contact area 1")+
   labs(x = "Repetitive experiments", y = "Number of transferred fibres") +
   guides(color = guide_legend(title = NULL, override.aes = list(shape = coder_shapes, linetype = coder_linetypes))) +
-  scale_y_continuous(breaks = seq(-1, 28, by = 5), limits = c(-1, 28), expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(-2, 28, by = 5), limits = c(-1, 28), expand = c(0, 0)) +
   scale_x_continuous(breaks = seq(1, 16, by = 2), limits = c(1, 16), expand = c(0.01, 0)) +
   scale_color_manual(values = coder_colors, guide = FALSE) +
   scale_shape_manual(values = coder_shapes, guide = FALSE) +  
@@ -1008,19 +1045,13 @@ pRTWashB3_combined <- ggplot(data = TransferRTWashB3_combined, aes(x = Transfer,
 show(pRTWashB3_combined)
 #ggsave("Wastewater fibres_Total normalised.png", pRTWashB3_combined, width = 7, height = 5, units = "in", dpi=600, path = "Results")
 
-#### Band 4
-# plot data with both B4 from the three dataset
-TransferRTB4_15 <- head(TransferRTB8, 15)
-TransferRTB4_15$group<- gsub("RTB8","No wash",TransferRTB4_15$group)
-TransferRTWashB4_combined <-rbind(TransferRToneWashB4,TransferRT15WashB4,TransferRTB4_15)
-
-#### GRAPH ####
+#Perpendicular contact area 2
 pRTWashB4_combined <- ggplot(data = TransferRTWashB4_combined, aes(x = Transfer, y = value, color = as.factor(group), shape = as.factor(group), linetype = as.factor(group))) +
   geom_point(size = 1.5) + 
   ggtitle("Perpendicular contact area 2")+
   labs(x = "Repetitive experiments", y = "Number of transferred fibres") +
   guides(color = guide_legend(title = NULL, override.aes = list(shape = coder_shapes, linetype = coder_linetypes))) +
-  scale_y_continuous(breaks = seq(-1, 5, by = 20), limits = c(-1, 28), expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(-2, 28, by = 5), limits = c(-1, 28), expand = c(0, 0)) +
   scale_x_continuous(breaks = seq(1, 16, by = 2), limits = c(1, 16), expand = c(0.01, 0)) +
   scale_color_manual(values = coder_colors, guide = FALSE) +
   scale_shape_manual(values = coder_shapes, guide = FALSE) +  
@@ -1037,21 +1068,49 @@ pRTWashB4_combined <- ggplot(data = TransferRTWashB4_combined, aes(x = Transfer,
   geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)
 show(pRTWashB4_combined)
 
+# Perpendicular contact areas combined
+TransferRTBperp_combined <- rbind(TransferRTWashB3_combined, TransferRTWashB4_combined)
+
+# Specify the desired order for the legend
+#legend_order <- c("Unwashed", "After one wash", "After 15 washes")
+
+pRTWashBperp_combined <- ggplot(data = TransferRTBperp_combined, aes(x = Transfer, y = value, color = group, shape = group, linetype = group)) +
+  geom_point(size = 1.5) +
+  ggtitle("Parallel contact areas")+
+  labs(x = "Repetitive experiments", y = "Number of transferred fibres") +
+  guides(color = guide_legend(title = NULL, override.aes = list(shape = coder_shapes, linetype = coder_linetypes))) +
+  scale_y_continuous(breaks = seq(-2, 28, by = 5), limits = c(-1, 28), expand = c(0, 0)) +
+  scale_x_continuous(breaks = seq(1, 16, by = 2), limits = c(1, 16), expand = c(0.01, 0)) +
+  scale_color_manual(values = coder_colors, guide = FALSE) +
+  scale_shape_manual(values = coder_shapes, guide = FALSE) +  
+  scale_linetype_manual(values = coder_linetypes, guide = FALSE) +  # Set different line types for the regression lines
+  theme_bw(base_size = 12) +
+  theme(panel.grid.major = element_line(color = "grey90"),
+        panel.grid.minor = element_line(color = "white"),
+        legend.position = "bottom",
+        legend.background = element_rect(fill = "grey95", size = 1, linetype = "solid", colour = "grey80"),
+        axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),
+        axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+        plot.title = element_text(size = 12)) +
+  geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)
+mean <- round(mean(TransferRTBperp_combined$value),digits = 2)
+pRTWashBperp_combined <-pRTWashBperp_combined + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
+pRTWashBperp_combined
+
 #### Combined grap ####
-pCombinedRTWash_pending <- ggarrange(pRTWashB1_combined+ rremove("ylab") + rremove("xlab"),
-                                     pRTWashB2_combined+ rremove("ylab") + rremove("xlab"),
-                                     pRTWashB3_combined+ rremove("ylab") + rremove("xlab"),
-                                     pRTWashB4_combined+ rremove("ylab") + rremove("xlab"),
+pCombinedRTWash_pending <- ggarrange(pRTWashBpara_combined+ rremove("ylab") + rremove("xlab"),
+                                     pRTWashBperp_combined+ rremove("ylab") + rremove("xlab"),
                                      labels = NULL,
                                      common.legend = TRUE, legend = "bottom",
                                      align = "hv",
-                                     ncol = 2, nrow = 2,
+                                     ncol = 1, nrow = 2,
                                      font.label = list(size = 8, color = "black", family = NULL, position = "top"))
 
 pCombinedRTWash <- annotate_figure(pCombinedRTWash_pending, left = textGrob("Number of fibres", rot = 90, vjust = 0.5, hjust = 0.5, gp = gpar(cex =1)),
                                    bottom = textGrob("\nRepetitive transfer number", vjust = 0.5, hjust = 0.5,gp = gpar(cex = 1)))
 pCombinedRTWash
-ggsave("Repetitive transfer with wash.png", pCombinedRTWash, width =7, height = 6, units = "in", dpi=300,path = "Results")
+ggsave("Repetitive transfer with wash.png", pCombinedRTWash, width =6, height = 8, units = "in", dpi=300,path = "Results")
 
 #----------------------------------------------------------------------------------#
 ####                        Repetitive Transfer vs. Wash                       #####
@@ -1178,7 +1237,7 @@ colors <- c("#469990",
 
 plot(Toplot$Transfer, Toplot$value, col=colors[Toplot$group],
      pch=19,
-     xlab='\nWash number',
+     xlab='\nWash/Repetitive transfer number',
      ylab='Average number of transferred fibres',
      xaxt='n',
      cex.axis = 1.2,
