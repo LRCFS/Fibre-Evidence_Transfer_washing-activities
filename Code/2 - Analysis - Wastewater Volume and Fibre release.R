@@ -1,6 +1,6 @@
-#############################################################
-#####                     To read                       #####
-#############################################################
+##########################################################################
+#####         Analysis - Wastewater Volume and Fibre release         #####
+##########################################################################
 # This R script is to generate the figures related to the Wastewater Volume and Fibre release
 # 1. Wastewater volume
 # 2. Fibres released in the wastewater
@@ -11,41 +11,41 @@
 # ------------------------------------------------------------------------
 #### Data Cleaning and Processing ####
   # 1) Uncertainty related to the graduation of the barrel (calibration)
-# To calibrate the barrel, a 500 ml burette was filled up to the 500 ml graduation and pour into the barrel.
+# To calibrate the barrel, a 500 ml burette was filled up to the 500 ml graduation and poured into the barrel.
 # At the first calibration line on the barrel, the uncertainty on the position of the line corresponds to the uncertainty
 # on the measured volume (standard uncertainty of reading): Uread = (1 graduation/√12)
 # The burette used was graduated every 10 mL
 Uread <- 10/sqrt(12)
 
-#The second graduation was obtained by adding again 500 ml of water using the same burette, and so on until the Nth graduation
+# The second graduation was obtained by adding again 500 ml of water using the same burette, and so on until the Nth graduation
 # the uncertainty is therefore calculated as: Ucalibration = √N*Uread
-Wastewatervolume_G1$Ucalibration <- sqrt(Wastewatervolume_G1$Total)*Uread
-Wastewatervolume_G5$Ucalibration <- sqrt(Wastewatervolume_G5$Total)*Uread
-Wastewatervolume_G12$Ucalibration <- sqrt(Wastewatervolume_G12$Total)*Uread
+Wastewatervolume_G1$Ucalibration <- sqrt(Wastewatervolume_G1$Total) * Uread
+Wastewatervolume_G5$Ucalibration <- sqrt(Wastewatervolume_G5$Total) * Uread
+Wastewatervolume_G12$Ucalibration <- sqrt(Wastewatervolume_G12$Total) * Uread
 
-  # 2)	Uncertainty related to the reading of the volume in the barrel
+  # 2) Uncertainty related to the reading of the volume in the barrel
 # The barrel was not graduated with consistent precision and therefore if a reading was done between graduations N and (N+1)
 # the standard reading uncertainty was calculated as: Ureadbarrel = (1 graduation)/√12
-# The barrel was  graduated every 500 mL, therefore:
+# The barrel was graduated every 500 mL, therefore:
 Ureadbarrel <- 500/sqrt(12)
 
   # 3) Considering calibration and reading uncertainty
-#To consider these uncertainties (calibration and reading) on the estimation of the volume V, between V(N+1) and V(N):
-# U(V) = √(Ucalibration)^2+ (Ureadbarrel)^2 )
-Wastewatervolume_G1$U.V <- (sqrt((Wastewatervolume_G1$Ucalibration)^2 +(Ureadbarrel)^2))/1000 #the division by 1000 is to convert ml to L
-Wastewatervolume_G5$U.V <- (sqrt((Wastewatervolume_G5$Ucalibration)^2 +(Ureadbarrel)^2))/1000 
-Wastewatervolume_G12$U.V <- (sqrt((Wastewatervolume_G12$Ucalibration)^2 +(Ureadbarrel)^2))/1000
+# To consider these uncertainties (calibration and reading) on the estimation of the volume V, between V(N+1) and V(N):
+# U(V) = √(Ucalibration)^2 + (Ureadbarrel)^2 )
+Wastewatervolume_G1$U.V <- sqrt((Wastewatervolume_G1$Ucalibration)^2 + (Ureadbarrel)^2) / 1000 # the division by 1000 is to convert ml to L
+Wastewatervolume_G5$U.V <- sqrt((Wastewatervolume_G5$Ucalibration)^2 + (Ureadbarrel)^2) / 1000 
+Wastewatervolume_G12$U.V <- sqrt((Wastewatervolume_G12$Ucalibration)^2 + (Ureadbarrel)^2) / 1000
 
   # 4) Confidence interval
 # One single measure of the volume of water in the barrel was done each wash.
-# the Guide to the expression of Uncertainty in Measurement (GUM) recommends to calculate the confidence interval from the standard reading uncertainty (U(V))...
-#...taking into account the uniform distribution associated with this type of uncertainty (uncertainty of B type), as follow : I=[-2U(V)  ; + 2U(V)]
+# the Guide to the expression of Uncertainty in Measurement (GUM) recommends calculating the confidence interval from the standard reading uncertainty (U(V))...
+# ...taking into account the uniform distribution associated with this type of uncertainty (uncertainty of B type), as follows: I = [-2U(V)  ; + 2U(V)]
 # In our particular situation, Wastewatervolume_G1$U.V2 is used for the interval
-Wastewatervolume_G1$U.V2 <-Wastewatervolume_G1$U.V*2
-Wastewatervolume_G5$U.V2 <-Wastewatervolume_G5$U.V*2
-Wastewatervolume_G12$U.V2 <-Wastewatervolume_G12$U.V*2
+Wastewatervolume_G1$U.V2 <- Wastewatervolume_G1$U.V * 2
+Wastewatervolume_G5$U.V2 <- Wastewatervolume_G5$U.V * 2
+Wastewatervolume_G12$U.V2 <- Wastewatervolume_G12$U.V * 2
 
-#### Intermediate Data Visualization ####
+#### Intermediate Data Visualisation ####
 # exclude wash W034 from Wastewatervolume_G5
 Wastewatervolume_G5 <- Wastewatervolume_G5[Wastewatervolume_G5$Washnumber != 34, ]
 
@@ -270,7 +270,7 @@ ggsave("Wastewater fibres_Total normalised.png", pfibres_Total, width = 7, heigh
 # ------------------------------------------------------------------------
 # Section 3: Mass of fibres VS volume of wastewater
 # ------------------------------------------------------------------------
-#### Intermediate Data Visualization ####
+#### Intermediate Data Visualisation ####
 # Null hypothesis – There is no significant correlation between the volume and the wash number
 # The alternative hypothesis – There is a significant correlation between the volume and the wash number
 # set alpha level to 0.05
@@ -329,6 +329,6 @@ ggsave("pPearson_combined.png", pPearson_combined, width = 6, height = 8, units 
 rm(merge.dat_G1,merge.dat_G12,merge.dat_G5,p1_G1,p1_G12,p1_G5,p2_G1,p2_G12,p2_G5,
    PearsonFW_G1,PearsonFW_G5,PearsonFW_G12,PearsonG1,PearsonG12, PearsonG5,modelG1,
    modelG5,modelG12,Wastewaterfibres_G12p3,Wastewaterfibres_G1p3,Wastewaterfibres_G5p3,
-   pPearson_combined,pPearson_combined_pending,pVolume_combined,pVolume_combined_pending,
+   pPearson_combined,pPearson_combined_pending,pVolume_combined_pending,
    pVolume_G1,pVolume_G5,pVolume_G12,pfibres_Total,Wastewaterfibres_G1,Wastewaterfibres_G5,
    Wastewaterfibres_G12, Wastewaterfibres_Total)

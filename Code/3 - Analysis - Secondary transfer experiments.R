@@ -1,16 +1,16 @@
-#############################################################
-#####                     To read                       #####
-#############################################################
-# This R script is to generate the figures related to the secondary transfer of fibres following washing
+##########################################################################
+#####            Analysis - Secondary transfer experiments           #####
+##########################################################################
+# This R script is to generate the figures related to the secondary transfer of fibers following washing.
 
 #### Data Cleaning and Processing ####
 # Split the column based on "_"
 ST_Dataset <- separate(ST_Dataset, Sample, into = c("Garment", "Side", "Row","Column", "Condition"), sep = "_")
 
-# substract background
+# Subtract background
 ST_Dataset$value <-  ST_Dataset$`After wash` -  ST_Dataset$`Before wash`
 
-# Select important column
+# Select important columns
 ST_Dataset <- ST_Dataset %>% dplyr::select(Garment, Side,Row,Column,`Before wash`,`After wash`,value)
 
 # Create a list of data frames
@@ -19,7 +19,7 @@ STG_list <- lapply(1:15, function(i) ST_Dataset %>% filter(grepl(paste0('\\bG', 
 # Assign the list elements to individual data frames
 list2env(setNames(STG_list, paste0("STG", 1:15)), .GlobalEnv)
 
-#Assign a Coder to each wash
+# Assign a coder to each dataset
 for (i in 1:15) {
   assign(paste0("STG", i), transform(get(paste0("STG", i)), Coder = paste0("S", sprintf("%03d", i))))
 }
@@ -34,7 +34,7 @@ for (i in 1:length(STG_list)) {
   assign(paste0("SumFibreCountSTG", i), SumFibreCount)
 }
 
-# To plot data
+# To plot aggregated data
 SumFibreTotal <- rbind(SumFibreCountSTG1, SumFibreCountSTG2, SumFibreCountSTG3, SumFibreCountSTG4, SumFibreCountSTG5, SumFibreCountSTG6,
                        SumFibreCountSTG7, SumFibreCountSTG8, SumFibreCountSTG9, SumFibreCountSTG10, SumFibreCountSTG11, SumFibreCountSTG12,
                        SumFibreCountSTG13, SumFibreCountSTG14, SumFibreCountSTG15)
@@ -60,7 +60,7 @@ STplot
 # To save the graph
 ggsave("Secondary transfer_Fibre Count total.png", STplot, width = 7, height = 5, units = "in", dpi=150, path = "Results/")
 
-#remove unused dataframe
+# Remove unused dataframe
 rm(SumFibreCount,SumFibreCountSTG1,SumFibreCountSTG10,SumFibreCountSTG11,SumFibreCountSTG12,SumFibreCountSTG13,SumFibreCountSTG14,
    SumFibreCountSTG15,SumFibreCountSTG2,SumFibreCountSTG3,SumFibreCountSTG4,SumFibreCountSTG5,SumFibreCountSTG6,SumFibreCountSTG7,
    SumFibreCountSTG8,SumFibreCountSTG9,STplot,STG1,STG2,STG3,STG4,STG5,STG6,STG7,STG8,STG9,STG10,STG11,STG12,STG13,STG14,STG15,
