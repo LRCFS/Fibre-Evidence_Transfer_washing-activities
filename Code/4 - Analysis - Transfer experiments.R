@@ -184,7 +184,7 @@ compute_and_write_stats <- function(df, filename) {
 
 # Loop through the dataframes and compute/write statistics
 for (i in 1:length(dataframes)) {
-  compute_and_write_stats(dataframes[[i]], paste("Results/Descriptive statistics - Garment", c(1, 5, 12)[i], ".csv", sep = ""))
+  compute_and_write_stats(dataframes[[i]], paste("Results/Descriptive statistics - Garment ", c(1, 5, 12)[i], ".csv", sep = ""))
 }
 
 # Create dataframe for the final plot
