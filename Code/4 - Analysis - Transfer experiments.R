@@ -132,7 +132,7 @@ pCombinedRT <- annotate_figure(pCombinedRT_pending, left = textGrob("Number of f
 pCombinedRT
 
 # to save the graph
-ggsave("RT_control garment.png", pCombinedRT, width =8, height = 7, units = "in", dpi=300,path = "Results")
+ggsave("Figure S4 - Repetitive transfer control garment.png", pCombinedRT, width =8, height = 7, units = "in", dpi=300,path = "Results")
 
 # ------------------------------------------------------------------------
 # Subsection 1-2 : Transfer - Washing series vs control garment
@@ -184,7 +184,7 @@ compute_and_write_stats <- function(df, filename) {
 
 # Loop through the dataframes and compute/write statistics
 for (i in 1:length(dataframes)) {
-  compute_and_write_stats(dataframes[[i]], paste("Results/Stats-Garment", c(1, 5, 12)[i], ".csv", sep = ""))
+  compute_and_write_stats(dataframes[[i]], paste("Results/Descriptive statistics - Garment", c(1, 5, 12)[i], ".csv", sep = ""))
 }
 
 # Create dataframe for the final plot
@@ -251,7 +251,13 @@ fit7 <- lm(value~poly(Transfer,7,raw=TRUE), data=forplotTotG12)
 fit1 <- lm(value~Transfer, data=forplotTotRT);fit1
 
 #### Final graph - Figure 9 ####
-# create a scatterplot
+# Set up a PNG device
+png("./Results/Figure 9 - Washing series vs control garment.png", width = 2700, height = 2400, res = 300)
+
+# Adjust the margins (bottom, left, top, right)
+par(mar = c(5, 4, 1, 2))  # Adjust the top margin to be smaller
+
+# Your plotting code here...
 colors <- c("#469990",
             "darkred",
             "#000000",
@@ -289,18 +295,21 @@ x_range <- seq(1, 41, length = 51)  # Adjust the range as needed
 predictions <- predict(fitG12, data.frame(Transfer = x_range))
 lines(x_range, predictions, col = 'darkred')
 
+# End the plot device
+dev.off()
+
 # ------------------------------------------------------------------------
 # Subsection 1-3 : Repetitive Transfer - Washing series vs control garment
 # ------------------------------------------------------------------------
 #### Data Cleaning and Processing #####
-# substract background
-RTWash_Dataset$value <-  RTWash_Dataset$`After transfer` -  RTWash_Dataset$`Before transfer`
+# subtract background
+RTwash_Dataset$value <-  RTwash_Dataset$`After transfer` -  RTwash_Dataset$`Before transfer`
 
 # Select each contact areas and place it in different dataframes
-RTWashB1_Dataset <- RTWash_Dataset %>% filter(grepl("\\_B1_B\\b", Sample))
-RTWashB2_Dataset <- RTWash_Dataset %>% filter(grepl("\\_B2_B\\b", Sample))
-RTWashB3_Dataset <- RTWash_Dataset %>% filter(grepl("\\_B3_B\\b", Sample))
-RTWashB4_Dataset <- RTWash_Dataset %>% filter(grepl("\\_B4_B\\b", Sample))
+RTWashB1_Dataset <- RTwash_Dataset %>% filter(grepl("\\_B1_B\\b", Sample))
+RTWashB2_Dataset <- RTwash_Dataset %>% filter(grepl("\\_B2_B\\b", Sample))
+RTWashB3_Dataset <- RTwash_Dataset %>% filter(grepl("\\_B3_B\\b", Sample))
+RTWashB4_Dataset <- RTwash_Dataset %>% filter(grepl("\\_B4_B\\b", Sample))
 
 # Select the 15 repetitive transfers performed after washing 1 garment one time
 RToneWashB1_Dataset <- subset(RTWashB1_Dataset, !grepl("_RTWash_W015|_RTWash_W000", Sample))
@@ -486,7 +495,7 @@ pCombinedRTWash <- annotate_figure(pCombinedRTWash_pending, left = textGrob("Num
 pCombinedRTWash
 
 #to save the graph
-ggsave("Repetitive transfer with wash.png", pCombinedRTWash, width =6, height = 8, units = "in", dpi=300,path = "Results")
+ggsave("Figure 10 - Repetitive transfer with washing series.png", pCombinedRTWash, width =6, height = 8, units = "in", dpi=300,path = "Results")
 
 # ------------------------------------------------------------------------
 # Section 2: Variability between and within garments
@@ -666,7 +675,7 @@ pIntercombined <- annotate_figure(pIntercombined_pending,
 pIntercombined
 
 # to save the graph
-ggsave("Intervariability.png", pIntercombined, width =7, height = 5, units = "in", dpi=300,path = "Results")
+ggsave("Figure 11 - Inter-garment variability.png", pIntercombined, width =7, height = 5, units = "in", dpi=300,path = "Results")
 
 # ------------------------------------------------------------------------
 # Subsection 2-1 : intra-garment variability
@@ -1004,7 +1013,7 @@ pIntracombined <- annotate_figure(pIntracombined_pending,
 pIntracombined
 
 # to save the graph
-ggsave("Intravariability.png", pIntracombined, width =7, height = 8, units = "in", dpi=300,path = "Results")
+ggsave("Figure 12 - Intra-garment variability.png", pIntracombined, width =7, height = 8, units = "in", dpi=300,path = "Results")
 
 #### Final graph - Figure S5 to S7 (supplementary information) ####
 MeanTotBG5_forCorrPlot <-data.frame(cbind(G1para=meanGarment1_Transfer_G5_para$value, G2para=meanGarment2_Transfer_G5_para$value,
@@ -1021,6 +1030,8 @@ Garment1_Transfer_G1_perp <- Transfer_G1 %>% filter(grepl('^[6-9]|10$', band))
 MeanTotBG1_forCorrPlot <-data.frame(cbind(G1para=as.numeric(Garment1_Transfer_G1_para$value), G1perp=as.numeric(Garment1_Transfer_G1_perp$value)))
 
 # data from the first series involving washing a single donor garment - Figure S5
+# Set up a PNG device
+png("./Results/Figure S5 - correlation matrix G1.png", width = 2600, height = 2300, res = 300)
 cor_matrix <- cor(MeanTotBG1_forCorrPlot,use = "complete.obs")
 head(cor_matrix)
 pairs.panels(MeanTotBG1_forCorrPlot[,1:2],
@@ -1032,8 +1043,11 @@ pairs.panels(MeanTotBG1_forCorrPlot[,1:2],
              density = TRUE,  # show density plots
              ellipses = F # show correlation ellipses
 )
+# End the plot device
+dev.off()
 
 # data from the second series involving washing 5 donor garments - Figure S6
+png("./Results/Figure S6 - correlation matrix G5.png", width = 2600, height = 2300, res = 300)
 cor_matrix <- cor(MeanTotBG5_forCorrPlot,use = "complete.obs")
 head(cor_matrix)
 pairs.panels(MeanTotBG5_forCorrPlot[,1:10],
@@ -1045,8 +1059,11 @@ pairs.panels(MeanTotBG5_forCorrPlot[,1:10],
              density = TRUE,  # show density plots
              ellipses = F # show correlation ellipses
 )
+# End the plot device
+dev.off()
 
 # data from the third series involving washing 12 donor garments - Figure S7
+png("./Results/Figure S7 - correlation matrix G12.png", width = 2600, height = 2300, res = 300)
 cor_matrix <- cor(MeanTotBG12_forCorrPlot,use = "complete.obs")
 head(cor_matrix)
 pairs.panels(MeanTotBG12_forCorrPlot[,1:6],
@@ -1058,6 +1075,8 @@ pairs.panels(MeanTotBG12_forCorrPlot[,1:6],
              density = TRUE,  # show density plots
              ellipses = F # show correlation ellipses
 )
+# End the plot device
+dev.off()
 
 # ------------------------------------------------------------------------
 # Section 3: Fibres in wastewater vs fibres transferred
@@ -1125,4 +1144,4 @@ pPearson_combined <- annotate_figure(pPearson_combined_pending, left = textGrob(
 pPearson_combined
 
 # to save the graph
-ggsave("pPearson_combined_waterVStransfer.png", pPearson_combined, width = 6, height = 9, units = "in", dpi=300, path = "Results")
+ggsave("Figure 13 - Fibres in wastewater vs fibres transferred.png", pPearson_combined, width = 6, height = 9, units = "in", dpi=300, path = "Results")

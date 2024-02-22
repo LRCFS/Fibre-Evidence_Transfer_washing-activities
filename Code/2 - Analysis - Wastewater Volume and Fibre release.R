@@ -122,7 +122,7 @@ pVolume_combined <- annotate_figure(pVolume_combined_pending, left = textGrob("V
 pVolume_combined
 
 # to save the graph
-ggsave("pVolume_combined.png", pVolume_combined, width = 7, height = 8, units = "in", dpi=300, path = "Results")
+ggsave("Figure 6 - Wastewater volume released.png", pVolume_combined, width = 7, height = 8, units = "in", dpi=300, path = "Results")
 
 # ------------------------------------------------------------------------
 # Section 2: Fibres released in the wastewater
@@ -263,7 +263,7 @@ pfibres_Total <- ggplot(data = Wastewaterfibres_Total, aes(x = Experiment, y = n
 show(pfibres_Total)
 
 # To save the graph
-ggsave("Wastewater fibres_Total normalised.png", pfibres_Total, width = 7, height = 5, units = "in", dpi=600, path = "Results")
+ggsave("Figure 7 - Mass of fibres released.png", pfibres_Total, width = 7, height = 5, units = "in", dpi=600, path = "Results")
 
 # the warning message showing correspond to the wash W034 performed with G5, excluded at line 49
 
@@ -323,7 +323,7 @@ pPearson_combined <- annotate_figure(pPearson_combined_pending, left = textGrob(
 pPearson_combined
 
 # To save the graph
-ggsave("pPearson_combined.png", pPearson_combined, width = 6, height = 8, units = "in", dpi=300, path = "Results")
+ggsave("Figure S3 - Mass of fibres VS volume of wastewater.png", pPearson_combined, width = 6, height = 8, units = "in", dpi=300, path = "Results")
 
 #remove unused dataframe
 rm(merge.dat_G1,merge.dat_G12,merge.dat_G5,p1_G1,p1_G12,p1_G5,p2_G1,p2_G12,p2_G5,

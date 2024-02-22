@@ -58,7 +58,7 @@ STplot <- ggplot(SumFibreTotal, aes(x= Garment, y=value, group=1)) +
 STplot
 
 # To save the graph
-ggsave("Secondary transfer_Fibre Count total.png", STplot, width = 7, height = 5, units = "in", dpi=150, path = "Results/")
+ggsave("Figure 8 - Fibres secondarily transferred.png", STplot, width = 7, height = 5, units = "in", dpi=150, path = "Results/")
 
 # Remove unused dataframe
 rm(SumFibreCount,SumFibreCountSTG1,SumFibreCountSTG10,SumFibreCountSTG11,SumFibreCountSTG12,SumFibreCountSTG13,SumFibreCountSTG14,
