@@ -71,7 +71,7 @@ Results.dir <- "Results/"
 #############################################################
 #####                       Codes                       #####
 #############################################################
-# This codes can be run subsequently as each create necessary outputs for the next codes.  
+# This codes can be run subsequently
 source("Code/1 - Data upload.R")
 source("Code/2 - Analysis - Wastewater Volume and Fibre release.R")
 source("Code/3 - Analysis - Secondary transfer experiments.R")
