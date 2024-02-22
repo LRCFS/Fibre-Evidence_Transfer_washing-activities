@@ -117,7 +117,7 @@ pGarment_G5_para <-ggplot(data = MeanTotG5_para, aes(x =wash, y = value, color=g
   labs(x="\nWash number", y="Number of Fibres\n")+
   scale_colour_manual(values=c("#000000", "#a9a9a9", "#4363d8", "#42d4f4", "#3cb44b"))+
   scale_linetype_manual(values=c("solid","solid", "solid","solid","solid"))+
-  ylim(-2,30)+
+  ylim(-2,35)+
   theme_bw(base_family = "Arial", base_size = 12) +
   theme(legend.title = element_blank(),
         legend.position = "bottom",
@@ -130,7 +130,7 @@ pGarment_G5_perp <-ggplot(data = MeanTotG5_perp, aes(x =wash, y = value, color=g
   labs(x="\nWash number", y="Number of Fibres\n")+
   scale_colour_manual(values=c("#000000", "#a9a9a9", "#4363d8", "#42d4f4", "#3cb44b"))+
   scale_linetype_manual(values=c("solid","solid", "solid","solid","solid"))+
-  ylim(-2,30)+
+  ylim(-2,35)+
   theme_bw(base_family = "Arial", base_size = 12) +
   theme(legend.title = element_blank(),
         legend.position = "bottom",
@@ -191,7 +191,7 @@ pGarment_G12_para <-ggplot(data = MeanTotG12_para, aes(x =wash, y = value, color
   labs(x="\nWash number", y="Number of Fibres\n")+
   scale_colour_manual(values=c("#000000", "#a9a9a9", "#4363d8", "#42d4f4", "#3cb44b"))+
   scale_linetype_manual(values=c("solid","solid", "solid","solid","solid"))+
-  ylim(-2,30)+
+  ylim(-2,35)+
   theme_bw(base_family = "Arial", base_size = 12) +
   theme(legend.title = element_blank(),
         legend.position = "bottom",
@@ -203,7 +203,7 @@ pGarment_G12_perp <-ggplot(data = MeanTotG12_perp, aes(x =wash, y = value, color
   labs(x="\nWash number", y="Number of Fibres\n")+
   scale_colour_manual(values=c("#000000", "#a9a9a9", "#4363d8", "#42d4f4", "#3cb44b"))+
   scale_linetype_manual(values=c("solid","solid", "solid","solid","solid"))+
-  ylim(-2,30)+
+  ylim(-2,35)+
   theme_bw(base_family = "Arial", base_size = 12) +
   theme(legend.title = element_blank(),
         legend.position = "bottom",
@@ -231,39 +231,10 @@ pIntercombined_pending
 pIntercombined <- annotate_figure(pIntercombined_pending,
                                   left = textGrob("Number of fibres", rot = 90, vjust = 0.5, hjust = 0.5, gp = gpar(cex =1)),
                                   bottom = textGrob("Wash number", vjust = 0.5, hjust = 0.5,gp = gpar(cex = 1)),
-                                  right = text_grob(bquote("Contact areas"), rot = 90),
+                                  right = text_grob(bquote("Garments"), rot = 90),
                                   top = textGrob("Parallel contact areas                     Perpendicular contact areas", vjust = 0.5, hjust = 0.5,gp = gpar(cex = 1.05)))
 pIntercombined
 ggsave("Intervariability.png", pIntercombined, width =7, height = 5, units = "in", dpi=300,path = "Results")
-
-#### Corr plot for inter-variability ####
-# the corplot has to be saved manually
-cor_matrix <- cor(MeanTotG5_forCorrPlot,use = "complete.obs")
-head(cor_matrix)
-write.matrix(cor_matrix,file="GvsG_G5.csv", sep = ",")
-pairs.panels(MeanTotG5_forCorrPlot[,1:5],
-             stars = TRUE, # If TRUE, adds significance level with stars
-             pch=20, # points shape
-             lm=T, # Plot the linear fit rather than the LOESS smoothed fits
-             method = "pearson", # correlation method
-             hist.col = "#6BAED6",
-             density = TRUE,  # show density plots
-             ellipses = F # show correlation ellipses
-)
-
-# the corplot has to be saved manually
-cor_matrix <- cor(MeanTotG12_forCorrPlot,use = "complete.obs")
-head(cor_matrix)
-write.matrix(cor_matrix,file="GvsG_G12.csv", sep = ",")
-pairs.panels(MeanTotG12_forCorrPlot[,1:3],
-             stars = TRUE, # If TRUE, adds significance level with stars
-             pch=20, # points shape
-             lm=T, # Plot the linear fit rather than the LOESS smoothed fits
-             method = "pearson", # correlation method
-             hist.col = "#6BAED6",
-             density = TRUE,  # show density plots
-             ellipses = F # show correlation ellipses
-)
 
 #####################################################################
 #####   NUMBER OF FIBRES FOLLOWING TRANSFER PER CONTACT AREAS   #####
@@ -345,7 +316,7 @@ pG1_bandspara <-ggplot(data = G1_MeanTotpara, aes(x = as.factor(wash), y = as.nu
   geom_line(aes(linetype=`Contact area`, color=`Contact area`), size=0.5)+
   labs(x = "\nWash number", y = "\nNumber of Fibre\n") +
   scale_x_discrete(labels = every_n_labeler(5)) +
-  ylim(-2,30)+
+  ylim(-2,35)+
   scale_linetype_manual(values = c("solid", "solid", "solid", "solid", "solid")) +
   scale_colour_manual(values = c("#000000", "#a9a9a9", "#4363d8", "#42d4f4", "#3cb44b")) +
   theme_bw(base_family = "Arial", base_size = 12) +
@@ -363,7 +334,7 @@ pG1_bandsperp <- ggplot(data = G1_MeanTotperp, aes(x = as.factor(wash), y = as.n
   geom_line(aes(linetype = `Contact area`, color = `Contact area`)) +
   labs(x = "\nWash number", y = "\nNumber of Fibre\n") +
   scale_x_discrete(labels = every_n_labeler(5)) +
-  ylim(-2,30)+
+  ylim(-2,35)+
   scale_linetype_manual(values = c("solid", "solid", "solid", "solid", "solid")) +
   scale_colour_manual(values = c("#000000", "#a9a9a9", "#4363d8", "#42d4f4", "#3cb44b")) +
   theme_bw(base_family = "Arial", base_size = 12) +
@@ -439,7 +410,7 @@ mean(G5_meanPerp$value)
 pG5_bandspara <-ggplot(data = G5_MeanTotpara, aes(x =wash, y = value, color=as.factor(`Contact area`), group=as.factor(`Contact area`))) +
   geom_line(aes(linetype=as.factor(`Contact area`), color=as.factor(`Contact area`)))+
   labs(x="\nWash number", y="\nNumber of Fibre\n")+
-  ylim(-2,30)+
+  ylim(-2,35)+
   scale_x_discrete(labels = every_n_labeler(5)) +
   scale_linetype_manual(values = c("solid", "solid", "solid", "solid", "solid")) +
   scale_colour_manual(values = c("#000000", "#a9a9a9", "#4363d8", "#42d4f4", "#3cb44b")) +
@@ -451,7 +422,7 @@ pG5_bandspara
 pG5_bandsperp <-ggplot(data = G5_MeanTotperp, aes(x =wash, y = value, color=as.factor(`Contact area`), group=as.factor(`Contact area`))) +
   geom_line(aes(linetype=as.factor(`Contact area`), color=as.factor(`Contact area`)))+
   labs(x="\nWash number", y="\nNumber of Fibre\n")+
-  ylim(-2,30)+
+  ylim(-2,35)+
   scale_x_discrete(labels = every_n_labeler(5)) +
   scale_linetype_manual(values = c("solid", "solid", "solid", "solid", "solid")) +
   scale_colour_manual(values = c("#000000", "#a9a9a9", "#4363d8", "#42d4f4", "#3cb44b")) +
@@ -553,7 +524,7 @@ G12_MeanTotpara[166,] <- c("W040", NA, NA)
 pG12_bandspara <-ggplot(data = G12_MeanTotpara, aes(x =as.factor(wash), y = as.numeric(value), color=`Contact area`, group=`Contact area`)) +
   geom_line(aes(linetype=`Contact area`, color=`Contact area`))+
   labs(x="\nWash number", y="\nNumber of Fibre\n")+
-  ylim(-2,30)+
+  ylim(-2,35)+
   scale_x_discrete(labels = every_n_labeler(5)) +
   scale_linetype_manual(values = c("solid", "solid", "solid", "solid", "solid")) +
   scale_colour_manual(values = c("#000000", "#a9a9a9", "#4363d8", "#42d4f4", "#3cb44b")) +
@@ -580,7 +551,7 @@ G12_MeanTotperp$`Contact area` <- factor(G12_MeanTotperp$`Contact area`, levels 
 pG12_bandsperp <-ggplot(data = G12_MeanTotperp, aes(x =as.factor(wash), y = as.numeric(value), color=`Contact area`, group=`Contact area`)) +
   geom_line(aes(linetype=`Contact area`, color=`Contact area`))+
   labs(x="\nWash number", y="\nNumber of Fibre\n")+
-  ylim(-2,30)+
+  ylim(-2,35)+
   scale_x_discrete(labels = every_n_labeler(5)) +
   scale_linetype_manual(values = c("solid", "solid", "solid", "solid", "solid")) +
   scale_colour_manual(values = c("#000000", "#a9a9a9", "#4363d8", "#42d4f4", "#3cb44b")) +
@@ -747,52 +718,56 @@ df_meanspara <- ddply(TotRTpara, "group", summarise, mean_value = mean(value)) ;
 df_meansperp <- ddply(TotRTperp, "group", summarise, mean_value = mean(value)) ; df_meansperp
 
 #### GRAPH ####
+lm(value~Transfer, data=TransferRTB1)
 pRTB1 <-ggplot(data = TransferRTB1, aes(Transfer, value)) +
-  geom_line(size=0.3)+geom_point(size=0.3, colour= "darkred")+
+geom_point(size=1, colour= "black")+
   labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
   theme_bw(base_family = "Arial", base_size = 10) +
   theme(legend.title = element_blank(),
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
         axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Parallel contact area 1")+
-  geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
-mean <- round(mean(TransferRTB1$value),digits = 2)
-pRTB1 <-pRTB1 + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
+  geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="solid", size=1)+
+  annotate(geom="text", x=82, y=15, label="y = - 0.02x + 3.04",color="black",fontface = "bold")+
+  annotate(geom="text", x=82, y=14, label="bar(x) == 1.98",color="black",parse=T)
 pRTB1
 
+lm(value~Transfer, data=TransferRTB3)
 pRTB3 <-ggplot(data = TransferRTB3, aes(Transfer, value)) +
-  geom_line(size=0.3)+geom_point(size=0.3, colour= "darkred")+
+  geom_point(size=1, colour= "black")+
   labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
   theme_bw(base_family = "Arial", base_size = 10) +
   theme(legend.title = element_blank(),
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
         axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Parallel contact area 2")+
-  geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
-mean <- round(mean(TransferRTB3$value),digits = 2)
-pRTB3 <-pRTB3 + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
+  geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="solid", size=1)+
+  annotate(geom="text", x=83, y=15, label="y = - 0.01x + 3.7",color="black",fontface = "bold")+
+  annotate(geom="text", x=82, y=14, label="bar(x) == 3.02",color="black",parse=T)
 pRTB3
 
+lm(value~Transfer, data=TransferRTB6)
 pRTB6 <-ggplot(data = TransferRTB6, aes(Transfer, value)) +
-  geom_line(size=0.3)+geom_point(size=0.3, colour= "darkred")+
+  geom_point(size=1, colour= "black")+
   labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
   theme_bw(base_family = "Arial", base_size = 10) +
   theme(legend.title = element_blank(),
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
         axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Perpendicular contact area 1")+
-  geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
-mean <- round(mean(TransferRTB6$value),digits = 2)
-pRTB6 <-pRTB6 + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
+  geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="solid", size=1)+
+  annotate(geom="text", x=82, y=15, label="y = - 0.01x + 4.93",color="black",fontface = "bold")+
+  annotate(geom="text", x=82, y=14, label="bar(x) == 4.50",color="black",parse=T)
 pRTB6
 
+lm(value~Transfer, data=TransferRTB8)
 pRTB8 <-ggplot(data = TransferRTB8, aes(Transfer, value)) +
-  geom_line(size=0.3)+geom_point(size=0.3, colour= "darkred")+
+  geom_point(size=1, colour= "black")+
   labs(x="Repetitive transfer", y="Number of Fibre")+ ylim(0,15)+
   theme_bw(base_family = "Arial", base_size = 10) +
   theme(legend.title = element_blank(),
         legend.background = element_rect(fill="grey95",size=1, linetype="solid", colour="grey80"),
         axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=0.5))+ggtitle("Perpendicular contact area 2")+
-  geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="dashed", size=0.5)
-mean <- round(mean(TransferRTB8$value),digits = 2)
-pRTB8 <-pRTB8 + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
+  geom_smooth(formula = y ~ x,method='lm', se=F,color="black", linetype="solid", size=1)+
+  annotate(geom="text", x=82, y=15, label="y = - 0.04x + 5.16",color="black",fontface = "bold")+
+  annotate(geom="text", x=82, y=14, label="bar(x) == 3.27",color="black",parse=T)
 pRTB8
 
 #### Combined grap ####
@@ -809,6 +784,7 @@ pCombinedRT_pending <- ggarrange(pRTB1+ rremove("ylab") + rremove("xlab"),
 pCombinedRT <- annotate_figure(pCombinedRT_pending, left = textGrob("Number of fibres", rot = 90, vjust = 0.5, hjust = 0.5, gp = gpar(cex =1)),
                                bottom = textGrob("Wash number", vjust = 0.5, hjust = 0.5,gp = gpar(cex = 1)))
 pCombinedRT
+ggsave("RT_control garment.png", pCombinedRT, width =8, height = 7, units = "in", dpi=300,path = "Results")
 
 #----------------------------------------------------------------------------------#
 ####                 Repetitive Transfer - washing activities                  #####
@@ -993,10 +969,9 @@ show(pRTWashB2_combined)
 
 # Parallel contact areas combined
 TransferRTBpara_combined <- rbind(TransferRTWashB1_combined, TransferRTWashB2_combined)
-
 # Specify the desired order for the legend
 #legend_order <- c("Unwashed", "After one wash", "After 15 washes")
-
+meanTransferRTBpara_combined <- round(mean(TransferRTBpara_combined$value), digits = 3);meanTransferRTBpara_combined
 pRTWashBpara_combined <- ggplot(data = TransferRTBpara_combined, aes(x = Transfer, y = value, color = group, shape = group, linetype = group)) +
   geom_point(size = 1.5) +
   ggtitle("Parallel contact areas")+
@@ -1016,10 +991,8 @@ pRTWashBpara_combined <- ggplot(data = TransferRTBpara_combined, aes(x = Transfe
         axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
         axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
         plot.title = element_text(size = 12)) +
-  geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)
-mean <- round(mean(TransferRTBpara_combined$value),digits = 2)
-pRTWashBpara_combined <-pRTWashBpara_combined + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
-pRTWashBpara_combined
+  geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)+
+  annotate(geom="text", x=15, y=26.5, label="bar(x) == 4.12",color="black",parse=T)
 
 #Perpendicular contact area 1
 pRTWashB3_combined <- ggplot(data = TransferRTWashB3_combined, aes(x = Transfer, y = value, color = group, shape = group, linetype = group)) +
@@ -1070,10 +1043,9 @@ show(pRTWashB4_combined)
 
 # Perpendicular contact areas combined
 TransferRTBperp_combined <- rbind(TransferRTWashB3_combined, TransferRTWashB4_combined)
-
 # Specify the desired order for the legend
 #legend_order <- c("Unwashed", "After one wash", "After 15 washes")
-
+meanVTransferRTBperp_combined <- round(mean(TransferRTBperp_combined$value), digits = 3);meanVTransferRTBperp_combined
 pRTWashBperp_combined <- ggplot(data = TransferRTBperp_combined, aes(x = Transfer, y = value, color = group, shape = group, linetype = group)) +
   geom_point(size = 1.5) +
   ggtitle("Parallel contact areas")+
@@ -1093,9 +1065,8 @@ pRTWashBperp_combined <- ggplot(data = TransferRTBperp_combined, aes(x = Transfe
         axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
         axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
         plot.title = element_text(size = 12)) +
-  geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)
-mean <- round(mean(TransferRTBperp_combined$value),digits = 2)
-pRTWashBperp_combined <-pRTWashBperp_combined + annotate("text",  x=Inf, y = Inf, label = mean, vjust=2, hjust=1.5)
+  geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)+
+  annotate(geom="text", x=15, y=26.5, label="bar(x) == 7.8",color="black",parse=T)
 pRTWashBperp_combined
 
 #### Combined grap ####
@@ -1302,29 +1273,24 @@ PearsonpmgvolG1 <- ggscatter(Garment1_mgvol, x = "fibre", y = "mgvol",
                              add = "reg.line",
                              xlab = "Number of fibres transferred", ylab = "fibre released per volume of wastewater(mg/L)",
                              ylim = c(0,30),
-                             xlim = c(0,10),
-                             cor.coef = TRUE,
-                             cor.coeff.args = list(method = "pearson", label.x = 1,label.y = 28, label.sep = "\n"))
+                             xlim = c(0,10))+
+  annotate(geom="text", x=1, y=29, label="R = 0.96\np < 0.0001",color="black")
 PearsonpmgvolG1                 
-#ggsave("Pearson fibre VS wash number_G12.png", PearsonFW_G12, width = 7, height = 4, units = "in", dpi=600, path = "Results")
 
 PearsonpmgvolG5 <- ggscatter(Garment5_mgvol, x = "fibre", y = "mgvol",
                              add = "reg.line",
                              xlab = "Number of fibres transferred", ylab = "Fibre released per volume of wastewater(mg/L)",
                              ylim = c(0,12),
-                             xlim = c(0,30),
-                             cor.coef = TRUE,
-                             cor.coeff.args = list(method = "pearson", label.x = 1,label.y = 11, label.sep = "\n"))
+                             xlim = c(0,30))+
+  annotate(geom="text", x=2, y=11.5, label="R = 0.77\np < 0.0001",color="black")
 PearsonpmgvolG5                 
-#ggsave("Pearson fibre VS wash number_G12.png", PearsonFW_G12, width = 7, height = 4, units = "in", dpi=600, path = "Results")
 
 PearsonpmgvolG12 <- ggscatter(Garment12_mgvol, x = "fibre", y = "mgvol",
                               add = "reg.line",
                               xlab = "Number of fibres transferred", ylab = "fibre released per volume of wastewater(mg/L)",
                               ylim = c(0,12),
-                              xlim = c(0,20),
-                              cor.coef = TRUE,
-                              cor.coeff.args = list(method = "pearson", label.x = 1,label.y = 11, label.sep = "\n"))
+                              xlim = c(0,20))+
+  annotate(geom="text", x=1.5, y=11.5, label="R = 0.63\np < 0.0001",color="black")
 PearsonpmgvolG12  
 
 #### Combined results 
@@ -1335,7 +1301,7 @@ pPearson_combined_pending <- ggarrange(PearsonpmgvolG1+ rremove("ylab") + rremov
                                        vjust = 0.9, hjust = 0.9)+
   theme(plot.margin = margin(0.5,0,0,0, "cm")) # in order (Top,left,bottom,right)
 
-pPearson_combined <- annotate_figure(pPearson_combined_pending, left = textGrob("Mass of fibre released per volume of wastewater(mg/L)\n", rot = 90, vjust = 0.5, hjust = 0.5, gp = gpar(cex =1)),
+pPearson_combined <- annotate_figure(pPearson_combined_pending, left = textGrob("Mass of fibre released per litre of wastewater(mg/L)\n", rot = 90, vjust = 0.5, hjust = 0.5, gp = gpar(cex =1)),
                                      bottom = textGrob("\nAverage Number of fibres transferred", vjust = 0.5, hjust = 0.5,gp = gpar(cex = 1)));pVolume_combined
 pPearson_combined
 ggsave("pPearson_combined_waterVStransfer.png", pPearson_combined, width = 6, height = 9, units = "in", dpi=300, path = "Results")

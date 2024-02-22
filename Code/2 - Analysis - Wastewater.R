@@ -50,11 +50,12 @@ Wastewatervolume_G5 <- Wastewatervolume_G5[Wastewatervolume_G5$Washnumber != 34,
 
 # Data obtained with 1 garment
 lm(Total~Washnumber, data=Wastewatervolume_G1)
+meanVolume_G1 <- round(mean(Wastewatervolume_G1$Total), digits = 2);meanVolume_G1
 pVolume_G1 <- ggplot(data = Wastewatervolume_G1, aes(x =Washnumber, y = Total)) +
   geom_line(colour = "#469990")+
   geom_smooth(method = lm, se = FALSE,formula = y ~ x, color="black", linetype="dashed", size=0.5)+
   labs(x="Wash number", y="Volume of water (L)")+
-  scale_y_continuous(breaks = seq(0, 35, by = 2), limits = c(15, 29),expand = c(0,0))+
+  scale_y_continuous(breaks = seq(0, 35, by = 2), limits = c(15, 30),expand = c(0,0))+
   scale_x_continuous(breaks = seq(1, 15, by = 2), limits = c(1, 15),expand = c(0.03,0))+
   theme_bw(base_size = 12) +
   theme(legend.position = "bottom",
@@ -63,18 +64,18 @@ pVolume_G1 <- ggplot(data = Wastewatervolume_G1, aes(x =Washnumber, y = Total)) 
         axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
         axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)))+ # top, right,bottom,left
   geom_errorbar(aes(ymin=Total-U.V2, ymax=Total+U.V2), width=0.5,  color="#469990")+
-  annotate(geom="text", x=12.75, y=28.1, label="y = - 0.04x + 22.3",color="black")# values obtained with lm(Diff.FN~Experiment, data=Wastewaterfibres_G1p4) above
-meanVolume_G1 <- round(mean(Wastewatervolume_G1$Total),digits = 2)
-pVolume_G1 <-pVolume_G1 + annotate("text",  x=Inf, y = Inf, label = meanVolume_G1, vjust=2, hjust=1.5)
+  annotate(geom="text", x=13.75, y=29.1, label="y = - 0.04x + 22.3",color="black")+
+  annotate(geom="text", x=13.75, y=27.5, label="bar(x) == 21.95",color="black",parse=T)
 show(pVolume_G1)
 
 # Data obtained with 5 garments
 lm(Total~Washnumber, data=Wastewatervolume_G5)
+meanVolume_G5 <- round(mean(Wastewatervolume_G5$Total), digits = 2);meanVolume_G5
 pVolume_G5 <- ggplot(data = Wastewatervolume_G5, aes(x =Washnumber, y = Total)) +
   geom_line(colour = "black")+
   geom_smooth(method = lm, se = FALSE,formula = y ~ x, color="black", linetype="dashed", size=0.5)+
   labs(x="Wash number", y="Volume of water (L)")+
-  scale_y_continuous(breaks = seq(0, 35, by = 2), limits = c(15, 29),expand = c(0,0))+
+  scale_y_continuous(breaks = seq(0, 35, by = 2), limits = c(15, 30),expand = c(0,0))+
   scale_x_continuous(breaks = seq(1, 51, by = 2), limits = c(1, 51),expand = c(0.03,0))+
   theme_bw(base_size = 12) +
   theme(legend.position = "bottom",
@@ -83,18 +84,18 @@ pVolume_G5 <- ggplot(data = Wastewatervolume_G5, aes(x =Washnumber, y = Total)) 
         axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
         axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)))+ # top, right,bottom,left
   geom_errorbar(aes(ymin=Total-U.V2, ymax=Total+U.V2), width=0.5)+
-  annotate(geom="text", x=43, y=28.1, label="y = - 0.06 x + 22.4 ",color="black")# values obtained with lm(Diff.FN~Experiment, data=Wastewaterfibres_G5p4) above
-meanVolume_G5 <- round(mean(Wastewatervolume_G5$Total),digits = 2)
-pVolume_G5 <-pVolume_G5 + annotate("text",  x=Inf, y = Inf, label = meanVolume_G5, vjust=2, hjust=1.5)
+  annotate(geom="text", x=47, y=29.1, label="y = - 0.06 x + 22.4 ",color="black")+
+  annotate(geom="text", x=47, y=27.5, label="bar(x) == 23.88",color="black",parse=T)
 show(pVolume_G5)
 
 # Data obtained with 12 garments
 lm(Total~Washnumber, data=Wastewatervolume_G12)
+meanVolume_G12 <- round(mean(Wastewatervolume_G12$Total), digits = 2);meanVolume_G12
 pVolume_G12 <- ggplot(data = Wastewatervolume_G12, aes(x =Washnumber, y = Total)) +
   geom_line(colour = "darkred")+
   geom_smooth(method = lm, se = FALSE,formula = y ~ x, color="black", linetype="dashed", size=0.5)+
   labs(x="Wash number", y="Volume of water (L)")+
-  scale_y_continuous(breaks = seq(0, 35, by = 2), limits = c(15, 29),expand = c(0,0))+
+  scale_y_continuous(breaks = seq(0, 35, by = 2), limits = c(15, 30),expand = c(0,0))+
   scale_x_continuous(breaks = seq(1, 41, by = 2), limits = c(1, 41),expand = c(0.03,0))+
   theme_bw(base_size = 12) +
   theme(legend.position = "bottom",
@@ -103,9 +104,8 @@ pVolume_G12 <- ggplot(data = Wastewatervolume_G12, aes(x =Washnumber, y = Total)
         axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
         axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)))+ # top, right,bottom,left
   geom_errorbar(aes(ymin=Total-U.V2, ymax=Total+U.V2), width=0.5, color="darkred")+
-  annotate(geom="text", x=35, y=28.1, label="y = 0.01 x + 23.11",color="black")# values obtained with lm(Diff.FN~Experiment, data=Wastewaterfibres_G12p4) above
-meanVolume_G12 <- round(mean(Wastewatervolume_G12$Total),digits = 2)
-pVolume_G12 <-pVolume_G12 + annotate("text",  x=Inf, y = Inf, label = meanVolume_G12, vjust=2, hjust=1.5)
+  annotate(geom="text", x=37.5, y=29.1, label="y = 0.01 x + 23.11",color="black")+
+  annotate(geom="text", x=37.5, y=27.5, label="bar(x) == 23.4",color="black",parse=T)
 show(pVolume_G12)
 
 #### Combined results ####
@@ -119,7 +119,7 @@ pVolume_combined_pending <- ggarrange(pVolume_G1+ rremove("ylab") + rremove("xla
 pVolume_combined <- annotate_figure(pVolume_combined_pending, left = textGrob("Volume of wastewater (L)\n", rot = 90, vjust = 0.5, hjust = 0.5, gp = gpar(cex =1)),
                                     bottom = textGrob("Wash number", vjust = 0.5, hjust = 0.5,gp = gpar(cex = 1)));pVolume_combined
 pVolume_combined
-ggsave("pVolume_combined.png", pVolume_combined, width = 8, height = 8, units = "in", dpi=300, path = "Results")
+ggsave("pVolume_combined.png", pVolume_combined, width = 7, height = 8, units = "in", dpi=300, path = "Results")
 
 #----------------------------------------------------------------------------------#
 ####                     Fibres released in the wastewater                     #####
@@ -380,7 +380,7 @@ pfibres_Total <- ggplot(data = Wastewaterfibres_Total, aes(x = Experiment, y = n
   # Add regression equations as annotations using annotate()
   annotate(geom = "text", x = 41.5, y = 190, label = "1 garment:  y = - 0.1 x + 22.8 ", color = "#469990") +
   annotate(geom = "text", x = 41.8, y = 175, label = "5 garments:  y = - 0.2 x + 43.0", color = "black") +
-  annotate(geom = "text", x = 41.8, y = 160, label = "12 garments:  y = 0.2 x + 15.8", color = "darkred")
+  annotate(geom = "text", x = 41.8, y = 160, label = "12 garments:  y = 1.1 x - 12.8", color = "darkred")
 show(pfibres_Total)
 ggsave("Wastewater fibres_Total normalised.png", pfibres_Total, width = 7, height = 5, units = "in", dpi=600, path = "Results")
 
