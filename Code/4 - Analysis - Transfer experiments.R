@@ -1,16 +1,16 @@
 #############################################################
 #####                     To read                       #####
 #############################################################
-# This R script is to generate the figures related to:
-# the transfer of fibres following washing
+# This R script is to generate the figures related to the Transfer experiments:
+# 1: Transfer of fibres following washing
 # Repetitive transfer (control garment)
 # Repetitive Transfer - washing activities
 # Repetitive Transfer vs. Wash 
 # the fibres released in the wastewater VS number of transferred fibres (this part of the code needs to be run after Analysis - Transfer.R)
 
-#----------------------------------------------------------------------------------#
-####                   Transfer of fibres following washing                    #####
-#----------------------------------------------------------------------------------#
+# ------------------------------------------------------------------------
+# Section 1: Transfer of fibres following washing
+# ------------------------------------------------------------------------
 # Split the column based on "_"
 Transfer_G1 <- separate(G1_Dataset, Sample, into = c("date", "exp", "wash","garment", "band", "sample"), sep = "_")
 Transfer_G5 <- separate(G5_Dataset, Sample, into = c("wash","garment", "band", "orientation", "condition"), sep = "_")

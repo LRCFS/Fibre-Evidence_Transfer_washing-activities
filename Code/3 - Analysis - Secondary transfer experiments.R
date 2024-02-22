@@ -1,13 +1,9 @@
 #############################################################
 #####                     To read                       #####
 #############################################################
-# This R script is to generate the figures related to:
-# the secondary transfer of fibres following washing
+# This R script is to generate the figures related to the secondary transfer of fibres following washing
 
-#----------------------------------------------------------------------------------#
-####              Secondary transfer of fibres following washing               #####
-#----------------------------------------------------------------------------------#
-
+#### Data Cleaning and Processing ####
 # Split the column based on "_"
 ST_Dataset <- separate(ST_Dataset, Sample, into = c("Garment", "Side", "Row","Column", "Condition"), sep = "_")
 
@@ -23,15 +19,10 @@ STG_list <- lapply(1:15, function(i) ST_Dataset %>% filter(grepl(paste0('\\bG', 
 # Assign the list elements to individual data frames
 list2env(setNames(STG_list, paste0("STG", 1:15)), .GlobalEnv)
 
-
-####_________________Boxplot_________________####
 #Assign a Coder to each wash
 for (i in 1:15) {
   assign(paste0("STG", i), transform(get(paste0("STG", i)), Coder = paste0("S", sprintf("%03d", i))))
 }
-
-# # Combined Dataset
-# TotalData <- rbind(STG1,STG2,STG3,STG4,STG5,STG6,STG7,STG8,STG9,STG10,STG11,STG12,STG13,STG14,STG15)
 
 # Define a list of STG datasets
 STG_list <- list(STG1,STG2,STG3,STG4,STG5,STG6,STG7,STG8,STG9,STG10,STG11,STG12,STG13,STG14,STG15)
@@ -48,7 +39,7 @@ SumFibreTotal <- rbind(SumFibreCountSTG1, SumFibreCountSTG2, SumFibreCountSTG3, 
                        SumFibreCountSTG7, SumFibreCountSTG8, SumFibreCountSTG9, SumFibreCountSTG10, SumFibreCountSTG11, SumFibreCountSTG12,
                        SumFibreCountSTG13, SumFibreCountSTG14, SumFibreCountSTG15)
 
-#### Create a graph of total fibres by wash/garment ####
+#### Final graph - Figure 8 ####
 STplot <- ggplot(SumFibreTotal, aes(x= Garment, y=value, group=1)) +
   geom_line(colour='#d1133f')+ 
   geom_point(colour='#d1133f')+
@@ -65,5 +56,12 @@ STplot <- ggplot(SumFibreTotal, aes(x= Garment, y=value, group=1)) +
             vjust = -1.05, hjust = -0.25,
             show.legend = FALSE)
 STplot
+
+# To save the graph
 ggsave("Secondary transfer_Fibre Count total.png", STplot, width = 7, height = 5, units = "in", dpi=150, path = "Results/")
 
+#remove unused dataframe
+rm(SumFibreCount,SumFibreCountSTG1,SumFibreCountSTG10,SumFibreCountSTG11,SumFibreCountSTG12,SumFibreCountSTG13,SumFibreCountSTG14,
+   SumFibreCountSTG15,SumFibreCountSTG2,SumFibreCountSTG3,SumFibreCountSTG4,SumFibreCountSTG5,SumFibreCountSTG6,SumFibreCountSTG7,
+   SumFibreCountSTG8,SumFibreCountSTG9,STplot,STG1,STG2,STG3,STG4,STG5,STG6,STG7,STG8,STG9,STG10,STG11,STG12,STG13,STG14,STG15,
+   ST_Dataset, STG_list)

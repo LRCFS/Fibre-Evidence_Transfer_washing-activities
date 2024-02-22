@@ -1,16 +1,33 @@
 #############################################################
 #####                     To read                       #####
 #############################################################
-# This R script is the first step to export all the data needed to generate the figure in the article
+# This R script is the first step to export all the data needed to generate the figure in the article.
 # This includes the data from: 
-# Fibres released in the wastewater and wastewater volume
-# Transfer with washing activities
-# Repetitive transfer (without washing)
-# Secondary transfer through wash
+# 1. Weight of all donor garments
+# 2. Wastewater Volume and Fibre release
+# 3. Secondary transfer experiments 
+# 4. Transfer experiments (with and without washing activities)
 
-#----------------------------------------------------------------------------------#
-####          Fibres released in the wastewater and wastewater volume          #####
-#----------------------------------------------------------------------------------#
+# ------------------------------------------------------------------------
+# Section 1: Weight of all donor garments
+# ------------------------------------------------------------------------
+WeightGarment <- read.csv('./Garment weight.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+
+# Creating the different dataframe for each garment
+G1weight<- WeightGarment %>% filter(grepl('^[1]$', Load))
+G5weight<- WeightGarment %>% filter(grepl(5, Load))
+G12weight<- WeightGarment %>% filter(grepl(12, Load))
+
+# calculate the total weight
+G1weightTotal<- sum(G1weight$weight_kg);G1weightTotal
+G5weightTotal <- sum(G5weight$weight_kg);G5weightTotal
+G12weightTotal <- sum(G12weight$weight_kg);G12weightTotal
+
+# remove unused dataframe
+rm(G1weight,G5weight,G12weight,WeightGarment)
+# ------------------------------------------------------------------------
+# Section 2: Wastewater Volume and Fibre release
+# ------------------------------------------------------------------------
 
 Wastewaterfibres_G1 <- read.csv('./Wastewater/Data_filtration_fibre weight_G1.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 Wastewaterfibres_G1$Date<-as.factor(Wastewaterfibres_G1$Date)
@@ -24,10 +41,10 @@ Wastewaterfibres_G12 <- read.csv('./Wastewater//Data_filtration_fibre weight_G12
 Wastewaterfibres_G12$Date<-as.factor(Wastewaterfibres_G12$Date)
 Wastewatervolume_G12 <- read.csv('./Wastewater//Data_filtration_water volume_G12.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
-#-----------------------------------------------------------#
-####          Transfer with washing activities          #####
-#-----------------------------------------------------------#
-###_________________Data loading_________________###
+# ------------------------------------------------------------------------
+# Section 3: Transfer experiments
+# ------------------------------------------------------------------------
+#### Uploading data from the first series involving washing a single donor garment ####
 G1 <- read.csv('./Fibre count Summary/G1_Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
 # removing the ".TIF" in G1
@@ -54,7 +71,7 @@ G1_Dataset[,2:3] = apply(G1_Dataset[,2:3], 2, function(x) as.numeric(as.characte
 # remove unused dataframe
 rm(G1,G1B,G1Atr,G1_Dataset_pending)
 
-###_________________Data loading_________________###
+#### Uploading data from the second series involving washing 5 donor garments ####
 G5 <- read.csv('./Fibre count Summary/G5_Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
 # removing the ".TIF" in G5
@@ -81,7 +98,7 @@ G5_Dataset[,2:3] = apply(G5_Dataset[,2:3], 2, function(x) as.numeric(as.characte
 # remove unused dataframe
 rm(G5,G5B,G5Atr,G5_Dataset_pending)
 
-###_________________Data loading_________________###
+#### Uploading data from the third series involving washing 12 donor garments ####
 G12 <- read.csv('./Fibre count Summary/G12_Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
 # removing the ".TIF" in G12
@@ -96,11 +113,6 @@ G12 <- G12[!grepl(text_to_remove, G12$Slice), ]
 G12B<- G12 %>% filter(grepl('_B', Slice))
 G12Atr <- G12 %>% filter(grepl('_Atr', Slice))
 
-# # Assuming 'your_data' is your dataframe and 'column_name' is the column to check
-# duplicates <- duplicated(G12Atr$Slice)
-# # Select rows with duplicates
-# duplicate_rows <- G12Atr[duplicates, ]
-
 # Create table
 G12_Dataset_pending <- data.frame(rbind(G12B$Slice, G12B$Count, G12Atr$Count))
 G12_Dataset<-as.data.frame(t(G12_Dataset_pending))
@@ -113,10 +125,7 @@ G12_Dataset[,2:3] = apply(G12_Dataset[,2:3], 2, function(x) as.numeric(as.charac
 # remove unused dataframe
 rm(G12,G12B,G12Atr,G12_Dataset_pending)
 
-#-----------------------------------------------------------#
-####         Repetitive transfer (without washing)      #####
-#-----------------------------------------------------------#
-###_________________Data loading_________________###
+#### Uploading data from the repetitive transfer performed with the control garment (never washed) ####
 RT <- read.csv('./Fibre count Summary/RT_Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
 # removing the ".TIF" in RT
@@ -143,10 +152,7 @@ RT_Dataset[,2:3] = apply(RT_Dataset[,2:3], 2, function(x) as.numeric(as.characte
 # remove unused dataframe
 rm(RT,RTB,RTAtr,RT_Dataset_pending)
 
-#-----------------------------------------------------------#
-####          Repetitive transfer without washing       #####
-#-----------------------------------------------------------#
-###_________________Data loading_________________###
+#### Uploading data from the repetitive transfer performed with the donor garment washed only once ####
 RTWash <- read.csv('./Fibre count Summary/RTWash_Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
 # removing the ".TIF" in RTWash
@@ -173,10 +179,9 @@ RTWash_Dataset[,2:3] = apply(RTWash_Dataset[,2:3], 2, function(x) as.numeric(as.
 # remove unused dataframe
 rm(RTWash,RTWashB,RTWashAtr,RTWash_Dataset_pending)
 
-#-----------------------------------------------------------#
-####        Secondary transfer through wash             #####
-#-----------------------------------------------------------#
-###_________________Data loading_________________###
+# ------------------------------------------------------------------------
+# Section 4: Secondary transfer experiments
+# ------------------------------------------------------------------------
 ST <- read.csv('./Fibre count Summary/ST_Summary.csv', sep="," ,header = T,fileEncoding="UTF-8-BOM")
 
 # removing the ".TIF" in ST

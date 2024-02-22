@@ -1,10 +1,12 @@
 ###########################################################################
 #
 # Exploring the influence of washing activities on the transfer and persistence of fibres in forensic science
-#
-# Leverhulme Research Centre for Forensic Science
 
-# Virginie Galais, Stephanie Wilson, Niamh Nic Daéid, Hervé Ménard
+#Virginie Galais1*, Chris Gannicliffe2, Patricia Dugard1, Stephanie Wilson3, Niamh Nic Daéid1, Hervé Ménard1 
+  # 1 Leverhulme Research Centre for Forensic Science, University of Dundee, Dundee, DD1 4HN, UK
+  # 2 Scottish Police Authority Forensic Services, Aberdeen Laboratory, Aberdeen, AB24 5EQ, UK
+  # 3 Centre for Forensic Science, University of Strathclyde, Glasgow, G1 1XW, UK
+  # *Correspondence: vgalais001@dundee.ac.uk 
 
 # Website: https://github.com/LRCFS/
 # Contact: lrc@dundee.ac.uk
@@ -71,7 +73,7 @@ Results.dir <- "Results/"
 #############################################################
 # This codes can be run subsequently as each create necessary outputs for the next codes.  
 source("Code/1 - Data upload.R")
-source("Code/2 - Analysis - Wastewater.R")
-source("Code/3 - Analysis - Transfer.R")
-source("Code/4 - Analysis - Secondary transfer.R")
+source("Code/2 - Analysis - Wastewater Volume and Fibre release.R")
+source("Code/3 - Analysis - Secondary transfer experiments.R")
+source("Code/4 - Analysis - Transfer experiments.R")
 
