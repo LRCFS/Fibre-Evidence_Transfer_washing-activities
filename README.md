@@ -1,5 +1,5 @@
 
-# Fibre_Transfer_washing-activities
+# Exploring the influence of washing activities on the transfer and persistence of fibres in forensic science
 
 This repository contains a series of R scripts designed for analysing the raw data from a study investigating the impact of washing activities on both the release of fibres into wastewater and the transfer of constituent fibres from donor garments to receiver swatches. 
 Enclosed are the source code and raw data for individual analysis, facilitating the recreation of the figures depicted in the paper. The project is structured into four main parts:
