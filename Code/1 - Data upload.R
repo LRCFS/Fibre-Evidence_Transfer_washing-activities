@@ -14,7 +14,7 @@
 # ------------------------------------------------------------------------
 
 # Read the CSV file containing garment weight data
-WeightGarment <- read.csv('./Garment weight.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+WeightGarment <- read.csv('./Data/Garments weight.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
 # Create different dataframes for each garment
 G1weight<- WeightGarment %>% filter(grepl('^[1]$', Load))
@@ -34,26 +34,26 @@ rm(G1weight,G5weight,G12weight,WeightGarment)
 # ------------------------------------------------------------------------
 
 # Read data on wastewater fibre weight and volume for G1 garments
-Wastewaterfibres_G1 <- read.csv('./Wastewater/Data_filtration_fibre weight_G1.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+Wastewaterfibres_G1 <- read.csv('./Data/Data_filtration_fibre weight_Garment1.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 Wastewaterfibres_G1$Date<-as.factor(Wastewaterfibres_G1$Date)
-Wastewatervolume_G1 <- read.csv('./Wastewater//Data_filtration_water volume_G1.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+Wastewatervolume_G1 <- read.csv('./Data/Data_filtration_water volume_Garment1.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
 # Read data on wastewater fibre weight and volume for G5 garments
-Wastewaterfibres_G5 <- read.csv('./Wastewater//Data_filtration_fibre weight_G5.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+Wastewaterfibres_G5 <- read.csv('./Data/Data_filtration_fibre weight_Garment5.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 Wastewaterfibres_G5$Date<-as.factor(Wastewaterfibres_G5$Date)
-Wastewatervolume_G5 <- read.csv('./Wastewater//Data_filtration_water volume_G5.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+Wastewatervolume_G5 <- read.csv('./Data/Data_filtration_water volume_Garment5.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
 # Read data on wastewater fibre weight and volume for G12 garments
-Wastewaterfibres_G12 <- read.csv('./Wastewater//Data_filtration_fibre weight_G12.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+Wastewaterfibres_G12 <- read.csv('./Data/Data_filtration_fibre weight_Garment12.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 Wastewaterfibres_G12$Date<-as.factor(Wastewaterfibres_G12$Date)
-Wastewatervolume_G12 <- read.csv('./Wastewater//Data_filtration_water volume_G12.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+Wastewatervolume_G12 <- read.csv('./Data/Data_filtration_water volume_Garment12.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
 # ------------------------------------------------------------------------
 # Section 3: Transfer experiments
 # ------------------------------------------------------------------------
 
 #### Uploading data from the first series involving washing a single donor garment ####
-G1 <- read.csv('./Fibre count Summary/G1_Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+G1 <- read.csv('./Data/Garment1_ Fibre count Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
 # Remove ".TIF" in G1
 G1$Slice<- gsub(".TIF","",G1$Slice)
@@ -81,7 +81,7 @@ G1_Dataset[,2:3] = apply(G1_Dataset[,2:3], 2, function(x) as.numeric(as.characte
 rm(G1,G1B,G1Atr,G1_Dataset_pending)
 
 #### Uploading data from the second series involving washing 5 donor garments ####
-G5 <- read.csv('./Fibre count Summary/G5_Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+G5 <- read.csv('./Data/Garment5_ Fibre count Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
 # Remove ".TIF" in G5
 G5$Slice<- gsub(".TIF","",G5$Slice)
@@ -109,7 +109,7 @@ G5_Dataset[,2:3] = apply(G5_Dataset[,2:3], 2, function(x) as.numeric(as.characte
 rm(G5,G5B,G5Atr,G5_Dataset_pending)
 
 #### Uploading data from the third series involving washing 12 donor garments ####
-G12 <- read.csv('./Fibre count Summary/G12_Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+G12 <- read.csv('./Data/Garment12_ Fibre count Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
 # Remove ".TIF" in G12
 G12$Slice<- gsub(".TIF","",G12$Slice)
@@ -137,7 +137,7 @@ G12_Dataset[,2:3] = apply(G12_Dataset[,2:3], 2, function(x) as.numeric(as.charac
 rm(G12,G12B,G12Atr,G12_Dataset_pending)
 
 #### Uploading data from the repetitive transfer performed with the control garment (never washed) ####
-RT <- read.csv('./Fibre count Summary/RT_Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+RT <- read.csv('./Data/Repetitive transfer_Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
 # Remove ".TIF" in RT
 RT$Slice<- gsub(".TIF","",RT$Slice)
@@ -165,7 +165,7 @@ RT_Dataset[,2:3] = apply(RT_Dataset[,2:3], 2, function(x) as.numeric(as.characte
 rm(RT,RTB,RTAtr,RT_Dataset_pending)
 
 #### Uploading data from the repetitive transfer performed with the donor garment washed only once ####
-RTwash <- read.csv('./Fibre count Summary/RTwash_Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
+RTwash <- read.csv('./Data/Repetitive transfer and Wash_Summary.csv', sep="," ,header = T,fileEncoding = 'UTF-8-BOM')
 
 # Remove ".TIF" in RTwash
 RTwash$Slice<- gsub(".TIF","",RTwash$Slice)
@@ -196,7 +196,7 @@ rm(RTwash,RTwashB,RTwashAtr,RTwash_Dataset_pending)
 # Section 4: Secondary transfer experiments
 # ------------------------------------------------------------------------
 # Upload data from the secondary transfer experiments
-ST <- read.csv('./Fibre count Summary/ST_Summary.csv', sep="," ,header = T,fileEncoding="UTF-8-BOM")
+ST <- read.csv('./Data/Secondary Transfer_Summary.csv', sep="," ,header = T,fileEncoding="UTF-8-BOM")
 
 # Remove ".TIF" in ST
 ST$Slice<- gsub(".TIF","",ST$Slice)
@@ -216,3 +216,4 @@ ST_Dataset[,2:3] = apply(ST_Dataset[,2:3], 2, function(x) as.numeric(as.characte
 
 # remove unused dataframe
 rm(ST,STB,STAW,ST_Dataset_pending)
+
