@@ -1,12 +1,13 @@
 ##########################################################################
 #####                           Data upload                          #####
 ##########################################################################
+
 # This R script is the first step to export all the data needed to generate the figure in the article.
 # This includes the data from: 
 # 1. Weight of all donor garments
 # 2. Wastewater Volume and Fibre release
-# 3. Secondary transfer experiments 
-# 4. Transfer experiments (with and without washing activities)
+# 3. Transfer experiments 
+# 4. Secondary transfer experiments
 
 # ------------------------------------------------------------------------
 # Section 1: Weight of all donor garments

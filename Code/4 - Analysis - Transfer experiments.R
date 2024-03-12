@@ -1,12 +1,18 @@
 #############################################################
-#####                     To read                       #####
+#####          Analysis - Transfer experiments          #####
 #############################################################
+
 # This R script is to generate the figures related to the Transfer experiments:
-# 1: Washing series vs control garment
-# Repetitive transfer (control garment)
-# Repetitive Transfer - washing activities
-# Repetitive Transfer vs. Wash 
-# the fibres released in the wastewater VS number of transferred fibres (this part of the code needs to be run after Analysis - Transfer.R)
+# 1. Washing series vs control garment
+  # 1-1. Repetitive Transfer - control garment
+  # 1-2. Transfer - Washing series vs control garment
+  # 1-3. Repetitive Transfer - Washing series vs control garment
+
+# 2. Variability between and within garments
+  # 2-1. inter-garment variability
+  # 2-2. intra-garment variability
+
+# 3. Fibres in wastewater vs fibres transferred
 
 # ------------------------------------------------------------------------
 # Section 1: Washing series vs control garment
@@ -678,7 +684,7 @@ pIntercombined
 ggsave("Figure 11 - Inter-garment variability.png", pIntercombined, width =7, height = 5, units = "in", dpi=300,path = "Results")
 
 # ------------------------------------------------------------------------
-# Subsection 2-1 : intra-garment variability
+# Subsection 2-2 : intra-garment variability
 # ------------------------------------------------------------------------
 #### Data Cleaning and Processing ####
 # data from the first series involving washing a single donor garment

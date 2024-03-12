@@ -1,11 +1,11 @@
 ###########################################################################
-#
+
 # Exploring the influence of washing activities on the transfer and persistence of fibres in forensic science
 
-#Virginie Galais1*, Chris Gannicliffe2, Patricia Dugard1, Stephanie Wilson3, Niamh Nic Daéid1, Hervé Ménard1 
-  # 1 Leverhulme Research Centre for Forensic Science, University of Dundee, Dundee, DD1 4HN, UK
-  # 2 Scottish Police Authority Forensic Services, Aberdeen Laboratory, Aberdeen, AB24 5EQ, UK
-  # 3 Centre for Forensic Science, University of Strathclyde, Glasgow, G1 1XW, UK
+# Virginie Galais (1*), Chris Gannicliffe (2), Patricia Dugard (1), Stephanie Wilson (3), Niamh Nic Daéid (1), Hervé Ménard (1) 
+  # (1) Leverhulme Research Centre for Forensic Science, University of Dundee, Dundee, DD1 4HN, UK
+  # (2) Scottish Police Authority Forensic Services, Aberdeen Laboratory, Aberdeen, AB24 5EQ, UK
+  # (3) Centre for Forensic Science, University of Strathclyde, Glasgow, G1 1XW, UK
   # *Correspondence: vgalais001@dundee.ac.uk 
 
 # Website: https://github.com/LRCFS/
@@ -23,7 +23,6 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-#
 
 ###########################################################################
 # To clean the Global environment
@@ -32,6 +31,7 @@ rm(list=ls())
 #############################################################
 #####                library requirement                #####
 #############################################################
+
 library(plyr)
 library(dplyr)
 library(tidyverse)

@@ -1,10 +1,11 @@
 ##########################################################################
 #####         Analysis - Wastewater Volume and Fibre release         #####
 ##########################################################################
+
 # This R script is to generate the figures related to the Wastewater Volume and Fibre release
 # 1. Wastewater volume
 # 2. Fibres released in the wastewater
-# 3: Mass of fibres VS volume of wastewater
+# 3. Mass of fibres VS volume of wastewater
 
 # ------------------------------------------------------------------------
 # Section 1: Wastewater volume
