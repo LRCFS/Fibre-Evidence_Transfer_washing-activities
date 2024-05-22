@@ -177,7 +177,7 @@ text_to_remove <- "_positive"
 RTwash <- RTwash[!grepl(text_to_remove, RTwash$Slice), ]
 
 # Create different dataframes before and after transfer
-RTwashB<- RTwash %>% filter(grepl('_B', Slice))
+RTwashB <- RTwash %>% filter(grepl('_B', Slice) & !grepl('_Atr', Slice))
 RTwashAtr <- RTwash %>% filter(grepl('_Atr', Slice))
 
 # Create table

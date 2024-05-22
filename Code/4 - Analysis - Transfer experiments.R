@@ -438,6 +438,7 @@ coder_colors <- c("black", "black","black")  # You can add more colors if needed
 coder_linetypes <- c("solid", "dashed", "dotted")  # You can add more linetypes if needed
 
 # Parallel contact areas combined
+meanAtrG1 <- aggregate(value ~ wash, Transfer_G1, function(x) round(mean(x), digits = 2))
 TransferRTBpara_combined <- rbind(TransferRTWashB1_combined, TransferRTWashB2_combined)
 meanTransferRTBpara_combined <- round(mean(TransferRTBpara_combined$value), digits = 3);meanTransferRTBpara_combined
 pRTWashBpara_combined <- ggplot(data = TransferRTBpara_combined, aes(x = Transfer, y = value, color = group, shape = group, linetype = group)) +
@@ -461,13 +462,14 @@ pRTWashBpara_combined <- ggplot(data = TransferRTBpara_combined, aes(x = Transfe
         plot.title = element_text(size = 12)) +
   geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)+
   annotate(geom="text", x=15, y=26.5, label="bar(x) == 4.12",color="black",parse=T)
+pRTWashBpara_combined
 
 # Perpendicular contact areas combined
 TransferRTBperp_combined <- rbind(TransferRTWashB3_combined, TransferRTWashB4_combined)
 meanVTransferRTBperp_combined <- round(mean(TransferRTBperp_combined$value), digits = 3);meanVTransferRTBperp_combined
 pRTWashBperp_combined <- ggplot(data = TransferRTBperp_combined, aes(x = Transfer, y = value, color = group, shape = group, linetype = group)) +
   geom_point(size = 1.5) +
-  ggtitle("Parallel contact areas")+
+  ggtitle("Perpendicular contact areas")+
   labs(x = "Repetitive experiments", y = "Number of transferred fibres") +
   guides(color = guide_legend(title = NULL, override.aes = list(shape = coder_shapes, linetype = coder_linetypes))) +
   scale_y_continuous(breaks = seq(-2, 28, by = 5), limits = c(-1, 28), expand = c(0, 0)) +
@@ -486,6 +488,7 @@ pRTWashBperp_combined <- ggplot(data = TransferRTBperp_combined, aes(x = Transfe
         plot.title = element_text(size = 12)) +
   geom_smooth(aes(linetype = as.factor(group)), method = lm, se = FALSE, size = 0.7)+
   annotate(geom="text", x=15, y=26.5, label="bar(x) == 7.8",color="black",parse=T)
+pRTWashBperp_combined
 
 #### Final graph - Figure 10 ####
 pCombinedRTWash_pending <- ggarrange(pRTWashBpara_combined+ rremove("ylab") + rremove("xlab"),
